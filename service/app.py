@@ -8,7 +8,7 @@ from astropy import units
 app = Flask(__name__)
 
 path = '/home/ubuntu/catalogsHTM/'
-catalogs = ['FIRST', 'TMASS', 'TMASSxsc', 'DECaLS', 'GAIADR1', 'GAIADR2', 'GALEX', 'HSCv2', 'IPHAS', 'NEDz', 'SDSSDR10', 'SDSSoffset', 'SpecSDSS', 'SAGE', 'IRACgc', 'UKIDSS', 'VISTAviking', 'VSTatlas', 'VSTkids', 'AKARI', 'APASS', 'NVSS', 'Cosmos', 'PTFpc', 'ROSATfsc', 'SkyMapper', 'UCAC4', 'WISE', 'XMM', 'AAVSO_VSX', 'unWISE', 'SWIREz', 'GLADE', 'Simbad_PM200', 'CRTS_per_var']
+catalogs = ['FIRST', 'TMASS', 'TMASSxsc', 'DECaLS', 'GAIADR1', 'GAIADR2', 'GALEX', 'HSCv2', 'IPHAS', 'NEDz', 'SDSSDR10', 'SDSSoffset', 'SpecSDSS', 'SAGE', 'IRACgc', 'UKIDSS', 'VISTAviking', 'VSTatlas', 'VSTkids', 'AKARI', 'APASS', 'NVSS', 'Cosmos', 'PTFpc', 'ROSATfsc', 'SkyMapper', 'UCAC4', 'WISE', 'XMM', 'AAVSO_VSX', 'unWISE', 'SWIREz', 'Simbad_PM200', 'CRTS_per_var']
 
 @app.route('/')
 def welcome():
@@ -16,38 +16,43 @@ def welcome():
 
 @app.route('/conesearch')
 def conesearch():
+    #get arguments
     catalog = request.args.get('catalog')
     ra = float(request.args.get('ra'))
     dec = float(request.args.get('dec'))
     radius = float(request.args.get('radius'))
 
+    return jsonify(conesearch(catalog, ra, dec, radius))
+
+def conesearch(catalog, ra, dec, radius):
     match, catalog_columns, columns_units = cone_search(catalog, ra, dec, radius, path)
-    df = pd.DataFrame(match, columns=catalog_columns)
+    try:
+        df = pd.DataFrame(match, columns=catalog_columns)
+    except ValueError as ex:
+        return []
     results = []
     for index, row in df.iterrows():
         obj = dict(zip(catalog_columns, row.values))
         results.append(obj)
-    return jsonify(results)
+    return results
 
 @app.route('/allmatches')
 def allmatches():
+    global catalogs
     ra = float(request.args.get('ra'))
     dec = float(request.args.get('dec'))
     radius = float(request.args.get('radius'))
 
     result = []
-    for catalog in cat_dirs:
-        match, catalog_columns, columns_units = cone_search(catalog, ra, dec, radius, path)
-        df = pd.DataFrame(match, columns=catalog_columns)
-        partial_result = []
-        for index, row in df.iterrows():
-            obj = dict(zip(catalog_columns, row.values))
-            partial_result.append(obj)
-        # add catalog tag 
-        result_catname = {catalog: partial_result}
-        print(f'result_catname is {result_catname}')
-        result.update(result_catname)
+    for catalog in catalogs:
+        partial_result = conesearch(catalog, ra, dec, radius)
+        if partial_result == []:    
+            continue
+        else:
+            result_catname = {catalog: partial_result}  
+            result.append(result_catname)
     return jsonify(result)
+
 
 @app.route('/crossmatch')
 def crossmatch():
@@ -72,6 +77,10 @@ def crossmatch():
         if row[ra_cat] == closest_ra_dec[0]['ra'] and row[dec_cat] == closest_ra_dec[0]['dec']:
             result.append(row)
     return str(result)
+
+@app.route('/crossmatch_all')
+def crossmatch_all():
+    return None
 
 def map_ra_dec(catalog):
     if catalog == 'HSCv2':
