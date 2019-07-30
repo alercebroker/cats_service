@@ -87,14 +87,18 @@ def map_ra_dec(catalog):
 def get_min_distance(matches, catalog, ra, dec):
     ra_cat, dec_cat = map_ra_dec(catalog)
     distances = []
+    if catalog == 'XMM':
+        unit = units.degree
+    else:
+        unit = units.radian
     for match in matches:
         point_cat = SkyCoord(
-                ra=float(match[ra_cat]) * units.degree,
-                dec=float(match[dec_cat]) * units.degree
+                ra=float(match[ra_cat]) * unit,
+                dec=float(match[dec_cat]) * unit
                 )
         point_requested = SkyCoord(
-                ra=float(ra) * units.degree,
-                dec=float(dec) * units.degree
+                ra=float(ra) * unit,
+                dec=float(dec) * unit
                 )
         distances.append(dict(distance=point_requested.separation(point_cat).arcsecond, ra=match[ra_cat], dec=match[dec_cat])) #distance, object ra, object dec
     #get minimum distance
