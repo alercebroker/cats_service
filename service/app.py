@@ -1,12 +1,15 @@
 from catsHTM import cone_search
 from flask import Flask, request, jsonify, flash, redirect, url_for
+from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import pandas as pd
 from astropy.coordinates import SkyCoord
 from astropy import units
 from math import radians, degrees
+import numpy as np
 
 app = Flask(__name__)
+CORS(app)
 
 path = '/home/ubuntu/catalogsHTM/'
 catalogs = ['FIRST', 'TMASS', 'TMASSxsc', 'DECaLS', 'GAIADR1', 'GAIADR2', 'GALEX', 'HSCv2', 'IPHAS', 'NEDz', 'SDSSDR10', 'SDSSoffset', 'SpecSDSS', 'SAGE', 'IRACgc', 'UKIDSS', 'VISTAviking', 'VSTatlas', 'VSTkids', 'AKARI', 'APASS', 'NVSS', 'Cosmos', 'PTFpc', 'ROSATfsc', 'SkyMapper', 'UCAC4', 'WISE', 'XMM', 'AAVSO_VSX', 'unWISE', 'SWIREz', 'Simbad_PM200', 'CRTS_per_var']
@@ -90,11 +93,13 @@ def crossmatch(catalog, ra, dec, radius):
             break
     result_with_units = {}
     for key, unit in zip(result, columns_units):
+        # if value is NaN, replace
+        value = result[key]
         if unit_is_rad(unit):
             # convert unit to deg
-            result_with_units[key] = {'value': degrees(result[key]), 'unit': 'deg'}
+            result_with_units[key] = {'value': None if np.isnan(value) else degrees(value), 'unit': 'deg'}
         else:
-            result_with_units[key] = {'value': result[key], 'unit': unit}
+            result_with_units[key] = {'value': None if np.isnan(value) else value, 'unit': unit}
     return result_with_units
 
 @app.route('/crossmatch_all')
