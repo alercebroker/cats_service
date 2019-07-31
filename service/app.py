@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 import pandas as pd
 from astropy.coordinates import SkyCoord
 from astropy import units
+from math import radians, degrees
 
 app = Flask(__name__)
 
@@ -18,6 +19,7 @@ def welcome():
 def conesearch():
     #get arguments
     catalog = request.args.get('catalog')
+    # convert ra and dec to radians
     ra = float(request.args.get('ra'))
     dec = float(request.args.get('dec'))
     radius = float(request.args.get('radius'))
@@ -39,8 +41,9 @@ def conesearch(catalog, ra, dec, radius):
 @app.route('/allmatches')
 def allmatches():
     global catalogs
-    ra = float(request.args.get('ra'))
-    dec = float(request.args.get('dec'))
+    # ra and dec to radians
+    ra = radians(float(request.args.get('ra')))
+    dec = radians(float(request.args.get('dec')))
     radius = float(request.args.get('radius'))
 
     result = []
@@ -57,8 +60,8 @@ def allmatches():
 @app.route('/crossmatch')
 def crossmatch():
     catalog = request.args.get('catalog')
-    ra = float(request.args.get('ra'))
-    dec = float(request.args.get('dec'))
+    ra = radians(float(request.args.get('ra')))
+    dec = radians(float(request.args.get('dec')))
     radius = float(request.args.get('radius'))
 
     return jsonify(crossmatch(catalog, ra, dec, radius))
@@ -87,14 +90,18 @@ def crossmatch(catalog, ra, dec, radius):
             break
     result_with_units = {}
     for key, unit in zip(result, columns_units):
-        result_with_units[key] = {'value': result[key], 'unit': unit}
+        if unit_is_rad(unit):
+            # convert unit to deg
+            result_with_units[key] = {'value': degrees(result[key]), 'unit': 'deg'}
+        else:
+            result_with_units[key] = {'value': result[key], 'unit': unit}
     return result_with_units
 
 @app.route('/crossmatch_all')
 def crossmatch_all():
     global catalogs
-    ra = float(request.args.get('ra'))
-    dec = float(request.args.get('dec'))
+    ra = radians(float(request.args.get('ra')))
+    dec = radians(float(request.args.get('dec')))
     radius = float(request.args.get('radius'))
     
     result = []
@@ -114,6 +121,12 @@ def map_ra_dec(catalog):
         return 'ra', 'dec'
     else:
         return 'RA', 'Dec'
+
+def unit_is_rad(unit):
+    if unit == 'rad':
+        return True
+    else:
+        return False
 
 #receives a list of dictionaries and the original catalog, ra and dec
 def get_min_distance(matches, catalog, ra, dec):
