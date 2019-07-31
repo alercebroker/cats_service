@@ -61,7 +61,7 @@ def crossmatch():
     dec = float(request.args.get('dec'))
     radius = float(request.args.get('radius'))
 
-    return str(crossmatch(catalog, ra, dec, radius))
+    return jsonify(crossmatch(catalog, ra, dec, radius))
 
 def crossmatch(catalog, ra, dec, radius):
     match, catalog_columns, columns_units = cone_search(catalog, ra, dec, radius, path)
@@ -80,12 +80,15 @@ def crossmatch(catalog, ra, dec, radius):
         return []
     # get all the fields of the matching object
     ra_cat, dec_cat = map_ra_dec(catalog)
-    # this part is stupidly inneficient, i need to learn pandas
-    result = []
+    result = {}
     for index, row in df.iterrows():
         if row[ra_cat] == closest_ra_dec[0]['ra'] and row[dec_cat] == closest_ra_dec[0]['dec']:
-            result.append(row)
-    return result
+            result = row.to_dict()
+            break
+    result_with_units = {}
+    for key, unit in zip(result, columns_units):
+        result_with_units[key] = {'value': result[key], 'unit': unit}
+    return result_with_units
 
 @app.route('/crossmatch_all')
 def crossmatch_all():
@@ -100,8 +103,7 @@ def crossmatch_all():
         if partial_result:
             result_catname = {catalog: partial_result}
             result.append(result_catname)
-    #should jsonify instead
-    return str(result)
+    return jsonify(result)
 
 def map_ra_dec(catalog):
     if catalog == 'HSCv2':
