@@ -95,11 +95,25 @@ def crossmatch(catalog, ra, dec, radius):
     ra_cat, dec_cat = map_ra_dec(catalog)
     result = {}
     for index, row in df.iterrows():
-        if row[ra_cat] == closest_ra_dec[0]['ra'] and row[dec_cat] == closest_ra_dec[0]['dec']:
+
+        if type(row[ra_cat]) is float:
+            ra_equal = row[ra_cat] == closest_ra_dec[0]["ra"]
+        else:
+            app.logger.warning(type(row[ra_cat]))
+            ra_equal = (row[ra_cat] == closest_ra_dec[0]["ra"]).any()
+
+        if type(row[dec_cat]) is float:
+            dec_equal = row[dec_cat] == closest_ra_dec[0]["dec"]
+        else:
+            dec_equal = (row[dec_cat] == closest_ra_dec[0]["dec"]).any()
+
+
+        if ra_equal and dec_equal:
             # add distance to result
             row['distance'] = closest_ra_dec[0]['distance']
             result = row.to_dict()
             break
+
     result_with_units = {}
     for key, unit in zip(result, columns_units):
         # if value is NaN, replace
