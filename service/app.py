@@ -75,9 +75,6 @@ def crossmatch(catalog, ra, dec, radius):
         df = pd.DataFrame(match, columns=catalog_columns)
         #add distance column to df
         df['distance'] = None
-        #add distance unit
-        #columns_units = np.append(column_units, 'arcsec')
-        #catalog_columns = np.append(catalog_columns, 'distance')
     except:
         return []
     matches = []
@@ -99,14 +96,12 @@ def crossmatch(catalog, ra, dec, radius):
         if type(row[ra_cat]) is float:
             ra_equal = row[ra_cat] == closest_ra_dec[0]["ra"]
         else:
-            app.logger.warning(type(row[ra_cat]))
             ra_equal = (row[ra_cat] == closest_ra_dec[0]["ra"]).any()
 
         if type(row[dec_cat]) is float:
             dec_equal = row[dec_cat] == closest_ra_dec[0]["dec"]
         else:
             dec_equal = (row[dec_cat] == closest_ra_dec[0]["dec"]).any()
-
 
         if ra_equal and dec_equal:
             # add distance to result
