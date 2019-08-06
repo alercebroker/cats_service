@@ -79,7 +79,7 @@ def crossmatch(catalog, ra, dec, radius):
         return []
     matches = []
     columns_units = np.append(columns_units, 'arcsec')
-    #catalog_columns = np.append(catalog_columns, 'distance')
+    
     for index, row in df.iterrows():
         obj = dict(zip(catalog_columns, row.values))
         matches.append(obj)
@@ -96,12 +96,12 @@ def crossmatch(catalog, ra, dec, radius):
         if type(row[ra_cat]) is float:
             ra_equal = row[ra_cat] == closest_ra_dec[0]["ra"]
         else:
-            ra_equal = (row[ra_cat] == closest_ra_dec[0]["ra"]).any()
+            ra_equal = (row[ra_cat].iloc[0] == closest_ra_dec[0]["ra"]) 
 
         if type(row[dec_cat]) is float:
             dec_equal = row[dec_cat] == closest_ra_dec[0]["dec"]
         else:
-            dec_equal = (row[dec_cat] == closest_ra_dec[0]["dec"]).any()
+            dec_equal = (row[dec_cat].iloc[0] == closest_ra_dec[0]["dec"])
 
         if ra_equal and dec_equal:
             # add distance to result
@@ -149,10 +149,7 @@ def map_ra_dec(catalog):
         return 'RA', 'Dec'
 
 def unit_is_rad(unit):
-    if unit == 'rad':
-        return True
-    else:
-        return False
+    return unit == 'rad'
 
 #receives a list of dictionaries and the original catalog, ra and dec
 def get_min_distance(matches, catalog, ra, dec):
@@ -171,7 +168,7 @@ def get_min_distance(matches, catalog, ra, dec):
                 ra=float(ra) * unit,
                 dec=float(dec) * unit
                 )
-        distances.append(dict(distance=point_requested.separation(point_cat).arcsecond, ra=match[ra_cat], dec=match[dec_cat])) #distance, object ra, object dec
+        distances.append(dict(distance=point_requested.separation(point_cat).arcsecond, ra=match[ra_cat], dec=match[dec_cat]))
     #get minimum distance
     if distances:
         min_distance = min([float(x['distance']) for x in distances])
@@ -180,4 +177,4 @@ def get_min_distance(matches, catalog, ra, dec):
     return None
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', port='5001')
