@@ -12,7 +12,7 @@ app = Flask(__name__)
 CORS(app)
 
 path = '/home/ubuntu/catalogsHTM/'
-catalogs = ['FIRST', 'TMASS', 'TMASSxsc', 'DECaLS', 'GAIADR1', 'GAIADR2', 'GALEX', 'HSCv2', 'IPHAS', 'NEDz', 'SDSSDR10', 'SDSSoffset', 'SpecSDSS', 'SAGE', 'IRACgc', 'UKIDSS', 'VISTAviking', 'VSTatlas', 'VSTkids', 'AKARI', 'APASS', 'NVSS', 'Cosmos', 'PTFpc', 'ROSATfsc', 'SkyMapper', 'UCAC4', 'WISE', 'XMM', 'AAVSO_VSX', 'unWISE', 'SWIREz', 'Simbad_PM200', 'CRTS_per_var']
+catalogs = ['FIRST', 'TMASS', 'TMASSxsc', 'DECaLS', 'GAIADR1', 'GAIADR2', 'GALEX', 'HSCv2', 'IPHAS', 'NEDz', 'SDSSDR10', 'SDSSoffset', 'SpecSDSS', 'SAGE', 'IRACgc', 'UKIDSS', 'VISTAviking', 'VSTatlas', 'VSTkids', 'AKARI', 'APASS', 'NVSS', 'Cosmos', 'PTFpc', 'ROSATfsc', 'SkyMapper', 'UCAC4', 'WISE', 'XMM' , 'AAVSO_VSX', 'unWISE', 'SWIREz', 'Simbad_PM200', 'CRTS_per_var']
 
 @app.route('/')
 def welcome():
@@ -73,9 +73,16 @@ def crossmatch(catalog, ra, dec, radius):
     match, catalog_columns, columns_units = cone_search(catalog, ra, dec, radius, path)
     try:
         df = pd.DataFrame(match, columns=catalog_columns)
+        #add distance column to df
+        df['distance'] = None
+        #add distance unit
+        #columns_units = np.append(column_units, 'arcsec')
+        #catalog_columns = np.append(catalog_columns, 'distance')
     except:
         return []
     matches = []
+    columns_units = np.append(columns_units, 'arcsec')
+    #catalog_columns = np.append(catalog_columns, 'distance')
     for index, row in df.iterrows():
         obj = dict(zip(catalog_columns, row.values))
         matches.append(obj)
@@ -89,6 +96,8 @@ def crossmatch(catalog, ra, dec, radius):
     result = {}
     for index, row in df.iterrows():
         if row[ra_cat] == closest_ra_dec[0]['ra'] and row[dec_cat] == closest_ra_dec[0]['dec']:
+            # add distance to result
+            row['distance'] = closest_ra_dec[0]['distance']
             result = row.to_dict()
             break
     result_with_units = {}
@@ -105,9 +114,12 @@ def crossmatch(catalog, ra, dec, radius):
 @app.route('/crossmatch_all')
 def crossmatch_all():
     global catalogs
-    ra = radians(float(request.args.get('ra')))
-    dec = radians(float(request.args.get('dec')))
-    radius = float(request.args.get('radius'))
+    try:
+        ra = radians(float(request.args.get('ra')))
+        dec = radians(float(request.args.get('dec')))
+        radius = float(request.args.get('radius'))
+    except:
+        return jsonify('Deja de echarte el servicio >:(')
     
     result = []
     for catalog in catalogs:

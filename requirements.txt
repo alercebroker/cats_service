@@ -1,4 +1,3 @@
-catsHTM
 flask
 flask_cors
 pandas
