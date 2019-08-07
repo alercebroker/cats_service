@@ -111,13 +111,14 @@ def crossmatch(catalog, ra, dec, radius):
 
     result_with_units = {}
     for key, unit in zip(result, columns_units):
-        # if value is NaN, replace
         value = result[key]
         if unit_is_rad(unit):
             # convert unit to deg
             result_with_units[key] = {'value': None if np.isnan(value) else degrees(value), 'unit': 'deg'}
         else:
             result_with_units[key] = {'value': None if np.isnan(value) else value, 'unit': unit}
+    # replace inf
+    result_with_units = {key: (val if val['value'] != np.inf else {'value': 'infinity', 'unit': val['unit']}) for key, val in result_with_units.items()} 
     return result_with_units
 
 @app.route('/crossmatch_all')
