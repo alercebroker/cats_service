@@ -12,7 +12,9 @@ app = Flask(__name__)
 CORS(app)
 
 path = '/home/ubuntu/catalogsHTM/'
-catalogs = ['FIRST', 'TMASS', 'TMASSxsc', 'DECaLS', 'GAIADR1', 'GAIADR2', 'GALEX', 'HSCv2', 'IPHAS', 'NEDz', 'SDSSDR10', 'SDSSoffset', 'SpecSDSS', 'SAGE', 'IRACgc', 'UKIDSS', 'VISTAviking', 'VSTatlas', 'VSTkids', 'AKARI', 'APASS', 'NVSS', 'Cosmos', 'PTFpc', 'ROSATfsc', 'SkyMapper', 'UCAC4', 'WISE', 'XMM' , 'AAVSO_VSX', 'unWISE', 'SWIREz', 'Simbad_PM200', 'CRTS_per_var']
+catalogs = ['FIRST', 'TMASS', 'TMASSxsc', 'DECaLS', 'GAIADR1', 'GAIADR2', 'GALEX', 'HSCv2', 'IPHAS', 'NEDz', 'SDSSDR10', 'SDSSoffset', 'SpecSDSS', 'SAGE', 'IRACgc', 'UKIDSS', 'VISTAviking', 'VSTatlas', 'VSTkids', 'AKARI', 'APASS', 'NVSS', 'Cosmos', 'PTFpc', 'ROSATfsc', 'SkyMapper', 'UCAC4', 'WISE', 'XMM', 'AAVSO_VSX', 'unWISE', 'SWIREz', 'Simbad_PM200', 'CRTS_per_var']
+
+radius = {'ROSATfsc': 50, 'XMM': 8, 'APASS': 2, 'DECaLS': 0.1, 'GAIADR1': 0.00005, 'GAIADR2': 0.00005, 'NVSS': 10.8, 'SDSSoffset': 0.1, 'SkyMapper': 0.4}
 
 @app.route('/')
 def welcome():
@@ -124,16 +126,16 @@ def crossmatch(catalog, ra, dec, radius):
 @app.route('/crossmatch_all')
 def crossmatch_all():
     global catalogs
+    global radius
     try:
         ra = radians(float(request.args.get('ra')))
         dec = radians(float(request.args.get('dec')))
-        radius = float(request.args.get('radius'))
     except:
         return jsonify('Deja de echarte el servicio >:(')
     
     result = []
     for catalog in catalogs:
-        partial_result = crossmatch(catalog, ra, dec, radius)
+        partial_result = crossmatch(catalog, ra, dec, radius.get(catalog, 50))
         if partial_result:
             result_catname = {catalog: partial_result}
             result.append(result_catname)
