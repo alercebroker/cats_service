@@ -14,11 +14,11 @@ CORS(app)
 path = '/home/ubuntu/catalogsHTM/'
 catalogs = ['FIRST', 'TMASS', 'TMASSxsc', 'DECaLS', 'GAIADR1', 'GAIADR2', 'GALEX', 'HSCv2', 'IPHAS', 'NEDz', 'SDSSDR10', 'SDSSoffset', 'SpecSDSS', 'SAGE', 'IRACgc', 'UKIDSS', 'VISTAviking', 'VSTatlas', 'VSTkids', 'AKARI', 'APASS', 'NVSS', 'Cosmos', 'PTFpc', 'ROSATfsc', 'SkyMapper', 'UCAC4', 'WISE', 'XMM', 'AAVSO_VSX', 'unWISE', 'SWIREz', 'Simbad_PM200', 'CRTS_per_var']
 
-radius = {'ROSATfsc': 50, 'XMM': 8, 'APASS': 2, 'DECaLS': 0.1, 'GAIADR1': 0.00005, 'GAIADR2': 0.00005, 'NVSS': 10.8, 'SDSSoffset': 0.1, 'SkyMapper': 0.4}
+radius_dict = {'ROSATfsc': 50, 'XMM': 8, 'APASS': 2, 'DECaLS': 0.1, 'GAIADR1': 0.00005, 'GAIADR2': 0.00005, 'NVSS': 10.8, 'SDSSoffset': 0.1, 'SkyMapper': 0.4}
 
 @app.route('/')
 def welcome():
-    return 'Welcome to the crossmatch service'
+    return 'Welcome to the crossmatch service.'
 
 @app.route('/conesearch')
 def conesearch():
@@ -39,7 +39,7 @@ def conesearch(catalog, ra, dec, radius):
     try:
         df = pd.DataFrame(match, columns=catalog_columns)
     except ValueError as ex:
-        return []
+        return {}
     results = []
     for index, row in df.iterrows():
         obj = dict(zip(catalog_columns, row.values))
@@ -98,7 +98,7 @@ def crossmatch(catalog, ra, dec, radius):
     try:
         closest_ra_dec = get_min_distance(matches, catalog, ra, dec)
     except:
-        return []
+        return {}
     # get all the fields of the matching object
     ra_cat, dec_cat = map_ra_dec(catalog)
     result = {}
@@ -135,16 +135,20 @@ def crossmatch(catalog, ra, dec, radius):
 @app.route('/crossmatch_all')
 def crossmatch_all():
     global catalogs
-    global radius
+    global radius_dict
     try:
         ra = radians(float(request.args.get('ra')))
         dec = radians(float(request.args.get('dec')))
     except:
         return jsonify('Request contains one or more invalid arguments.')
-    
+    #check if a value for radius was provided
+    try:
+        radius = float(request.args.get('radius'))
+    except:
+        radius = radius.get(catalog, 50)
     result = []
     for catalog in catalogs:
-        partial_result = crossmatch(catalog, ra, dec, radius.get(catalog, 50))
+        partial_result = crossmatch(catalog, ra, dec, radius)
         if partial_result:
             result_catname = {catalog: partial_result}
             result.append(result_catname)
