@@ -70,6 +70,7 @@ def conesearch_all():
 
 @app.route('/crossmatch')
 def crossmatch():
+    global radius_dict
     try:
         catalog = request.args.get('catalog')
         ra = radians(float(request.args.get('ra')))
@@ -79,7 +80,7 @@ def crossmatch():
     try:
         radius = float(request.args.get('radius'))
     except:
-        radius = radius_dict.get(catalog, 50)
+        radius = float(radius_dict.get(catalog, 50))
 
     return jsonify(crossmatch(catalog, ra, dec, radius))
 
@@ -145,13 +146,18 @@ def crossmatch_all():
     except:
         return jsonify('Request contains one or more invalid arguments.')
     #check if a value for radius was provided
+    radius = None
     try:
         radius = float(request.args.get('radius'))
+    #if not, use default
     except:
-        radius = radius_dict.get(catalog, 50)
+        pass
     result = []
     for catalog in catalogs:
-        partial_result = crossmatch(catalog, ra, dec, radius)
+        if radius:
+            partial_result = crossmatch(catalog, ra, dec, radius)
+        else:
+            partial_result = crossmatch(catalog, ra, dec, float(radius_dict.get(catalog, 50)))
         if partial_result:
             result_catname = {catalog: partial_result}
             result.append(result_catname)
