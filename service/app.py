@@ -47,7 +47,7 @@ def conesearch(catalog, ra, dec, radius):
     return results
 
 @app.route('/conesearch_all')
-def allmatches():
+def conesearch_all():
     global catalogs
     # ra and dec to radians
     try:
@@ -79,7 +79,7 @@ def crossmatch():
     try:
         radius = float(request.args.get('radius'))
     except:
-        radius = radius.get(catalog, 50)
+        radius = radius_dict.get(catalog, 50)
 
     return jsonify(crossmatch(catalog, ra, dec, radius))
 
@@ -148,7 +148,7 @@ def crossmatch_all():
     try:
         radius = float(request.args.get('radius'))
     except:
-        radius = radius.get(catalog, 50)
+        radius = radius_dict.get(catalog, 50)
     result = []
     for catalog in catalogs:
         partial_result = crossmatch(catalog, ra, dec, radius)
