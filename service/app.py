@@ -22,12 +22,15 @@ def welcome():
 
 @app.route('/conesearch')
 def conesearch():
-    #get arguments
-    catalog = request.args.get('catalog')
-    # convert ra and dec to radians
-    ra = float(request.args.get('ra'))
-    dec = float(request.args.get('dec'))
-    radius = float(request.args.get('radius'))
+    try:
+        #get arguments
+        catalog = request.args.get('catalog')
+        # convert ra and dec to radians
+        ra = float(request.args.get('ra'))
+        dec = float(request.args.get('dec'))
+        radius = float(request.args.get('radius'))
+    except:
+        return jsonify('Request contains one or more invalid arguments.')
 
     return jsonify(conesearch(catalog, ra, dec, radius))
 
@@ -43,13 +46,16 @@ def conesearch(catalog, ra, dec, radius):
         results.append(obj)
     return results
 
-@app.route('/allmatches')
+@app.route('/conesearch_all')
 def allmatches():
     global catalogs
     # ra and dec to radians
-    ra = radians(float(request.args.get('ra')))
-    dec = radians(float(request.args.get('dec')))
-    radius = float(request.args.get('radius'))
+    try:
+        ra = radians(float(request.args.get('ra')))
+        dec = radians(float(request.args.get('dec')))
+        radius = float(request.args.get('radius'))
+    except:
+        return jsonify('Request contains one or more invalid arguments.')
 
     result = []
     for catalog in catalogs:
@@ -64,10 +70,13 @@ def allmatches():
 
 @app.route('/crossmatch')
 def crossmatch():
-    catalog = request.args.get('catalog')
-    ra = radians(float(request.args.get('ra')))
-    dec = radians(float(request.args.get('dec')))
-    radius = float(request.args.get('radius'))
+    try:
+        catalog = request.args.get('catalog')
+        ra = radians(float(request.args.get('ra')))
+        dec = radians(float(request.args.get('dec')))
+        radius = float(request.args.get('radius'))
+    except:
+        return jsonify('Request contains one or more invalid arguments.')
 
     return jsonify(crossmatch(catalog, ra, dec, radius))
 
@@ -131,7 +140,7 @@ def crossmatch_all():
         ra = radians(float(request.args.get('ra')))
         dec = radians(float(request.args.get('dec')))
     except:
-        return jsonify('Deja de echarte el servicio >:(')
+        return jsonify('Request contains one or more invalid arguments.')
     
     result = []
     for catalog in catalogs:
