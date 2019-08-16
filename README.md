@@ -1,18 +1,28 @@
 # cats_service
-catsHTM xmatch service
+This is a crossmatch service based on https://github.com/maayane/catsHTM. The service provides conesearch and crossmatch over different [catalogs](#available-catalogs).
 
-#### to crossmatch one catalog
+#### Arguments and units in requests
 
-`curl "catshtm.alerce.online:5000/crossmatch?catalog=GAIADR1&ra=357.733730043103&dec=14.2051386793103&radius=100"`
+The arguments needed are almost always the name of the `catalog`, `ra` and `dec` in degress and `radius` in arcsec.
 
-#### to crosmatch all catalogs
+#### Conesearch in a catalog
+
+`curl "catshtm.alerce.online:5000/conesearch?catalog=GAIADR1&ra=357.733730043103&dec=14.2051386793103&radius=100"`
+
+#### Conesearch over all catalogs
+
+`curl "catshtm.alerce.online:5000/conesearch_all?ra=357.733730043103&dec=14.2051386793103&radius=10"`
+
+#### Crossmatch in a catalog
+
+`curl "catshtm.alerce.online:5000/crossmatch?catalog=SDSSDR10&ra=357.733730043103&dec=14.2051386793103&radius=100"`
+
+#### Crossmatch over all catalogs
 
 `curl "catshtm.alerce.online:5000/crossmatch_all?ra=357.733730043103&dec=14.2051386793103&radius=100"`
 
-`RA` and `Dec` in `degrees`, `radius` in `arcsecs`.
-
-#### Available catalogs are:
-- AAVSO_VSX
+#### Available catalogs:
+- AAVSO_VSX               
 - AKARI
 - APASS
 - CRTS_per_var
