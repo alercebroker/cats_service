@@ -15,35 +15,56 @@ The arguments needed are almost always the name of the `catalog`, `ra` and `dec`
 
 #### Crossmatch in a catalog
 
+There are two ways to perform crossmatch in a catalog.
+
+Providing a radius:
+
 `curl "catshtm.alerce.online:5000/crossmatch?catalog=SDSSDR10&ra=357.733730043103&dec=14.2051386793103&radius=100"`
+
+Not providing one:
+
+`curl "catshtm.alerce.online:5000/crossmatch?catalog=SDSSDR10&ra=357.733730043103&dec=14.2051386793103"`
+
+If a radius is provided, then that value is used. If not, then the default value for that catalog is used. See default values in [Available catalogs](#available-catalogs)
 
 #### Crossmatch over all catalogs
 
+For crossmatching over all catalogs, the same rule of providing or not providing a radius applies. Therefore, there are two ways to send the request:
+
+With radius:
+
 `curl "catshtm.alerce.online:5000/crossmatch_all?ra=357.733730043103&dec=14.2051386793103&radius=100"`
 
+Without radius:
+
+`curl "catshtm.alerce.online:5000/crossmatch_all?ra=357.733730043103&dec=14.2051386793103"`
+
 #### Available catalogs:
-- AAVSO_VSX               
+
+For the catalogs that do not have a value listed, the default radius is 50 arcsec.
+
+- AAVSO_VSX
 - AKARI
-- APASS
+- APASS (2 arcsec)
 - CRTS_per_var
 - Cosmos
-- DECaLS
+- DECaLS (0.1 arcsec)
 - FIRST
-- GAIADR1
-- GAIADR2
+- GAIADR1 (0.00005 arcsec)
+- GAIADR2 (0.00005 arcsec)
 - GALEX
 - HSCv2
 - IPHAS
 - IRACgc
 - NEDz
-- NVSS
+- NVSS (10.8 arcsec)
 - PTFpc
 - ROSATfsc
 - SAGE
 - SDSSDR10
-- SDSSoffset
+- SDSSoffset (0.1 arcsec)
 - SWIREz
-- SkyMapper
+- SkyMapper (0.4 arcsec)
 - SpecSDSS
 - TMASS
 - TMASSxsc
@@ -53,5 +74,5 @@ The arguments needed are almost always the name of the `catalog`, `ra` and `dec`
 - VSTatlas
 - VSTkids
 - WISE
-- XMM
+- XMM (8 arcsec)
 - unWISE
