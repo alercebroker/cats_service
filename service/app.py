@@ -74,9 +74,12 @@ def crossmatch():
         catalog = request.args.get('catalog')
         ra = radians(float(request.args.get('ra')))
         dec = radians(float(request.args.get('dec')))
-        radius = float(request.args.get('radius'))
     except:
         return jsonify('Request contains one or more invalid arguments.')
+    try:
+        radius = float(request.args.get('radius'))
+    except:
+        radius = radius.get(catalog, 50)
 
     return jsonify(crossmatch(catalog, ra, dec, radius))
 
