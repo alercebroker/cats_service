@@ -16,6 +16,16 @@ catalogs = ['FIRST', 'TMASS', 'TMASSxsc', 'DECaLS', 'GAIADR1', 'GAIADR2', 'GALEX
 
 radius_dict = {'ROSATfsc': 50, 'XMM': 8, 'APASS': 2, 'DECaLS': 0.1, 'GAIADR1': 0.00005, 'GAIADR2': 0.00005, 'NVSS': 10.8, 'SDSSoffset': 0.1, 'SkyMapper': 0.4}
 
+
+catalog_map = {
+        "TMASS" : "2MASS",
+        "CRTS_per_var": "CRTS",
+        "GAIADR1": "GAIA/DR1",
+        "GAIADR2":  "GAIA/DR2",
+        "SDSSDR10": "SDSS/DR10",
+        "TMASSxsc": "2ASSSxsc"
+        }
+
 @app.route('/')
 def welcome():
     return 'Welcome to the crossmatch service.'
@@ -60,6 +70,8 @@ def conesearch_all():
     result = []
     for catalog in catalogs:
         partial_result = conesearch(catalog, ra, dec, radius)
+        if catalog in catalog_map:
+            catalog = catalog_map[catalog]
         if partial_result == []:    
             continue
         else:
@@ -159,6 +171,8 @@ def crossmatch_all():
         else:
             partial_result = crossmatch(catalog, ra, dec, float(radius_dict.get(catalog, 50)))
         if partial_result:
+            if catalog in catalog_map:
+                catalog = catalog_map[catalog]
             result_catname = {catalog: partial_result}
             result.append(result_catname)
     return jsonify(result)
