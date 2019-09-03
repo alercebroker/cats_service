@@ -41,7 +41,6 @@ def conesearch():
         radius = float(request.args.get('radius'))
     except:
         return jsonify('Request contains one or more invalid arguments.')
-
     return jsonify(conesearch(catalog, ra, dec, radius))
 
 def conesearch(catalog, ra, dec, radius):
@@ -50,7 +49,7 @@ def conesearch(catalog, ra, dec, radius):
         df = pd.DataFrame(match, columns=catalog_columns)
     except ValueError as ex:
         return {}
-    results = []
+    results = {}
     result_with_catname = {}
     for column, unit in zip(catalog_columns, column_units):
         if unit_is_rad(unit):
@@ -58,9 +57,9 @@ def conesearch(catalog, ra, dec, radius):
             values = []
             for value in df[column].tolist():
                 values.append(degrees(value))
-            results.append({column: {"units": "deg", "values": values}})
+            results[column] = {"units": "deg", "values": values}
         else:
-            results.append({column: {"units": unit, "values": df[column].tolist()}})
+            results[column] = {"units": unit, "values": df[column].tolist()}
     result_with_catname[catalog_map.get(catalog, catalog)] = results
     return result_with_catname
 
