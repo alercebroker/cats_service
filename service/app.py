@@ -23,7 +23,7 @@ catalog_map = {
         "GAIADR1": "GAIA/DR1",
         "GAIADR2":  "GAIA/DR2",
         "SDSSDR10": "SDSS/DR10",
-        "TMASSxsc": "2ASSSxsc"
+        "TMASSxsc": "2MASSxsc"
         }
 
 @app.route('/')
@@ -45,16 +45,18 @@ def conesearch():
     return jsonify(conesearch(catalog, ra, dec, radius))
 
 def conesearch(catalog, ra, dec, radius):
-    match, catalog_columns, columns_units = cone_search(catalog, ra, dec, radius, path)
+    match, catalog_columns, column_units = cone_search(catalog, ra, dec, radius, path)
     try:
         df = pd.DataFrame(match, columns=catalog_columns)
     except ValueError as ex:
         return {}
     results = []
-    for index, row in df.iterrows():
-        obj = dict(zip(catalog_columns, row.values))
-        results.append(obj)
-    return results
+    result_with_catname = {}
+    for column, unit in zip(catalog_columns, column_units):
+        results.append({column: {"units": unit, "values": df[column].iloc[:10].tolist()}})
+    result_with_catname[catalog] = results
+    return result_with_catname
+
 
 @app.route('/conesearch_all')
 def conesearch_all():
