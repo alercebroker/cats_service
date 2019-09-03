@@ -45,6 +45,8 @@ def conesearch():
 
 def conesearch(catalog, ra, dec, radius):
     match, catalog_columns, column_units = cone_search(catalog, ra, dec, radius, path)
+    if match.size == 0:
+        return {}
     try:
         df = pd.DataFrame(match, columns=catalog_columns)
     except ValueError as ex:
@@ -52,14 +54,20 @@ def conesearch(catalog, ra, dec, radius):
     results = {}
     result_with_catname = {}
     for column, unit in zip(catalog_columns, column_units):
+        values = []
+        for value in df[column].values.tolist():
+            if np.isnan(value):
+                value = None
+            elif value == np.inf:
+                value = "infinity"
+            elif unit_is_rad(unit):
+                value = degrees(value)
+            values.append(value)
         if unit_is_rad(unit):
-            # convert unit to deg
-            values = []
-            for value in df[column].tolist():
-                values.append(degrees(value))
             results[column] = {"units": "deg", "values": values}
         else:
-            results[column] = {"units": unit, "values": df[column].tolist()}
+            results[column] = {"units": unit, "values": values}
+    # append and get catalog real name
     result_with_catname[catalog_map.get(catalog, catalog)] = results
     return result_with_catname
 
@@ -78,14 +86,17 @@ def conesearch_all():
     result = []
     for catalog in catalogs:
         partial_result = conesearch(catalog, ra, dec, radius)
-        if catalog in catalog_map:
-            catalog = catalog_map[catalog]
-        if partial_result == []:    
-            continue
-        else:
-            result_catname = {catalog: partial_result}  
-            result.append(result_catname)
-    return jsonify(result)
+        #if catalog in catalog_map:
+        #result.append(partial_result)
+            #catalog = catalog_map[catalog]
+        if partial_result != {}:    
+            result.append(partial_result)
+        #else:
+        #    result_catname = {catalog: partial_result}  
+        #    result.append(result_catname)
+    final_result = {}
+    final_result['catalogs'] = result
+    return jsonify(final_result)
 
 
 @app.route('/crossmatch')
@@ -137,7 +148,6 @@ def crossmatch(catalog, ra, dec, radius):
             dec_equal = row[dec_cat] == closest_ra_dec[0]["dec"]
         else:
             dec_equal = (row[dec_cat].iloc[0] == closest_ra_dec[0]["dec"])
-
         if ra_equal and dec_equal:
             # add distance to result
             row['distance'] = closest_ra_dec[0]['distance']
