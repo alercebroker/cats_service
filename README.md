@@ -50,8 +50,8 @@ For the catalogs that do not have a value listed, the default radius is 50 arcse
 - Cosmos
 - DECaLS (0.1 arcsec)
 - FIRST
-- GAIADR1 (0.00005 arcsec)
-- GAIADR2 (0.00005 arcsec)
+- GAIADR1 (0.1 arcsec)
+- GAIADR2 (0.1 arcsec)
 - GALEX
 - HSCv2
 - IPHAS
