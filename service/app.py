@@ -14,7 +14,7 @@ CORS(app)
 path = '/home/ubuntu/catalogsHTM/'
 catalogs = ['FIRST', 'TMASS', 'TMASSxsc', 'DECaLS', 'GAIADR1', 'GAIADR2', 'GALEX', 'HSCv2', 'IPHAS', 'NEDz', 'SDSSDR10', 'SDSSoffset', 'SpecSDSS', 'SAGE', 'IRACgc', 'UKIDSS', 'VISTAviking', 'VSTatlas', 'VSTkids', 'AKARI', 'APASS', 'NVSS', 'Cosmos', 'PTFpc', 'ROSATfsc', 'SkyMapper', 'UCAC4', 'WISE', 'XMM', 'AAVSO_VSX', 'unWISE', 'SWIREz', 'Simbad_PM200', 'CRTS_per_var']
 
-radius_dict = {'ROSATfsc': 50, 'XMM': 8, 'APASS': 2, 'DECaLS': 0.1, 'GAIADR1': 0.00005, 'GAIADR2': 0.00005, 'NVSS': 10.8, 'SDSSoffset': 0.1, 'SkyMapper': 0.4}
+radius_dict = {'ROSATfsc': 50, 'XMM': 8, 'APASS': 2, 'DECaLS': 0.1, 'GAIADR1': 0.1, 'GAIADR2': 0.1, 'NVSS': 10.8, 'SDSSoffset': 0.1, 'SkyMapper': 0.4}
 
 
 catalog_map = {
