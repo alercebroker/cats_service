@@ -265,7 +265,7 @@ def crossmatch(catalog, ra, dec, radius):
         A dictionary with the crossmatch result.
     '''
     # call catsHTM cone search
-    match, catalog_columns, columns_units = cone_search(
+    match, catalog_columns, column_units = cone_search(
         catalog, ra, dec, radius, path)
     return format_crossmatch_results(match, catalog_columns, column_units)
 
@@ -292,7 +292,7 @@ def format_crossmatch_results(match, catalog_columns, column_units):
         return []
     matches = []
     # append distance unit
-    columns_units = np.append(columns_units, 'arcsec')
+    column_units = np.append(column_units, 'arcsec')
     for index, row in df.iterrows():
         obj = dict(zip(catalog_columns, row.values))
         matches.append(obj)
@@ -323,7 +323,7 @@ def format_crossmatch_results(match, catalog_columns, column_units):
             break
     # add units to the results
     result_with_units = {}
-    for key, unit in zip(result, columns_units):
+    for key, unit in zip(result, column_units):
         value = result[key]
         if unit_is_rad(unit):
             # convert unit to deg
