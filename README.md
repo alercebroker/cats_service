@@ -1,7 +1,5 @@
 # ALeRCE [Cats Service](http://catshtm.alerce.online)
-Cats Service provides conesearch and crossmatch over different [catalogs](#available-catalogs).
-
-This service is based on [catsHTM](https://github.com/maayane/catsHTM).
+Cats Service provides conesearch and crossmatch over different [catalogs](#available-catalogs). It is based on [catsHTM](https://github.com/maayane/catsHTM).
 
 #### Arguments and units in requests
 
