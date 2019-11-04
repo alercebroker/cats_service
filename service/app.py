@@ -81,7 +81,7 @@ def welcome():
         None
 
     Returns:
-        A string that includes a link to the API documentation.
+        HTML text with a link to the API documentation.
     '''
     return '''<!DOCTYPE html>
               <html>
@@ -89,11 +89,10 @@ def welcome():
               <title>ALeRCE Cats Service</title>
               </head>
               <body>
-              <h3>Welcome to the Cats service</h3>
-              <p>The documentation can be found
+              <h3>Welcome to the Cats Service</h3>
+              <p>Documentation can be found
               <a href="https://alerceapi.readthedocs.io/en/latest/catshtm.html">
-              here
-              </a></p>
+              here</a>.</p>
               </body>
               </html>'''
 
@@ -108,7 +107,7 @@ def conesearch():
         None
 
     Returns:
-        A jsonified string with the cone search result.
+        The JSON representation of the cone search result.
     '''
     try:
         # get arguments
@@ -124,7 +123,8 @@ def conesearch():
 
 def conesearch(catalog, ra, dec, radius):
     '''
-    This function returns the cone search result.
+    This function returns the cone search result. It uses an auxiliary
+    method.
 
     Args:
         catalog (string): catalog name according to the available catalog
@@ -133,27 +133,58 @@ def conesearch(catalog, ra, dec, radius):
         dec (float): dec coordinate of the point to search in degrees.
         radius (float): radius to search in arcsec.
     Returns:
-        A jsonified string with the cone search result.
+        A dictionary containing the cone search result for each catalog.
     '''
     # call catsHTM cone search
     match, catalog_columns, column_units = cone_search(
         catalog, ra, dec, radius, path)
+    # no results, empty dictionary
     if match.size == 0:
         return {}
     try:
+        # create a dataframe to match the columns to the values
         df = pd.DataFrame(match, columns=catalog_columns)
     except ValueError as ex:
         return {}
     results = {}
+    # generate dictionaries with response values
+    results = format_cone_results(match, catalog_columns, column_units)
+    # add catalog real name and append to final result
     result_with_catname = {}
+    result_with_catname[catalog_map.get(catalog, catalog)] = results
+    return result_with_catname
+
+def format_cone_results(match, catalog_columns, column_units):
+    '''
+    This function formats the cone search result. It replaces nan and infinity
+    values, and add columns names and units.
+
+    Args:
+        match (numpy ndarray): array contaning the values for the cone search
+        result, this array is the output of catsHTM cone_search method.
+        catalog_columns (numpy ndarray): the columns of the catalog according
+        to catsHTM.
+        column_units (numpy ndarray): the units associated to each column.
+    Returns:
+        A dictionary containing the formatted cone search results for every
+        catalog.
+    '''
+    try:
+        # create a dataframe to match the columns to the values
+        df = pd.DataFrame(match, columns=catalog_columns)
+    except ValueError as ex:
+        return {}
+    results = {}
     # generate dictionaries with response values and replace when neccessary
     for column, unit in zip(catalog_columns, column_units):
         values = []
         for value in df[column].values.tolist():
+            # replace nan and infinity
             if np.isnan(value):
                 value = None
             elif value == np.inf:
                 value = "infinity"
+            # convert radians to degrees
             elif unit_is_rad(unit):
                 value = degrees(value)
             values.append(value)
@@ -161,9 +192,7 @@ def conesearch(catalog, ra, dec, radius):
             results[column] = {"units": "deg", "values": values}
         else:
             results[column] = {"units": unit, "values": values}
-    # append and get catalog real name
-    result_with_catname[catalog_map.get(catalog, catalog)] = results
-    return result_with_catname
+    return results
 
 
 @app.route('/conesearch_all')
@@ -405,6 +434,14 @@ def map_ra_dec(catalog):
 
 
 def unit_is_rad(unit):
+    '''
+    Checks if unit is rad, and returns True or False accordingly.
+
+    Args:
+        unit (string): the unit.
+    Returns:
+        A boolean stating if the input units was radian or not.
+    '''
     return unit == 'rad'
 
 # receives a list of dictionaries and the original catalog, ra and dec
