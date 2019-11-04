@@ -63,13 +63,17 @@ radius_dict = {
     'SkyMapper': 0.4}
 # catsHTM catalog name to real name
 catalog_map = {
-    "TMASS": "2MASS",
-    "CRTS_per_var": "CRTS",
-    "GAIADR1": "GAIA/DR1",
-    "GAIADR2": "GAIA/DR2",
-    "SDSSDR10": "SDSS/DR10",
-    "TMASSxsc": "2MASSxsc"
-}
+    'TMASS': '2MASS',
+    'CRTS_per_var': 'CRTS',
+    'GAIADR1': 'GAIA/DR1',
+    'GAIADR2': 'GAIA/DR2',
+    'SDSSDR10': 'SDSS/DR10',
+    'TMASSxsc': '2MASSxsc'}
+# map ra, dec to catalog ra, dec name
+map_ra_dec = {
+    'HSCv2': ('MatchRA', 'MatchDec'),
+    'XMM': ('RA', 'DEC'),
+    'SDSSoffset': ('ra', 'dec')}
 
 
 @app.route('/')
@@ -96,6 +100,7 @@ def welcome():
               </body>
               </html>'''
 
+
 @app.route('/conesearch')
 def conesearch():
     '''
@@ -118,6 +123,7 @@ def conesearch():
     except BaseException:
         return jsonify('Request contains one or more invalid arguments.')
     return jsonify(conesearch(catalog, ra, dec, radius))
+
 
 def conesearch(catalog, ra, dec, radius):
     '''
@@ -145,6 +151,7 @@ def conesearch(catalog, ra, dec, radius):
     result_with_catname = {}
     result_with_catname[catalog_map.get(catalog, catalog)] = results
     return result_with_catname
+
 
 def format_cone_results(match, catalog_columns, column_units):
     '''
@@ -186,6 +193,7 @@ def format_cone_results(match, catalog_columns, column_units):
             results[column] = {"units": unit, "values": values}
     return results
 
+
 @app.route('/conesearch_all')
 def conesearch_all():
     '''
@@ -217,17 +225,17 @@ def conesearch_all():
     final_result['catalogs'] = result
     return jsonify(final_result)
 
+
 @app.route('/crossmatch')
 def crossmatch():
     '''
-    This function returns the result of running a crossmatch in one catalog.
+    This function returns the result of running a crossmatch over one catalog.
     It uses an auxiliary function to compute the results.
 
     Args:
         None
-
     Returns:
-        A jsonified string with the crossmatch result.
+        The JSON representation of the crossmatch result.
     '''
     global radius_dict
     try:
@@ -240,12 +248,12 @@ def crossmatch():
         radius = float(request.args.get('radius'))
     except BaseException:
         radius = float(radius_dict.get(catalog, 50))
-
     return jsonify(crossmatch(catalog, ra, dec, radius))
+
 
 def crossmatch(catalog, ra, dec, radius):
     '''
-    This function returns the crossmatch result.
+    This function returns the crossmatch result for a catalog.
 
     Args:
         catalog (string): catalog name according to the available catalog
@@ -254,39 +262,56 @@ def crossmatch(catalog, ra, dec, radius):
         dec (float): dec coordinate of the point to search in degrees.
         radius (float): radius to search in arcsec.
     Returns:
-        A jsonified string with the crossmatch result.
+        A dictionary with the crossmatch result.
     '''
     # call catsHTM cone search
     match, catalog_columns, columns_units = cone_search(
         catalog, ra, dec, radius, path)
+    return format_crossmatch_results(match, catalog_columns, column_units)
+
+
+def format_crossmatch_results(match, catalog_columns, column_units):
+    '''
+    This function formats the crossmatch result of a catalog.
+
+    Args:
+        match (numpy ndarray): array contaning the values for the cone search
+        result, this array is the output of catsHTM 'cone_search' function.
+        catalog_columns (numpy ndarray): the columns of the catalog according
+        to catsHTM.
+        column_units (numpy ndarray): the units associated to each column.
+    Returns:
+        A dictionary with the crossmatch result.
+    '''
     try:
+        # dataframe to match columns to values
         df = pd.DataFrame(match, columns=catalog_columns)
         # add distance column to df
         df['distance'] = None
     except BaseException:
         return []
     matches = []
+    # append distance unit
     columns_units = np.append(columns_units, 'arcsec')
-
     for index, row in df.iterrows():
         obj = dict(zip(catalog_columns, row.values))
         matches.append(obj)
-    # this object is a list with one dictionary containing the ra, dec of the
-    # closest matching object
+    # this object is a list with a dictionary containing
+    # the ra, dec of the closest matching object
     try:
         closest_ra_dec = get_min_distance(matches, catalog, ra, dec)
     except BaseException:
         return {}
     # get all the fields of the matching object
-    ra_cat, dec_cat = map_ra_dec(catalog)
+    ra_cat, dec_cat = map_ra_dec.get(catalog, ('RA', 'Dec'))
     result = {}
     for index, row in df.iterrows():
-
+        # check type of ra
         if isinstance(row[ra_cat], float):
             ra_equal = row[ra_cat] == closest_ra_dec[0]["ra"]
         else:
             ra_equal = (row[ra_cat].iloc[0] == closest_ra_dec[0]["ra"])
-
+        # check type of dec
         if isinstance(row[dec_cat], float):
             dec_equal = row[dec_cat] == closest_ra_dec[0]["dec"]
         else:
@@ -296,7 +321,7 @@ def crossmatch(catalog, ra, dec, radius):
             row['distance'] = closest_ra_dec[0]['distance']
             result = row.to_dict()
             break
-
+    # add units to the results
     result_with_units = {}
     for key, unit in zip(result, columns_units):
         value = result[key]
@@ -319,8 +344,17 @@ def crossmatch(catalog, ra, dec, radius):
 
 @app.route('/crossmatch_all')
 def crossmatch_all():
+    '''
+    This function returns the crossmatch result for all catalogs.
+
+    Args:
+        None
+    Returns:
+        The JSON representation of the crossmatch result for all catalogs.
+    '''
     global catalogs
     global radius_dict
+    # get request parameters
     try:
         ra = radians(float(request.args.get('ra')))
         dec = radians(float(request.args.get('dec')))
@@ -330,35 +364,20 @@ def crossmatch_all():
     radius = None
     try:
         radius = float(request.args.get('radius'))
-    # if not, use default
     except BaseException:
-        pass
+        # if no radius was provided, use the default value
+        radius = float(radius_dict.get(catalog, 50))
     result = []
     for catalog in catalogs:
-        if radius:
-            partial_result = crossmatch(catalog, ra, dec, radius)
-        else:
-            partial_result = crossmatch(
-                catalog, ra, dec, float(
-                    radius_dict.get(
-                        catalog, 50)))
+        partial_result = crossmatch(catalog, ra, dec, radius)
+        # append the partial result if it is not empty
         if partial_result:
             if catalog in catalog_map:
-                catalog = catalog_map[catalog]
+                # get the official name of the catalog
+                catalog = catalog_map.get(catalog, catalog)
             result_catname = {catalog: partial_result}
             result.append(result_catname)
     return jsonify(result)
-
-
-def map_ra_dec(catalog):
-    if catalog == 'HSCv2':
-        return 'MatchRA', 'MatchDec'
-    elif catalog == 'XMM':
-        return 'RA', 'DEC'
-    elif catalog == 'SDSSoffset':
-        return 'ra', 'dec'
-    else:
-        return 'RA', 'Dec'
 
 
 def unit_is_rad(unit):
@@ -372,13 +391,27 @@ def unit_is_rad(unit):
     '''
     return unit == 'rad'
 
+
 def get_min_distance(matches, catalog, ra, dec):
-    ra_cat, dec_cat = map_ra_dec(catalog)
-    distances = []
+    '''
+    Get the element with the minimum distance between the cone search matches.
+
+    Args:
+        matches (list): list of cone search matches for a catalog.
+        catalog (string): name of the catalog.
+        ra (float): ra coordinate of the point to search in degrees.
+        dec (float): dec coordinate of the point to search in degrees.
+    Returns:
+        A list containing the closest element (distance, ra, dec).
+    '''
+    ra_cat, dec_cat = map_ra_dec.get(catalog, ('RA', 'Dec'))
+    # XMM special case
     if catalog == 'XMM':
         unit = units.degree
     else:
         unit = units.radian
+    distances = []
+    # get distance between points in arcseconds
     for match in matches:
         point_cat = SkyCoord(
             ra=float(match[ra_cat]) * unit,
