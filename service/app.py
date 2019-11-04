@@ -83,8 +83,19 @@ def welcome():
     Returns:
         A string that includes a link to the API documentation.
     '''
-    return '''Welcome to the Cats service.
-    The documentation can be found here: link.'''
+    return '''<!DOCTYPE html>
+              <html>
+              <head>
+              <title>ALeRCE Cats Service</title>
+              </head>
+              <body>
+              <h3>Welcome to the Cats service</h3>
+              <p>The documentation can be found
+              <a href="https://alerceapi.readthedocs.io/en/latest/catshtm.html">
+              here
+              </a></p>
+              </body>
+              </html>'''
 
 
 @app.route('/conesearch')
