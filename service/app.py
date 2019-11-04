@@ -96,7 +96,6 @@ def welcome():
               </body>
               </html>'''
 
-
 @app.route('/conesearch')
 def conesearch():
     '''
@@ -107,7 +106,7 @@ def conesearch():
         None
 
     Returns:
-        The JSON representation of the cone search result.
+        The JSON representation of the cone search result for a single catalog.
     '''
     try:
         # get arguments
@@ -120,11 +119,10 @@ def conesearch():
         return jsonify('Request contains one or more invalid arguments.')
     return jsonify(conesearch(catalog, ra, dec, radius))
 
-
 def conesearch(catalog, ra, dec, radius):
     '''
-    This function returns the cone search result. It uses an auxiliary
-    method.
+    Returns the cone search result. It uses an auxiliary
+    function.
 
     Args:
         catalog (string): catalog name according to the available catalog
@@ -133,7 +131,7 @@ def conesearch(catalog, ra, dec, radius):
         dec (float): dec coordinate of the point to search in degrees.
         radius (float): radius to search in arcsec.
     Returns:
-        A dictionary containing the cone search result for each catalog.
+        A dictionary containing the cone search result for a single catalog.
     '''
     # call catsHTM cone search
     match, catalog_columns, column_units = cone_search(
@@ -141,12 +139,6 @@ def conesearch(catalog, ra, dec, radius):
     # no results, empty dictionary
     if match.size == 0:
         return {}
-    try:
-        # create a dataframe to match the columns to the values
-        df = pd.DataFrame(match, columns=catalog_columns)
-    except ValueError as ex:
-        return {}
-    results = {}
     # generate dictionaries with response values
     results = format_cone_results(match, catalog_columns, column_units)
     # add catalog real name and append to final result
@@ -157,16 +149,16 @@ def conesearch(catalog, ra, dec, radius):
 def format_cone_results(match, catalog_columns, column_units):
     '''
     This function formats the cone search result. It replaces nan and infinity
-    values, and add columns names and units.
+    values, and add column names and units.
 
     Args:
         match (numpy ndarray): array contaning the values for the cone search
-        result, this array is the output of catsHTM cone_search method.
+        result, this array is the output of catsHTM 'cone_search' function.
         catalog_columns (numpy ndarray): the columns of the catalog according
         to catsHTM.
         column_units (numpy ndarray): the units associated to each column.
     Returns:
-        A dictionary containing the formatted cone search results for every
+        A dictionary containing the formatted cone search results for a
         catalog.
     '''
     try:
@@ -194,19 +186,18 @@ def format_cone_results(match, catalog_columns, column_units):
             results[column] = {"units": unit, "values": values}
     return results
 
-
 @app.route('/conesearch_all')
 def conesearch_all():
     '''
     This function returns the result of running a cone search over all
-    available catalogs. It uses an auxiliary function to generate this
+    available catalogs. It uses the 'conesearch' function to generate this
     results.
 
     Args:
         None
 
     Returns:
-        A jsonified string with the cone search results for all catalogs.
+        The JSON representation of the cone search results for all catalogs.
     '''
     global catalogs
     # ra and dec to radians
@@ -225,7 +216,6 @@ def conesearch_all():
     final_result = {}
     final_result['catalogs'] = result
     return jsonify(final_result)
-
 
 @app.route('/crossmatch')
 def crossmatch():
@@ -252,68 +242,6 @@ def crossmatch():
         radius = float(radius_dict.get(catalog, 50))
 
     return jsonify(crossmatch(catalog, ra, dec, radius))
-
-@app.route('/test_cone')
-def test_cone():
-    # call catsHTM cone search
-    match, catalog_columns, columns_units = cone_search(
-        catalog, ra, dec, radius, path)
-    try:
-        df = pd.DataFrame(match, columns=catalog_columns)
-        # add distance column to df
-        df['distance'] = None
-    except BaseException:
-        return []
-    matches = []
-    columns_units = np.append(columns_units, 'arcsec')
-
-    for index, row in df.iterrows():
-        obj = dict(zip(catalog_columns, row.values))
-        matches.append(obj)
-    # this object is a list with one dictionary containing the ra, dec of the
-    # closest matching object
-    try:
-        closest_ra_dec = get_min_distance(matches, catalog, ra, dec)
-    except BaseException:
-        return {}
-    # get all the fields of the matching object
-    ra_cat, dec_cat = map_ra_dec(catalog)
-    result = {}
-    for index, row in df.iterrows():
-
-        if isinstance(row[ra_cat], float):
-            ra_equal = row[ra_cat] == closest_ra_dec[0]["ra"]
-        else:
-            ra_equal = (row[ra_cat].iloc[0] == closest_ra_dec[0]["ra"])
-
-        if isinstance(row[dec_cat], float):
-            dec_equal = row[dec_cat] == closest_ra_dec[0]["dec"]
-        else:
-            dec_equal = (row[dec_cat].iloc[0] == closest_ra_dec[0]["dec"])
-        if ra_equal and dec_equal:
-            # add distance to result
-            row['distance'] = closest_ra_dec[0]['distance']
-            result = row.to_dict()
-            break
-
-    result_with_units = {}
-    for key, unit in zip(result, columns_units):
-        value = result[key]
-        if unit_is_rad(unit):
-            # convert unit to deg
-            result_with_units[key] = {'value': None if np.isnan(
-                value) else degrees(value), 'unit': 'deg'}
-        else:
-            result_with_units[key] = {
-                'value': None if np.isnan(value) else value, 'unit': unit}
-    # replace inf
-    result_with_units = {
-        key: (
-            val if val['value'] != np.inf else {
-                'value': 'infinity',
-                'unit': val['unit']}) for key,
-        val in result_with_units.items()}
-    return result_with_units
 
 def crossmatch(catalog, ra, dec, radius):
     '''
@@ -443,9 +371,6 @@ def unit_is_rad(unit):
         A boolean stating if the input units was radian or not.
     '''
     return unit == 'rad'
-
-# receives a list of dictionaries and the original catalog, ra and dec
-
 
 def get_min_distance(matches, catalog, ra, dec):
     ra_cat, dec_cat = map_ra_dec(catalog)
