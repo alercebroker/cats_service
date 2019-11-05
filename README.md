@@ -1,7 +1,5 @@
 # ALeRCE [Cats Service](http://catshtm.alerce.online)
-Cats Service provides conesearch and crossmatch over different [catalogs](#available-catalogs).
-
-This service is based on [catsHTM](https://github.com/maayane/catsHTM).
+Cats Service provides conesearch and crossmatch over different [catalogs](#available-catalogs). It is based on [catsHTM](https://github.com/maayane/catsHTM).
 
 #### Arguments and units in requests
 
@@ -35,7 +33,7 @@ curl "catshtm.alerce.online/crossmatch?catalog=SDSSDR10&ra=357.733730043103&dec=
 curl "catshtm.alerce.online/crossmatch?catalog=SDSSDR10&ra=357.733730043103&dec=14.2051386793103"
 ```
 
-If a radius is provided, then that value is used. If not, the default value for that catalog is used. See default values in [Available catalogs](#available-catalogs)
+If a radius is provided, then that value is used. If not, the default value for that catalog is used. See default values in [Available catalogs](#available-catalogs).
 
 #### Crossmatch over all catalogs
 
