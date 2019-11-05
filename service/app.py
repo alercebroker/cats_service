@@ -5,9 +5,13 @@ from flask import Flask, request, jsonify, flash, redirect, url_for
 from flask_cors import CORS
 from math import radians, degrees
 from werkzeug.utils import secure_filename
+import logging
 import numpy as np
 import os
 import pandas as pd
+import gunicorn
+
+import pdb
 
 app = Flask(__name__)
 CORS(app)
@@ -267,10 +271,12 @@ def crossmatch(catalog, ra, dec, radius):
     # call catsHTM cone search
     match, catalog_columns, column_units = cone_search(
         catalog, ra, dec, radius, path)
-    return format_crossmatch_results(match, catalog_columns, column_units)
+    if match.size != 0:
+        return format_crossmatch_results(match, catalog, ra, dec, catalog_columns, column_units)
+    else:
+         return {}
 
-
-def format_crossmatch_results(match, catalog_columns, column_units):
+def format_crossmatch_results(match, catalog, ra, dec, catalog_columns, column_units):
     '''
     This function formats the crossmatch result of a catalog.
 
@@ -289,7 +295,7 @@ def format_crossmatch_results(match, catalog_columns, column_units):
         # add distance column to df
         df['distance'] = None
     except BaseException:
-        return []
+        return {}
     matches = []
     # append distance unit
     column_units = np.append(column_units, 'arcsec')
@@ -367,7 +373,7 @@ def crossmatch_all():
     except BaseException:
         # if no radius was provided, use the default value
         radius = float(radius_dict.get(catalog, 50))
-    result = []
+    result = {}
     for catalog in catalogs:
         partial_result = crossmatch(catalog, ra, dec, radius)
         # append the partial result if it is not empty
@@ -376,7 +382,7 @@ def crossmatch_all():
                 # get the official name of the catalog
                 catalog = catalog_map.get(catalog, catalog)
             result_catname = {catalog: partial_result}
-            result.append(result_catname)
+            result.update(result_catname)
     return jsonify(result)
 
 
