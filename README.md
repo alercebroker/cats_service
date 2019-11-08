@@ -8,13 +8,13 @@ The arguments needed are almost always the name of the `catalog`, `ra` and `dec`
 #### Conesearch in a catalog
 
 ```
-curl "catshtm.alerce.online/conesearch?catalog=GAIADR1&ra=357.733730043103&dec=14.2051386793103&radius=100"
+curl "catshtm.alerce.online/conesearch?catalog=GAIADR1&ra=357.73373004&dec=14.20513868&radius=100"
 ```
 
 #### Conesearch over all catalogs
 
 ```
-curl "catshtm.alerce.online/conesearch_all?ra=357.733730043103&dec=14.2051386793103&radius=10"
+curl "catshtm.alerce.online/conesearch?catalog=GAIADR1&ra=357.73373004&dec=14.20513868&radius=100"
 ```
 
 #### Crossmatch in a catalog
