@@ -24,13 +24,13 @@ Since the radius argument is optional, there are two ways to perform crossmatch 
 1. Providing a radius:
 
 ```
-curl "catshtm.alerce.online/crossmatch?catalog=SDSSDR10&ra=357.733730043103&dec=14.2051386793103&radius=10"
+curl "catshtm.alerce.online/crossmatch?catalog=GAIADR1&ra=357.73373004&dec=14.20513868&radius=100"
 ```
 
 2. Not providing one:
 
 ```
-curl "catshtm.alerce.online/crossmatch?catalog=SDSSDR10&ra=357.733730043103&dec=14.2051386793103"
+curl "catshtm.alerce.online/crossmatch?catalog=GAIADR1&ra=357.73373004&dec=14.20513868"
 ```
 
 If a radius is provided, then that value is used. If not, the default value for that catalog is used. See default values in [Available catalogs](#available-catalogs).
