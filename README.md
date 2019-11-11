@@ -54,8 +54,6 @@ curl "catshtm.alerce.online/crossmatch_all?ra=357.733730043103&dec=14.2051386793
 ```
 
 #### Available catalogs:
-
-For catalogs that do not have a value listed, the default radius is 50 arcsec.
 ```
 - AAVSO_VSX
 - AKARI
@@ -91,3 +89,4 @@ For catalogs that do not have a value listed, the default radius is 50 arcsec.
 - XMM (8 arcsec)
 - unWISE
 ```
+For catalogs that do not have a value listed, the default radius is 50 arcsec.
