@@ -1,7 +1,7 @@
 # ALeRCE [Cats Service](http://catshtm.alerce.online)
 [![Documentation Status](https://readthedocs.org/projects/alerce/badge/?version=latest)](https://alerceapi.readthedocs.io/en/latest/catshtm.html)
 
-Cats Service provides conesearch and crossmatch over different [catalogs](#available-catalogs). It is based on [catsHTM](https://github.com/maayane/catsHTM).
+Cats Service provides conesearch and cross-match over different [catalogs](#available-catalogs). It is based on [catsHTM](https://github.com/maayane/catsHTM).
 
 #### Arguments and units in requests
 
@@ -21,7 +21,7 @@ curl "catshtm.alerce.online/conesearch?catalog=GAIADR1&ra=357.73373004&dec=14.20
 
 #### Crossmatch in a catalog
 
-Since the radius argument is optional, there are two ways to perform crossmatch in a catalog.
+Since the radius argument is optional, there are two ways to perform cross-match in a catalog.
 
 1. Providing a radius:
 
@@ -39,7 +39,7 @@ If a radius is provided, then that value is used. If not, the default value for 
 
 #### Crossmatch over all catalogs
 
-For crossmatching over all catalogs, the same rule of providing a radius or not applies. Therefore, there are two ways to send the request.
+For cross-matching over all catalogs, the same rule of providing a radius or not applies. Therefore, there are two ways to send the request.
 
 1. With radius:
 
@@ -54,6 +54,7 @@ curl "catshtm.alerce.online/crossmatch_all?ra=357.733730043103&dec=14.2051386793
 ```
 
 #### Available catalogs:
+For catalogs that have a value listed, this value is the radius used for cone search and cross-match. Otherwise, the default radius of 50 arcsec is used.
 ```
 - AAVSO_VSX
 - AKARI
@@ -89,4 +90,3 @@ curl "catshtm.alerce.online/crossmatch_all?ra=357.733730043103&dec=14.2051386793
 - XMM (8 arcsec)
 - unWISE
 ```
-For catalogs that do not have a value listed, the default radius is 50 arcsec.
