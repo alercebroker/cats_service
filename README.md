@@ -1,5 +1,5 @@
 # ALeRCE [Cats Service](http://catshtm.alerce.online)
-[![Documentation Status](https://readthedocs.org/projects/alerce/badge/?version=latest)](https://alerce.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/alerce/badge/?version=latest)](hhttps://alerceapi.readthedocs.io/en/latest/catshtm.html)
 
 Cats Service provides conesearch and crossmatch over different [catalogs](#available-catalogs). It is based on [catsHTM](https://github.com/maayane/catsHTM).
 
