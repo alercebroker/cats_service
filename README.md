@@ -1,27 +1,27 @@
 # ALeRCE [Cats Service](http://catshtm.alerce.online)
 [![Documentation Status](https://readthedocs.org/projects/alerce/badge/?version=latest)](https://alerceapi.readthedocs.io/en/latest/catshtm.html)
 
-Cats Service provides conesearch and cross-match over different [catalogs](#available-catalogs). It is based on [catsHTM](https://github.com/maayane/catsHTM).
+Cats Service provides conesearch and cross-match on different [catalogs](#available-catalogs). It is based on [catsHTM](https://github.com/maayane/catsHTM).
 
 #### Arguments and units in requests
 
 The arguments needed are almost always the name of the `catalog`, `ra` and `dec` in degrees and `radius` in arcsec.
 
-#### Conesearch in a catalog
+#### Conesearch on a catalog
 
 ```
 curl "catshtm.alerce.online/conesearch?catalog=GAIADR1&ra=357.73373004&dec=14.20513868&radius=100"
 ```
 
-#### Conesearch over all catalogs
+#### Conesearch on all catalogs
 
 ```
 curl "catshtm.alerce.online/conesearch?catalog=GAIADR1&ra=357.73373004&dec=14.20513868&radius=100"
 ```
 
-#### Crossmatch in a catalog
+#### Crossmatch on a catalog
 
-Since the radius argument is optional, there are two ways to perform cross-match in a catalog.
+Since the radius argument is optional, there are two ways to perform cross-match on a catalog.
 
 1. Providing a radius:
 
@@ -37,17 +37,17 @@ curl "catshtm.alerce.online/crossmatch?catalog=GAIADR1&ra=357.73373004&dec=14.20
 
 If a radius is provided, then that value is used. If not, the default value for that catalog is used. See default values in [Available catalogs](#available-catalogs).
 
-#### Crossmatch over all catalogs
+#### Crossmatch on all catalogs
 
-For cross-matching over all catalogs, the same rule of providing a radius or not applies. Therefore, there are two ways to send the request.
+For cross-matching on all catalogs, the same rule of providing a radius or not applies. Therefore, there are two ways to send the request.
 
-1. With radius:
+1. With a value for the radius:
 
 ```
 curl "catshtm.alerce.online/crossmatch_all?ra=357.733730043103&dec=14.2051386793103&radius=100"
 ```
 
-2. Without radius:
+2. Without one:
 
 ```
 curl "catshtm.alerce.online/crossmatch_all?ra=357.733730043103&dec=14.2051386793103"
