@@ -63,8 +63,8 @@ For catalogs that have a value listed, this value is the radius used for cone se
 - Cosmos
 - DECaLS (0.1 arcsec)
 - FIRST
-- GAIADR1 (0.1 arcsec)
-- GAIADR2 (0.1 arcsec)
+- GAIADR1 (0.2 arcsec)
+- GAIADR2 (0.2 arcsec)
 - GALEX
 - HSCv2
 - IPHAS
