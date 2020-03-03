@@ -439,6 +439,61 @@ def get_min_distance(matches, catalog, ra, dec):
         return list(filter(lambda x: x['distance'] == min_distance, distances))
     return None
 
+@app.route('/crossmatch_bulk')
+def crossmatch_bulk():
+        '''
+        This function returns the crossmatch results for a set of independent sources.
+
+        Args:
+            None
+        Returns:
+            The JSON representation of the crossmatch result for all sources.
+        '''
+        global catalogs
+        global radius_dict
+        # get request parameters
+        try:
+            catalog = request.args.get('catalog')
+            object_list = request.GET.getlist('object_list')
+        except BaseException:
+            return jsonify('Request contains one or more invalid arguments.')
+        # check if a value for radius was provided
+        radius = None
+        try:
+            radius = float(request.args.get('radius'))
+        except BaseException:
+            # if no radius was provided, use the default value
+            radius = float(radius_dict.get(catalog, 50))
+        result = {}
+        for object in object_list:
+            partial_result = crossmatch(catalog, ra, dec, radius)
+            # append the partial result if it is not empty
+            if partial_result:
+                if catalog in catalog_map:
+                    # get the official name of the catalog
+                    catalog = catalog_map.get(catalog, catalog)
+                result_catname = {catalog: partial_result}
+                result.update(result_catname)
+        return jsonify(result)
+
+@app.route('/test')
+def test():
+    global radius_dict
+    try:
+        catalog = request.args.get('catalog')
+        ra = radians(float(request.args.get('ra')))
+        dec = radians(float(request.args.get('dec')))
+    except BaseException:
+        return jsonify('Request contains one or more invalid arguments.')
+    try:
+        radius = float(request.args.get('radius'))
+    except BaseException:
+        radius = float(radius_dict.get(catalog, 50))
+    crossmatch_with_id(catalog, ra, dec, radius)
+
+def crossmatch_with_id(id, ra, dec, catalog, radius):
+    result = crossmatch(catalog, ra, dec, radius)
+    logging.info(result)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port='5001')
