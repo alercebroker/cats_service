@@ -476,10 +476,14 @@ def crossmatch_bulk():
                 result.update(result_catname)
         return jsonify(result)
 
+
+######## xmatch with id ###########
+import json
 @app.route('/test')
 def test():
     global radius_dict
     try:
+        id = request.args.get('id')
         catalog = request.args.get('catalog')
         ra = radians(float(request.args.get('ra')))
         dec = radians(float(request.args.get('dec')))
@@ -489,11 +493,15 @@ def test():
         radius = float(request.args.get('radius'))
     except BaseException:
         radius = float(radius_dict.get(catalog, 50))
-    crossmatch_with_id(catalog, ra, dec, radius)
+    result = crossmatch_with_id(id, ra, dec, catalog, radius)
+    return jsonify(result)
 
 def crossmatch_with_id(id, ra, dec, catalog, radius):
     result = crossmatch(catalog, ra, dec, radius)
-    logging.info(result)
+    # add id as dict key
+    result['id'] = str(id)
+    return result
+    #######################3
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port='5001')
