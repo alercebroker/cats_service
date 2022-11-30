@@ -9,6 +9,5 @@ RUN pip install gunicorn && cd catsHTM && pip install -e .
 
 EXPOSE 5001
 ENV DATA_PATH="/usr/local/catalogsHTM/"
-ENV APP_WORKERS=4
 WORKDIR /app/scripts
 CMD ["/bin/sh", "entrypoint.sh"]
