@@ -19,42 +19,7 @@ CORS(app)
 # path where the HDF5 files are
 path = os.environ["DATA_PATH"]
 # list of catalogs available in catsHTM
-catalogs = [
-    "FIRST",
-    "TMASS",
-    "TMASSxsc",
-    "DECaLS",
-    "GAIADR1",
-    "GAIADR2",
-    "GALEX",
-    "HSCv2",
-    "IPHAS",
-    "NEDz",
-    "SDSSDR10",
-    "SDSSoffset",
-    "SpecSDSS",
-    "SAGE",
-    "IRACgc",
-    "UKIDSS",
-    "VISTAviking",
-    "VSTatlas",
-    "VSTkids",
-    "AKARI",
-    "APASS",
-    "NVSS",
-    "Cosmos",
-    "PTFpc",
-    "ROSATfsc",
-    "SkyMapper",
-    "UCAC4",
-    "WISE",
-    "XMM",
-    "AAVSO_VSX",
-    "unWISE",
-    "SWIREz",
-    "Simbad_PM200",
-    "CRTS_per_var",
-]
+catalogs = os.environ["CATALOGS"].split(",")
 # statistically defined radiuses, not advertised ones
 radius_dict = {
     "ROSATfsc": 50,
