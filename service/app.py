@@ -146,6 +146,18 @@ def format_cone_results(match, catalog_columns, column_units):
     except ValueError as ex:
         return {}
     results = {}
+    # rename duplicated df columns
+    duplicated_columns = [
+        col for col in catalog_columns if list(catalog_columns).count(col) > 1
+    ]
+    ran = 0
+    for col in duplicated_columns:
+        for idx in range(ran, len(catalog_columns)):
+            if catalog_columns[idx] == col:
+                catalog_columns[idx] = f"{col}_{column_units[idx]}"
+                ran = idx
+                break
+    df.columns = catalog_columns
     # generate dictionaries with response values and replace when neccessary
     for column, unit in zip(catalog_columns, column_units):
         values = []
@@ -153,7 +165,7 @@ def format_cone_results(match, catalog_columns, column_units):
             # replace nan and infinity
             if np.isnan(value):
                 value = None
-            elif value == np.inf:
+            elif np.isinf(value):
                 value = "infinity"
             # convert radians to degrees
             elif unit_is_rad(unit):
