@@ -325,16 +325,14 @@ def format_crossmatch_results(match, catalog, ra, dec, catalog_columns, column_u
                 "unit": unit,
             }
     # replace inf
-    result_with_units = [
-        {
-            key: (
-                val
-                if val["value"] != np.inf
-                else {"value": "infinity", "unit": val["unit"]}
-            )
-        }
+    result_with_units = {
+        key: (
+            val
+            if val["value"] != np.inf
+            else {"value": "infinity", "unit": val["unit"]}
+        )
         for key, val in result_with_units.items()
-    ]
+    }
     return result_with_units
 
 
@@ -363,7 +361,7 @@ def crossmatch_all():
     except BaseException:
         # if no radius was provided, use the default value
         radius = float(radius_dict.get(catalog, 50))
-    result = {}
+    result = []
     for catalog in catalogs:
         partial_result = crossmatch(catalog, ra, dec, radius)
         # append the partial result if it is not empty
@@ -372,7 +370,7 @@ def crossmatch_all():
                 # get the official name of the catalog
                 catalog = catalog_map.get(catalog, catalog)
             result_catname = {catalog: partial_result}
-            result.update(result_catname)
+            result.append(result_catname)
     return jsonify(result)
 
 
