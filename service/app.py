@@ -269,7 +269,7 @@ def format_crossmatch_results(match, catalog, ra, dec, catalog_columns, column_u
         to catsHTM.
         column_units (numpy ndarray): the units associated to each column.
     Returns:
-        A dictionary with the crossmatch result.
+        A list where each element is a dict with the crossmatch result of a single catalog.
     """
     try:
         # dataframe to match columns to values
@@ -325,14 +325,16 @@ def format_crossmatch_results(match, catalog, ra, dec, catalog_columns, column_u
                 "unit": unit,
             }
     # replace inf
-    result_with_units = {
-        key: (
-            val
-            if val["value"] != np.inf
-            else {"value": "infinity", "unit": val["unit"]}
-        )
+    result_with_units = [
+        {
+            key: (
+                val
+                if val["value"] != np.inf
+                else {"value": "infinity", "unit": val["unit"]}
+            )
+        }
         for key, val in result_with_units.items()
-    }
+    ]
     return result_with_units
 
 
