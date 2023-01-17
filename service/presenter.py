@@ -1,0 +1,25 @@
+from flask import jsonify 
+
+
+def json(final_result):
+    return jsonify(final_result)
+
+def catname(results, catalog_map, catalog):
+    result_with_catname = {}
+    result_with_catname[catalog_map.get(catalog, catalog)] = results
+    return result_with_catname
+
+def catname_all(final_result,catalog_map):
+
+    result_catname = []
+    final_result_catname = {}
+    for key in final_result:
+        result_catname.append(catname(final_result[key], catalog_map, key))
+    
+    final_result_catname["catalogs"] = result_catname
+
+    return final_result_catname
+
+
+
+    
