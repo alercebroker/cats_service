@@ -1,8 +1,8 @@
-from presenter import json,catname, catname_all
+from service.presenter import json,catname, catname_all
 import os 
 from math import radians
-from service import service_get_conesearch, service_get_crossmatch, service_get_conesearch_all, service_get_crossmatch_all
-from constants import radius_dict, map_ra_dec, catalog_map
+from service.service import service_get_conesearch, service_get_crossmatch, service_get_conesearch_all, service_get_crossmatch_all
+from service.constants import radius_dict, map_ra_dec, catalog_map
 
 def controller_conesearch(request):
 
@@ -54,7 +54,6 @@ def controller_crossmatch_all(request):
 
     catalogs = os.environ["CATALOGS"].split(",")
     try:
-        catalog = request.args.get("catalog")
         ra = radians(float(request.args.get("ra")))
         dec = radians(float(request.args.get("dec")))
         path = os.environ["DATA_PATH"]
@@ -67,6 +66,6 @@ def controller_crossmatch_all(request):
         radius = float(request.args.get("radius"))
     except BaseException:
         # if no radius was provided, use the default value
-        radius = float(radius_dict.get(catalog, 50))
-    return json(catname_all(service_get_crossmatch_all(catalogs, ra, dec ,radius,path, map_ra_dec,catalog_map), catalog_map))
+        radius = float(radius_dict.get(50))
+    return json(catname_all(service_get_crossmatch_all(catalogs, ra, dec ,radius,path, map_ra_dec),catalog_map))
 

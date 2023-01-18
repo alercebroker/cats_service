@@ -1,7 +1,7 @@
 from catsHTM import cone_search
-from parse import parse_conesearch, parse_crossmatch
+from service.parse import parse_conesearch, parse_crossmatch
 
-def service_get_conesearch(catalog, ra, dec, radius, path,catalog_map):
+def service_get_conesearch(catalog, ra, dec, radius, path):
 
     match, catalog_columns, column_units = cone_search(catalog, ra, dec, radius, path)
     results = parse_conesearch(match, catalog_columns, column_units)
@@ -32,7 +32,7 @@ def service_get_crossmatch(catalog, ra, dec, radius, path,map_ra_dec):
     else:
         return {}
 
-def service_get_crossmatch_all(catalogs, ra, dec ,radius, path, map_ra_dec,catalog_map):
+def service_get_crossmatch_all(catalogs, ra, dec ,radius, path, map_ra_dec):
 
     result = []
 

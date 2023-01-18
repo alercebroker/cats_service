@@ -3,7 +3,7 @@ from flask_cors import CORS
 import logging
 import gunicorn
 
-from controler import *
+from service.controler import *
 
 import pdb
 
@@ -92,7 +92,7 @@ def crossmatch_all():
     Returns:
         The JSON representation of the crossmatch result for all catalogs.
     """
-    return controller_crossmatch_all()
+    return controller_crossmatch_all(request)
 
 
 

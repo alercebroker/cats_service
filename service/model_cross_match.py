@@ -20,7 +20,7 @@ class ModelCrossMatch:
 
         matches = []
         # append distance unit
-        column_units = np.append(column_units, "arcsec")
+        self.column_units = np.append(self.column_units, "arcsec")
         for index, row in df.iterrows():
             obj = dict(zip(self.catalog_columns, row.values))
             matches.append(obj)
@@ -100,12 +100,12 @@ class ModelCrossMatch:
                 # convert unit to deg
                 result_with_units[key] = {
                     "value": None if np.isnan(value) else degrees(value),
-                    "unit": "deg",
+                    "units": "deg",
                 }
             else:
                 result_with_units[key] = {
                     "value": None if np.isnan(value) else value,
-                    "unit": unit,
+                    "units": unit,
                 }
         # replace inf
         result_with_units = {
