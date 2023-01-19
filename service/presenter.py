@@ -1,8 +1,8 @@
-from flask import jsonify 
+from fastapi.encoders import jsonable_encoder
 
 
 def json(final_result):
-    return jsonify(final_result)
+    return jsonable_encoder(final_result)
 
 def catname(results, catalog_map, catalog):
     result_with_catname = {}

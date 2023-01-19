@@ -1,1 +1,1 @@
-from .flask_proyect import *
+from .fastAPI_project import *
