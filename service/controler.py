@@ -75,5 +75,3 @@ def controller_crossmatch_all(request):
         radius = float(radius_dict.get(50))
     return json(catname_all(service_get_crossmatch_all(catalogs, ra, dec ,radius,path, map_ra_dec),catalog_map))
 
-#Comentario
-
