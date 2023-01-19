@@ -36,7 +36,13 @@ def conesearch(catalog: str, ra: float, dec: float, radius: float):
     Returns:
         The JSON representation of the cone search result for a single catalog.
     """
-    return controller_conesearch(catalog, ra, dec, radius)
+    request = {
+        "ra":ra,
+        "dec":dec,
+        "radius":radius
+    }
+ 
+    return controller_conesearch(catalog,request)
 
 
 @app.get("/conesearch_all")
@@ -52,7 +58,12 @@ def conesearch_all(ra: float, dec: float, radius: float):
     Returns:
         The JSON representation of the cone search results for all catalogs.
     """
-    return controller_conesearch_all(ra, dec, radius)
+    request = {
+        "ra":ra,
+        "dec":dec,
+        "radius":radius
+    }
+    return controller_conesearch_all(request)
 
 
 @app.get("/crossmatch")
@@ -66,7 +77,13 @@ def crossmatch(catalog: str, ra: float, dec: float, radius: Union[float, None] =
     Returns:
         The JSON representation of the crossmatch result.
     """
-    return controller_crossmatch(catalog, ra, dec, radius)
+    request = {
+        "ra":ra,
+        "dec":dec,
+        "radius":radius
+    }
+
+    return controller_crossmatch(catalog,request)
 
 
 
@@ -80,7 +97,12 @@ def crossmatch_all(ra: float, dec: float, radius: Union[float, None] = None):
     Returns:
         The JSON representation of the crossmatch result for all catalogs.
     """
-    return controller_crossmatch_all(ra, dec, radius)
+    request = {
+        "ra":ra,
+        "dec":dec,
+        "radius":radius
+    }
+    return controller_crossmatch_all(request)
 
 
 if __name__ == "__main__":
