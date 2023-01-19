@@ -4,6 +4,7 @@ from service.parse import parse_conesearch, parse_crossmatch
 def service_get_conesearch(catalog, ra, dec, radius, path):
 
     match, catalog_columns, column_units = cone_search(catalog, ra, dec, radius, path)
+    print(match, catalog_columns, column_units)
     results = parse_conesearch(match, catalog_columns, column_units)
     return results
 
@@ -32,13 +33,18 @@ def service_get_crossmatch(catalog, ra, dec, radius, path,map_ra_dec):
     else:
         return {}
 
-def service_get_crossmatch_all(catalogs, ra, dec ,radius, path, map_ra_dec):
+def service_get_crossmatch_all(catalogs, ra, dec ,radius, path, map_ra_dec,radius_dict):
 
     result = []
 
     final_result = {}
+
     for catalog in catalogs:
-        partial_result = service_get_crossmatch(catalog, ra, dec, radius, path, map_ra_dec)
+        if radius == None:
+            radius_aux = float(radius_dict.get(catalog,50))
+        else: 
+            radius_aux = radius
+        partial_result = service_get_crossmatch(catalog, ra, dec, radius_aux, path, map_ra_dec)
         # append the partial result if it is not empty
         if partial_result != {}:
             result.append(partial_result)

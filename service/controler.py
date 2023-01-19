@@ -45,13 +45,13 @@ def controller_crossmatch(request):
         path = os.environ["DATA_PATH"]
     except BaseException:
         return json("Request contains one or more invalid arguments.")
-
+    radius = None
     try:
         radius = float(request.args.get("radius"))
     except BaseException:
         # if no radius was provided, use the default value
-        radius = float(radius_dict.get(50))
-        
+        radius = float(radius_dict.get(catalog,50))
+
     return json(service_get_crossmatch(catalog, ra, dec, radius, path,map_ra_dec))
 
 
@@ -67,11 +67,10 @@ def controller_crossmatch_all(request):
         return json("Request contains one or more invalid arguments.")
 
     # check if a value for radius was provided
-    radius = None
     try:
         radius = float(request.args.get("radius"))
-    except BaseException:
-        # if no radius was provided, use the default value
-        radius = float(radius_dict.get(50))
-    return json(catname_all(service_get_crossmatch_all(catalogs, ra, dec ,radius,path, map_ra_dec),catalog_map))
+    except:
+        radius = None
+
+    return json(catname_all(service_get_crossmatch_all(catalogs, ra, dec ,radius,path, map_ra_dec,radius_dict),catalog_map))
 
