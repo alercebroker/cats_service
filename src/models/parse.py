@@ -1,5 +1,5 @@
-from service.model_conesearch import ModelConesearch
-from service.model_cross_match import ModelCrossMatch
+from src.models.model_conesearch import ModelConesearch
+from src.models.model_cross_match import ModelCrossMatch
 def parse_conesearch(match, catalog_columns, column_units):
 
     model = ModelConesearch(match, catalog_columns,column_units)

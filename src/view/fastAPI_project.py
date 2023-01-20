@@ -1,27 +1,14 @@
-from flask import Flask, request, jsonify, flash, redirect, url_for
-from flask_cors import CORS
-import logging
+import uvicorn
+from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
+from src.controllers.controler import *
 import gunicorn
-
-from service.controler import *
-
-import pdb
-
-app = Flask(__name__)
-CORS(app)
+from typing import Union
+app = FastAPI()
 
 
-@app.route("/")
+@app.get("/", response_class=HTMLResponse)
 def welcome():
-    """
-    This function returns information about the API.
-
-    Args:
-        None
-
-    Returns:
-        HTML text with a link to the API documentation.
-    """
     return """<!DOCTYPE html>
               <html>
               <head>
@@ -36,8 +23,9 @@ def welcome():
               </html>"""
 
 
-@app.route("/conesearch")
-def conesearch():
+
+@app.get("/conesearch")
+def conesearch(catalog: str, ra: float, dec: float, radius: float):
     """
     This function returns the cone search result, it uses an auxiliary
     function to generate the result.
@@ -48,11 +36,17 @@ def conesearch():
     Returns:
         The JSON representation of the cone search result for a single catalog.
     """
-    return controller_conesearch(request)
+    request = {
+        "ra":ra,
+        "dec":dec,
+        "radius":radius
+    }
+ 
+    return controller_conesearch(catalog,request)
 
 
-@app.route("/conesearch_all")
-def conesearch_all():
+@app.get("/conesearch_all")
+def conesearch_all(ra: float, dec: float, radius: float):
     """
     This function returns the result of running a cone search over all
     available catalogs. It uses the 'conesearch' function to generate this
@@ -64,11 +58,16 @@ def conesearch_all():
     Returns:
         The JSON representation of the cone search results for all catalogs.
     """
+    request = {
+        "ra":ra,
+        "dec":dec,
+        "radius":radius
+    }
     return controller_conesearch_all(request)
 
 
-@app.route("/crossmatch")
-def crossmatch():
+@app.get("/crossmatch")
+def crossmatch(catalog: str, ra: float, dec: float, radius: Union[float, None] = None):
     """
     This function returns the result of running a crossmatch over one catalog.
     It uses an auxiliary function to compute the results.
@@ -78,12 +77,18 @@ def crossmatch():
     Returns:
         The JSON representation of the crossmatch result.
     """
-    return controller_crossmatch(request)
+    request = {
+        "ra":ra,
+        "dec":dec,
+        "radius":radius
+    }
+
+    return controller_crossmatch(catalog,request)
 
 
 
-@app.route("/crossmatch_all")
-def crossmatch_all():
+@app.get("/crossmatch_all")
+def crossmatch_all(ra: float, dec: float, radius: Union[float, None] = None):
     """
     This function returns the crossmatch result for all catalogs.
 
@@ -92,11 +97,13 @@ def crossmatch_all():
     Returns:
         The JSON representation of the crossmatch result for all catalogs.
     """
+    request = {
+        "ra":ra,
+        "dec":dec,
+        "radius":radius
+    }
     return controller_crossmatch_all(request)
 
 
-
-
-
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port="5001")
+    uvicorn.run(app, host="0.0.0.0", port=5001)
