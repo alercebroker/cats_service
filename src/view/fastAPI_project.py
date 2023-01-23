@@ -2,9 +2,15 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from src.controllers.controler import *
-import gunicorn
 from typing import Union
+from starlette.applications import Starlette
+from starlette_prometheus import metrics, PrometheusMiddleware
+
+
 app = FastAPI()
+
+app.add_middleware(PrometheusMiddleware)
+app.add_route("/metrics/", metrics)
 
 
 @app.get("/", response_class=HTMLResponse)
