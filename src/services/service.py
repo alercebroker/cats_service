@@ -1,16 +1,11 @@
 from catsHTM import cone_search
-from src.models.parse import parse_conesearch, parse_crossmatch
+from ..models.parse import parse_conesearch, parse_crossmatch
+
 
 def service_get_conesearch(catalog, request, path):
     
     match, catalog_columns, column_units = cone_search(catalog, request["ra"], request["dec"], request["radius"], path)
-    f = open("text.txt","w")
-    print(match, catalog_columns, column_units, file = f)
-    f.close()
-    results = parse_conesearch(match, catalog_columns, column_units)
-    f = open("text2.txt","w")
-    print(results, file = f)
-    f.close()    
+    results = parse_conesearch(match, catalog_columns, column_units)  
     return results
 
 
@@ -25,7 +20,6 @@ def service_get_conesearch_all(catalogs,request, path):
             result.append(partial_result)
         final_result[catalog] = result
         result = []
-
     return final_result
 
 
