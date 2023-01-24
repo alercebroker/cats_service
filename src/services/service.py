@@ -29,7 +29,13 @@ def service_get_crossmatch(catalog,request, path,map_ra_dec,radius_dict):
         request["radius"] = float(radius_dict.get(catalog,50))
 
     match, catalog_columns, column_units = cone_search(catalog, request["ra"], request["dec"], request["radius"], path)
-    if match.size != 0:
+    f = open("cpreparse.txt","w")
+    print(match, catalog_columns, column_units, file = f)
+    f.close()  
+    f = open("cpostparse.txt","w")
+    print(parse_crossmatch(match, catalog, request["ra"], request["dec"], catalog_columns, column_units,map_ra_dec), file = f)
+    f.close()     
+    if len(match) != 0:
         return parse_crossmatch(match, catalog, request["ra"], request["dec"], catalog_columns, column_units,map_ra_dec)
 
     else:

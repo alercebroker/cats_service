@@ -116,9 +116,6 @@ csr2_3 = [
 scsr2 = {}
 
 
-# esto es lo que da el test y por eso da error
-
-
 # primer caso del conesearch_all ra = 1, dec = 0, radius = 200
 scsr1_1 = {
     "RA": {"units": "deg", "values": []},
@@ -343,4 +340,93 @@ scsar2 = {
 }
 
 
-# primer caso del crossmatch_all ra = 0, dec = 0, radius = 200, catalog = FIRST (entrega resultados)
+# primer caso del crossmatch catalog = "FIRST", ra = 1, dec = 0, radius = 200 (entrega resultados)
+
+cross_match_result1_1 = [
+    [
+        1.77356731e-02,
+        -2.04058073e-04,
+        1.40530020e-02,
+        1.04300003e01,
+        1.07168760e01,
+        1.08766742e-01,
+        1.63000000e00,
+        0.00000000e00,
+        3.39000015e01,
+        6.53999996e00,
+        5.42999983e00,
+        6.30000019e00,
+        2.45001971e06,
+        2.45248294e06,
+    ]
+]
+cross_match_result1_2 = [
+    "RA",
+    "Dec",
+    "SideProb",
+    "Fpeak",
+    "Fint",
+    "rms",
+    "Major",
+    "Minor",
+    "PosAng",
+    "FitMajor",
+    "FitMinor",
+    "FitPosAng",
+    "StartMJD",
+    "StopMJD",
+]
+cross_match_result1_3 = [
+    "rad",
+    "rad",
+    " ",
+    "mJy",
+    "mJy",
+    "mJy",
+    "arcsec",
+    "arcsec",
+    "deg",
+    "arcsec",
+    "arcsec",
+    "deg",
+    "MJD",
+    "MJD",
+]
+
+service_cross_match_result1 = {
+    "RA": {"value": 1.0161792162935126, "units": "deg"},
+    "Dec": {"value": -0.011691666358208579, "units": "deg"},
+    "SideProb": {"value": 0.014053001999855042, "units": " "},
+    "Fpeak": {"value": 10.430000305175781, "units": "mJy"},
+    "Fint": {"value": 10.716876029968262, "units": "mJy"},
+    "rms": {"value": 0.10876674205064774, "units": "mJy"},
+    "Major": {"value": 1.6299999952316284, "units": "arcsec"},
+    "Minor": {"value": 0.0, "units": "arcsec"},
+    "PosAng": {"value": 33.900001525878906, "units": "deg"},
+    "FitMajor": {"value": 6.539999961853027, "units": "arcsec"},
+    "FitMinor": {"value": 5.429999828338623, "units": "arcsec"},
+    "FitPosAng": {"value": 6.300000190734863, "units": "deg"},
+    "StartMJD": {"value": 2450019.713368056, "units": "MJD"},
+    "StopMJD": {"value": 2452482.9428125005, "units": "MJD"},
+    "distance": {"value": 71.86145556680134, "units": "arcsec"},
+}
+
+
+# resultado del crossmatch fuera del contenedor (llamando al test)
+{
+    "RA": {"value": 1.016179215453705, "units": "deg"},
+    "Dec": {"value": -0.011691666358472456, "units": "deg"},
+    "SideProb": {"value": 0.014053002, "units": " "},
+    "Fpeak": {"value": 10.4300003, "units": "mJy"},
+    "Fint": {"value": 10.716876, "units": "mJy"},
+    "rms": {"value": 0.108766742, "units": "mJy"},
+    "Major": {"value": 1.63, "units": "arcsec"},
+    "Minor": {"value": 0.0, "units": "arcsec"},
+    "PosAng": {"value": 33.9000015, "units": "deg"},
+    "FitMajor": {"value": 6.53999996, "units": "arcsec"},
+    "FitMinor": {"value": 5.42999983, "units": "arcsec"},
+    "FitPosAng": {"value": 6.30000019, "units": "deg"},
+    "StartMJD": {"value": 2450019.71, "units": "MJD"},
+    "StopMJD": {"value": 2452482.94, "units": "MJD"},
+    "distance": {"value": 202606.56393768272, "units": "arcsec"},
+}

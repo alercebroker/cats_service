@@ -15,6 +15,10 @@ class ModelCrossMatch:
         self.column_units = column_units
         self.map_ra_dec = map_ra_dec
 
+        f = open("constructor.txt","w")
+        print(match,column_units,catalog_columns, file = f)
+        f.close()
+
 
     def check_ra_dec_instance(self, df):
 
@@ -134,6 +138,10 @@ class ModelCrossMatch:
         try:
             # dataframe to match columns to values
             df = pd.DataFrame(self.match, columns= self.catalog_columns)
+
+            f = open("dataframecross.txt","w")
+            print(df, file = f)
+            f.close()
             # add distance column to df
             df["distance"] = None
         except BaseException:
