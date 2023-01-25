@@ -1,14 +1,24 @@
 import uvicorn
-from fastapi import FastAPI, status
+from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from src.controllers.controler import *
 from typing import Union
 
-app = FastAPI()
+from typing import Generic, TypeVar, Optional, List
+from pydantic import BaseModel, validator, ValidationError
+from pydantic.generics import GenericModel
 
-@app.get("/health", status_code=status.HTTP_200_OK)
-def health():
-    return {}
+
+
+DataT = TypeVar('DataT')
+
+class GenericExample(GenericModel, Generic[DataT]):
+    data1: DataT
+    data2: DataT
+
+
+
+app = FastAPI()
 
 @app.get("/", response_class=HTMLResponse)
 def welcome():
@@ -27,7 +37,23 @@ def welcome():
 
 
 
-@app.get("/conesearch")
+result_example = GenericExample(data1=3, data2="aaaa")
+
+conesearch_example_value = {
+    200: {
+        "content": {
+            "application/json": {
+                "example": {
+                    result_example.json()
+                }
+            }
+        }
+    }
+}
+
+
+
+@app.get("/conesearch", responses =conesearch_example_value)
 def conesearch(catalog: str, ra: float, dec: float, radius: float):
     """
     This function returns the cone search result, it uses an auxiliary
