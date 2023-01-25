@@ -37,15 +37,15 @@ def welcome():
 
 
 
-result_example = GenericExample(data1=3, data2="aaaa")
+result_example = GenericExample(data1=3, data2='aaaa')
+result_example.dict()
+
 
 conesearch_example_value = {
     200: {
         "content": {
             "application/json": {
-                "example": {
-                    result_example.json()
-                }
+                "example": result_example.dict()
             }
         }
     }
@@ -65,6 +65,8 @@ def conesearch(catalog: str, ra: float, dec: float, radius: float):
     Returns:
         The JSON representation of the cone search result for a single catalog.
     """
+
+    print(result_example.dict())
     request = {
         "ra":ra,
         "dec":dec,
