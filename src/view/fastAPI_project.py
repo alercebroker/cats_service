@@ -12,9 +12,33 @@ from pydantic.generics import GenericModel
 
 DataT = TypeVar('DataT')
 
-class GenericExample(GenericModel, Generic[DataT]):
-    data1: DataT
-    data2: DataT
+class CrossMatchDataModel(BaseModel):
+    value: int
+    units: str
+
+class CrossMatchContainerModel(BaseModel):
+    exampledata: CrossMatchDataModel
+
+class CrossMatchModel(BaseModel):
+    CATALOG: List[CrossMatchContainerModel]
+
+class CrossMatchAllModel(BaseModel):
+    catalogs: List[CrossMatchModel]
+
+
+class ConeSearchDataModel(BaseModel):
+    units: str
+    values: List[int]
+
+class ConeSearchContainerModel(BaseModel):
+    exampledata: ConeSearchDataModel
+    
+
+class ConeSearchModel(GenericModel, Generic[DataT]):
+    CATALOG: List[ConeSearchContainerModel]
+
+class ConeSearchAllModel(BaseModel):
+    catalogs: List[ConeSearchModel]
 
 
 
@@ -37,23 +61,7 @@ def welcome():
 
 
 
-result_example = GenericExample(data1=3, data2='aaaa')
-result_example.dict()
-
-
-conesearch_example_value = {
-    200: {
-        "content": {
-            "application/json": {
-                "example": result_example.dict()
-            }
-        }
-    }
-}
-
-
-
-@app.get("/conesearch", responses =conesearch_example_value)
+@app.get("/conesearch", response_model=ConeSearchModel)
 def conesearch(catalog: str, ra: float, dec: float, radius: float):
     """
     This function returns the cone search result, it uses an auxiliary
@@ -65,8 +73,6 @@ def conesearch(catalog: str, ra: float, dec: float, radius: float):
     Returns:
         The JSON representation of the cone search result for a single catalog.
     """
-
-    print(result_example.dict())
     request = {
         "ra":ra,
         "dec":dec,
@@ -76,7 +82,7 @@ def conesearch(catalog: str, ra: float, dec: float, radius: float):
     return controller_conesearch(catalog,request)
 
 
-@app.get("/conesearch_all")
+@app.get("/conesearch_all", response_model=ConeSearchAllModel)
 def conesearch_all(ra: float, dec: float, radius: float):
     """
     This function returns the result of running a cone search over all
@@ -97,7 +103,7 @@ def conesearch_all(ra: float, dec: float, radius: float):
     return controller_conesearch_all(request)
 
 
-@app.get("/crossmatch")
+@app.get("/crossmatch", response_model=CrossMatchContainerModel)
 def crossmatch(catalog: str, ra: float, dec: float, radius: Union[float, None] = None):
     """
     This function returns the result of running a crossmatch over one catalog.
@@ -118,7 +124,7 @@ def crossmatch(catalog: str, ra: float, dec: float, radius: Union[float, None] =
 
 
 
-@app.get("/crossmatch_all")
+@app.get("/crossmatch_all", response_model=CrossMatchAllModel)
 def crossmatch_all(ra: float, dec: float, radius: Union[float, None] = None):
     """
     This function returns the crossmatch result for all catalogs.
