@@ -1,45 +1,9 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
-from src.controllers.controler import *
+from src.controllers.controler import controller_conesearch, controller_conesearch_all, controller_crossmatch, controller_crossmatch_all
 from typing import Union
-
-from typing import Generic, TypeVar, Optional, List
-from pydantic import BaseModel, validator, ValidationError
-from pydantic.generics import GenericModel
-
-
-
-DataT = TypeVar('DataT')
-
-class CrossMatchDataModel(BaseModel):
-    value: int
-    units: str
-
-class CrossMatchContainerModel(BaseModel):
-    exampledata: CrossMatchDataModel
-
-class CrossMatchModel(BaseModel):
-    CATALOG: List[CrossMatchContainerModel]
-
-class CrossMatchAllModel(BaseModel):
-    catalogs: List[CrossMatchModel]
-
-
-class ConeSearchDataModel(BaseModel):
-    units: str
-    values: List[int]
-
-class ConeSearchContainerModel(BaseModel):
-    exampledata: ConeSearchDataModel
-    
-
-class ConeSearchModel(GenericModel, Generic[DataT]):
-    CATALOG: List[ConeSearchContainerModel]
-
-class ConeSearchAllModel(BaseModel):
-    catalogs: List[ConeSearchModel]
-
+from src.presentation.response_models import CrossMatchContainerModel, CrossMatchAllModel, ConeSearchModel, ConeSearchAllModel
 
 
 app = FastAPI()
