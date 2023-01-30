@@ -6,7 +6,8 @@ def json(final_result):
 
 def catname(results, catalog_map, catalog):
     result_with_catname = {}
-    result_with_catname[catalog_map.get(catalog, catalog)] = results
+    result_with_catname["cat_name"] = catalog_map.get(catalog, catalog)
+    result_with_catname["cat_fields"] = results
     return result_with_catname
 
 def catname_all(final_result,catalog_map):

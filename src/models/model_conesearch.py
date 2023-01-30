@@ -21,8 +21,9 @@ class ModelConesearch:
         return self.catalog_columns
     
     def replace_nan_inf_and_convert_degrees(self,df):
-        results = {}
+        results = []
         for column, unit in zip(self.catalog_columns, self.column_units):
+            attribute_dict = {}
             values = []
             for value in df[column].values.tolist():
                 # replace nan and infinity
@@ -35,9 +36,10 @@ class ModelConesearch:
                     value = degrees(value)
                 values.append(value)
             if self.unit_is_rad(unit):
-                results[column] = {"units": "deg", "values": values}
+                attribute_dict = {"attribute_name": column, "units": "deg", "values": values}
             else:
-                results[column] = {"units": unit, "values": values}
+                attribute_dict = {"attribute_name": column, "units": unit, "values": values}
+            results.append(attribute_dict)
         return results
 
 
@@ -46,7 +48,20 @@ class ModelConesearch:
             df = pd.DataFrame(self.match, columns = self.catalog_columns)
         except ValueError as ex:
             return {}
+
+        f = open("dfnormal.txt","w")
+        print(df, file = f)
+        f.close()
         df.columns = self.rename_duplicated_columns()
+
+        f = open("dfcolumns.txt","w")
+        print(df, file = f)
+        f.close()
+
+        f = open("dfnaninf.txt","w")
+        print(self.replace_nan_inf_and_convert_degrees(df), file = f)
+        f.close()
+
         return self.replace_nan_inf_and_convert_degrees(df)
     
     def unit_is_rad(self,unit):

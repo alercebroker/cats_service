@@ -47,7 +47,7 @@ def controller_crossmatch(catalog,request):
         return json("Request contains one or more invalid arguments.")
 
         
-    return json(service_get_crossmatch(catalog, request, path,map_ra_dec,radius_dict))
+    return json(catname(service_get_crossmatch(catalog, request, path,map_ra_dec,radius_dict), catalog_map, catalog))
 
 
 

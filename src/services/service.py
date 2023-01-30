@@ -11,15 +11,15 @@ def service_get_conesearch(catalog, request, path):
 
 def service_get_conesearch_all(catalogs,request, path):
 
-    result = []
+    #result = []
     # append the results of each catalog
     final_result = {}
     for catalog in catalogs:
         partial_result = service_get_conesearch(catalog,request, path)
         if partial_result != {}:
-            result.append(partial_result)
-        final_result[catalog] = result
-        result = []
+            #result.append(partial_result)
+            final_result[catalog] = partial_result
+        #result = []
     return final_result
 
 
@@ -41,7 +41,7 @@ def service_get_crossmatch_all(catalogs,request, path, map_ra_dec,radius_dict):
     final_result = {}
 
     for catalog in catalogs:
-        result = []
+        #result = []
         if request["radius"] == None:
             request_aux ={
                 "ra" : request["ra"],
@@ -54,8 +54,8 @@ def service_get_crossmatch_all(catalogs,request, path, map_ra_dec,radius_dict):
         partial_result = service_get_crossmatch(catalog, request_aux, path, map_ra_dec,radius_dict)
         # append the partial result if it is not empty
         if partial_result != {}:
-            result.append(partial_result)
-        final_result[catalog] = result
+            #result.append(partial_result)
+            final_result[catalog] = partial_result
     return final_result
 
 

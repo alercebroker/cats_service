@@ -4,28 +4,26 @@ from pydantic.generics import GenericModel
 
 DataT = TypeVar('DataT')
 
-class CrossMatchDataModel(BaseModel):
+class CrossMatchFieldsModel(GenericModel, Generic[DataT]):
+    attribute_name: str
     value: int
     units: str
 
-class CrossMatchContainerModel(BaseModel):
-    attribute_name: CrossMatchDataModel
-
 class CrossMatchModel(BaseModel):
-    catalog_name: List[CrossMatchContainerModel]
+    catalog_name: str
+    catalog_fields: List[CrossMatchFieldsModel]
 
 class CrossMatchAllModel(BaseModel):
     catalogs: List[CrossMatchModel]
 
-class ConeSearchDataModel(BaseModel):
+class ConeSearchFieldsModel(GenericModel, Generic[DataT]):
+    attribute_name: str
     units: str
-    values: List[int]
-
-class ConeSearchContainerModel(GenericModel, Generic[DataT]):
-    attribute_name: ConeSearchDataModel
+    values: List[float]
     
 class ConeSearchModel(BaseModel):
-    catalog_name: ConeSearchContainerModel
+    catalog_name: str
+    catalog_fields: List[ConeSearchFieldsModel]
 
 class ConeSearchAllModel(BaseModel):
     catalogs: List[ConeSearchModel]

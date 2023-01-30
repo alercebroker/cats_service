@@ -93,17 +93,21 @@ class ModelCrossMatch:
 
 
     def format_result_with_units(self, result):
+        
+        results_list = []
         result_with_units = {}
         for key, unit in zip(result, self.column_units):
             value = result[key]
             if self.unit_is_rad(unit):
                 # convert unit to deg
-                result_with_units[key] = {
+                result_with_units = {
+                    "attribute_name": key,
                     "value": None if np.isnan(value) else degrees(value),
                     "units": "deg",
                 }
             else:
-                result_with_units[key] = {
+                result_with_units = {
+                    "attribute_name": key,
                     "value": None if np.isnan(value) else value,
                     "units": unit,
                 }
@@ -111,12 +115,14 @@ class ModelCrossMatch:
         result_with_units = {
             key: (
                 val
-                if val["value"] != np.inf
-                else {"value": "infinity", "unit": val["unit"]}
+                if val != np.inf
+                else {"value": "infinity"}
             )
             for key, val in result_with_units.items()
         }
-        return result_with_units
+
+        results_list.append(result_with_units)
+        return results_list
 
 
     def unit_is_rad(self, unit):
