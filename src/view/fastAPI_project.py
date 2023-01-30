@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, status
 from fastapi.responses import HTMLResponse
 from src.controllers.controler import *
 from typing import Union
@@ -10,6 +10,11 @@ app = FastAPI()
 
 app.add_middleware(PrometheusMiddleware)
 app.add_route("/metrics/", metrics)
+
+
+@app.get("/health", status_code=status.HTTP_200_OK)
+def health():
+    return {}
 
 
 @app.get("/", response_class=HTMLResponse)
