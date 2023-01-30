@@ -1,4 +1,5 @@
-scripts/__pycache__/
-service/__pycache__/
+**/__pycache__
 venv/
-
+src/src.egg-info
+.env
+dist/
