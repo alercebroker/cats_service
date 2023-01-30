@@ -1,12 +1,32 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, status
 from fastapi.responses import HTMLResponse
-from src.controllers.controler import controller_conesearch, controller_conesearch_all, controller_crossmatch, controller_crossmatch_all
+from src.controllers.controler import (
+    controller_conesearch,
+    controller_conesearch_all,
+    controller_crossmatch,
+    controller_crossmatch_all,
+)
 from typing import Union
-from src.presentation.response_models import CrossMatchContainerModel, CrossMatchAllModel, ConeSearchModel, ConeSearchAllModel
+from src.presentation.response_models import (
+    CrossMatchContainerModel,
+    CrossMatchAllModel,
+    ConeSearchModel,
+    ConeSearchAllModel,
+)
+from starlette_prometheus import metrics, PrometheusMiddleware
 
 
 app = FastAPI()
+
+app.add_middleware(PrometheusMiddleware)
+app.add_route("/metrics/", metrics)
+
+
+@app.get("/health", status_code=status.HTTP_200_OK)
+def health():
+    return {}
+
 
 @app.get("/", response_class=HTMLResponse)
 def welcome():
@@ -24,7 +44,6 @@ def welcome():
               </html>"""
 
 
-
 @app.get("/conesearch")
 def conesearch(catalog: str, ra: float, dec: float, radius: float):
     """
@@ -37,13 +56,9 @@ def conesearch(catalog: str, ra: float, dec: float, radius: float):
     Returns:
         The JSON representation of the cone search result for a single catalog.
     """
-    request = {
-        "ra":ra,
-        "dec":dec,
-        "radius":radius
-    }
- 
-    return controller_conesearch(catalog,request)
+    request = {"ra": ra, "dec": dec, "radius": radius}
+
+    return controller_conesearch(catalog, request)
 
 
 @app.get("/conesearch_all")
@@ -59,11 +74,7 @@ def conesearch_all(ra: float, dec: float, radius: float):
     Returns:
         The JSON representation of the cone search results for all catalogs.
     """
-    request = {
-        "ra":ra,
-        "dec":dec,
-        "radius":radius
-    }
+    request = {"ra": ra, "dec": dec, "radius": radius}
     return controller_conesearch_all(request)
 
 
@@ -78,14 +89,9 @@ def crossmatch(catalog: str, ra: float, dec: float, radius: Union[float, None] =
     Returns:
         The JSON representation of the crossmatch result.
     """
-    request = {
-        "ra":ra,
-        "dec":dec,
-        "radius":radius
-    }
+    request = {"ra": ra, "dec": dec, "radius": radius}
 
-    return controller_crossmatch(catalog,request)
-
+    return controller_crossmatch(catalog, request)
 
 
 @app.get("/crossmatch_all")
@@ -98,11 +104,7 @@ def crossmatch_all(ra: float, dec: float, radius: Union[float, None] = None):
     Returns:
         The JSON representation of the crossmatch result for all catalogs.
     """
-    request = {
-        "ra":ra,
-        "dec":dec,
-        "radius":radius
-    }
+    request = {"ra": ra, "dec": dec, "radius": radius}
     return controller_crossmatch_all(request)
 
 
