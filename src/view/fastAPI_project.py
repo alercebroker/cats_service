@@ -3,8 +3,13 @@ from fastapi import FastAPI, status
 from fastapi.responses import HTMLResponse
 from src.controllers.controler import *
 from typing import Union
+from starlette_prometheus import metrics, PrometheusMiddleware
+
 
 app = FastAPI()
+
+app.add_middleware(PrometheusMiddleware)
+app.add_route("/metrics/", metrics)
 
 
 @app.get("/health", status_code=status.HTTP_200_OK)
