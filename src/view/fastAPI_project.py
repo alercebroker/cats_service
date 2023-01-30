@@ -28,7 +28,6 @@ def welcome():
               </html>"""
 
 
-
 @app.get("/conesearch")
 def conesearch(catalog: str, ra: float, dec: float, radius: float):
     """
@@ -41,13 +40,9 @@ def conesearch(catalog: str, ra: float, dec: float, radius: float):
     Returns:
         The JSON representation of the cone search result for a single catalog.
     """
-    request = {
-        "ra":ra,
-        "dec":dec,
-        "radius":radius
-    }
- 
-    return controller_conesearch(catalog,request)
+    request = {"ra": ra, "dec": dec, "radius": radius}
+
+    return controller_conesearch(catalog, request)
 
 
 @app.get("/conesearch_all")
@@ -63,11 +58,7 @@ def conesearch_all(ra: float, dec: float, radius: float):
     Returns:
         The JSON representation of the cone search results for all catalogs.
     """
-    request = {
-        "ra":ra,
-        "dec":dec,
-        "radius":radius
-    }
+    request = {"ra": ra, "dec": dec, "radius": radius}
     return controller_conesearch_all(request)
 
 
@@ -82,14 +73,9 @@ def crossmatch(catalog: str, ra: float, dec: float, radius: Union[float, None] =
     Returns:
         The JSON representation of the crossmatch result.
     """
-    request = {
-        "ra":ra,
-        "dec":dec,
-        "radius":radius
-    }
+    request = {"ra": ra, "dec": dec, "radius": radius}
 
-    return controller_crossmatch(catalog,request)
-
+    return controller_crossmatch(catalog, request)
 
 
 @app.get("/crossmatch_all")
@@ -102,11 +88,7 @@ def crossmatch_all(ra: float, dec: float, radius: Union[float, None] = None):
     Returns:
         The JSON representation of the crossmatch result for all catalogs.
     """
-    request = {
-        "ra":ra,
-        "dec":dec,
-        "radius":radius
-    }
+    request = {"ra": ra, "dec": dec, "radius": radius}
     return controller_crossmatch_all(request)
 
 

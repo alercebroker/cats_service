@@ -1,10 +1,16 @@
-from src.presentation.presenter import json,catname, catname_all
-import os 
+from src.presentation.presenter import json, catname, catname_all
+import os
 from math import radians
-from src.services.service import service_get_conesearch, service_get_crossmatch, service_get_conesearch_all, service_get_crossmatch_all
+from src.services.service import (
+    service_get_conesearch,
+    service_get_crossmatch,
+    service_get_conesearch_all,
+    service_get_crossmatch_all,
+)
 from src.controllers.constants import radius_dict, map_ra_dec, catalog_map
 
-def controller_conesearch(catalog,request):
+
+def controller_conesearch(catalog, request):
 
     try:
         # get arguments
@@ -17,7 +23,9 @@ def controller_conesearch(catalog,request):
     except BaseException:
         return json("Request contains one or more invalid arguments.")
 
-    return json(catname(service_get_conesearch(catalog,request, path), catalog_map, catalog))
+    return json(
+        catname(service_get_conesearch(catalog, request, path), catalog_map, catalog)
+    )
 
 
 def controller_conesearch_all(request):
@@ -30,11 +38,12 @@ def controller_conesearch_all(request):
         path = os.environ["DATA_PATH"]
     except BaseException:
         return "Request contains one or more invalid arguments."
-    return json(catname_all(service_get_conesearch_all(catalogs, request, path), catalog_map))
+    return json(
+        catname_all(service_get_conesearch_all(catalogs, request, path), catalog_map)
+    )
 
 
-
-def controller_crossmatch(catalog,request):
+def controller_crossmatch(catalog, request):
 
     try:
         # get arguments
@@ -46,9 +55,7 @@ def controller_crossmatch(catalog,request):
     except BaseException:
         return json("Request contains one or more invalid arguments.")
 
-        
-    return json(service_get_crossmatch(catalog, request, path,map_ra_dec,radius_dict))
-
+    return json(service_get_crossmatch(catalog, request, path, map_ra_dec, radius_dict))
 
 
 def controller_crossmatch_all(request):
@@ -63,5 +70,11 @@ def controller_crossmatch_all(request):
 
     # check if a value for radius was provided
 
-    return json(catname_all(service_get_crossmatch_all(catalogs,request,path, map_ra_dec,radius_dict),catalog_map))
-
+    return json(
+        catname_all(
+            service_get_crossmatch_all(
+                catalogs, request, path, map_ra_dec, radius_dict
+            ),
+            catalog_map,
+        )
+    )
