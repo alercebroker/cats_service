@@ -1,14 +1,13 @@
 import pytest
 from unittest import TestCase, mock
-from ..src.controllers.controler import (
+from src.controllers.controler import (
     controller_conesearch,
     controller_crossmatch,
     controller_conesearch_all,
     controller_crossmatch_all,
 )
-from results_controller import *
-from test_controller import *
-from ..src.controllers.constants import map_ra_dec, radius_dict
+from tests.results_controller import *
+from src.controllers.constants import map_ra_dec, radius_dict
 
 
 class TestControllerConesearch(TestCase):
