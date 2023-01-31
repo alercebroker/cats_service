@@ -1,7 +1,7 @@
 server {
     listen 80;
 
-    location /test {
+    location /test/ {
         proxy_pass_header Server;
         proxy_set_header Host $http_host;
         proxy_redirect off;
