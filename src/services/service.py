@@ -25,16 +25,16 @@ def service_get_conesearch_all(catalogs,request, path):
 
 def service_get_crossmatch(catalog,request, path,map_ra_dec,radius_dict):
 
+
     if request["radius"] == None: 
         request["radius"] = float(radius_dict.get(catalog,50))
 
-    match, catalog_columns, column_units = cone_search(catalog, request["ra"], request["dec"], request["radius"], path)
-    f = open("cpreparse.txt","w")
-    print(match, catalog_columns, column_units, file = f)
-    f.close()  
-    f = open("cpostparse.txt","w")
+    match, catalog_columns, column_units = cone_search(catalog, request["ra"], request["dec"], request["radius"], path) 
+
+    f = open("crossa.txt", "w")
     print(parse_crossmatch(match, catalog, request["ra"], request["dec"], catalog_columns, column_units,map_ra_dec), file = f)
-    f.close()     
+    f.close()
+
     if len(match) != 0:
         return parse_crossmatch(match, catalog, request["ra"], request["dec"], catalog_columns, column_units,map_ra_dec)
 
@@ -62,6 +62,9 @@ def service_get_crossmatch_all(catalogs,request, path, map_ra_dec,radius_dict):
         if partial_result != {}:
             result.append(partial_result)
         final_result[catalog] = result
+        f = open("crossmatchresult.txt", "w")
+        print(final_result, file = f)
+        f.close()
     return final_result
 
 

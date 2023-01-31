@@ -11,7 +11,7 @@ catalogs = [
 
 
 # primer caso del conesearch catalog = "FIRST", ra = 1, dec = 0, radius = 200
-csr1_1 = [
+cone_search_result1_1 = [
     [
         1.77356731e-02,
         -2.04058073e-04,
@@ -29,7 +29,7 @@ csr1_1 = [
         2.45248294e06,
     ]
 ]
-csr1_2 = [
+cone_search_result1_2 = [
     "RA",
     "Dec",
     "SideProb",
@@ -45,7 +45,7 @@ csr1_2 = [
     "StartMJD",
     "StopMJD",
 ]
-csr1_3 = [
+cone_search_result1_3 = [
     "rad",
     "rad",
     " ",
@@ -61,7 +61,7 @@ csr1_3 = [
     "MJD",
     "MJD",
 ]
-scsr1 = {
+service_cone_search_result1 = {
     "RA": {"units": "deg", "values": [1.016179215453705]},
     "Dec": {"units": "deg", "values": [-0.011691666358472456]},
     "SideProb": {"units": " ", "values": [0.014053002]},
@@ -80,8 +80,8 @@ scsr1 = {
 
 # segundo caso del conesearch catalog = "First", ra = 0, dec = 0, radius = 0 (no encuentra coincidencias)
 
-csr2_1 = []
-csr2_2 = [
+cone_search_result2_1 = []
+cone_search_result2_2 = [
     "RA",
     "Dec",
     "SideProb",
@@ -97,7 +97,7 @@ csr2_2 = [
     "StartMJD",
     "StopMJD",
 ]
-csr2_3 = [
+cone_search_result2_3 = [
     "rad",
     "rad",
     " ",
@@ -113,11 +113,11 @@ csr2_3 = [
     "MJD",
     "MJD",
 ]
-scsr2 = {}
+service_cone_search_result2 = {}
 
 
 # primer caso del conesearch_all ra = 1, dec = 0, radius = 200
-scsr1_1 = {
+service_cone_search_result1_1 = {
     "RA": {"units": "deg", "values": []},
     "Dec": {"units": "deg", "values": []},
     "r_K20e": {"units": "arcsec", "values": []},
@@ -134,7 +134,7 @@ scsr1_1 = {
     "Kb_a": {"units": " ", "values": []},
     "Kpa": {"units": "deg", "values": []},
 }
-scsr1_2 = {
+service_cone_search_result1_2 = {
     "RA": {"units": "deg", "values": []},
     "Dec": {"units": "deg", "values": []},
     "VarFlag": {"units": " ", "values": []},
@@ -143,7 +143,7 @@ scsr1_2 = {
     "Epoch": {"units": "d", "values": []},
     "period": {"units": "d", "values": []},
 }
-scsr1_3 = {
+service_cone_search_result1_3 = {
     "RA_rad": {"units": "deg", "values": []},
     "Dec_rad": {"units": "deg", "values": []},
     "RA_arcsec": {"units": "arcsec", "values": []},
@@ -154,8 +154,8 @@ scsr1_3 = {
     "H_K20e": {"units": "Jy", "values": []},
     "e_H_K20e": {"units": "Jy", "values": []},
 }
-scsr1_4 = {}
-scsr1_5 = {
+service_cone_search_result1_4 = {}
+service_cone_search_result1_5 = {
     "RA": {"units": "deg", "values": [1.0161792162935126]},
     "Dec": {"units": "deg", "values": [-0.011691666358208579]},
     "SideProb": {"units": " ", "values": [0.014053001999855042]},
@@ -171,7 +171,7 @@ scsr1_5 = {
     "StartMJD": {"units": "MJD", "values": [2450019.713368056]},
     "StopMJD": {"units": "MJD", "values": [2452482.9428125005]},
 }
-scsr1_6 = {
+service_cone_search_result1_6 = {
     "RA": {"units": "deg", "values": [1.0159166666666666]},
     "Dec": {"units": "deg", "values": [-0.011666666666674423]},
     "errRA": {"units": "deg", "values": [0.000541666655437425]},
@@ -185,7 +185,7 @@ scsr1_6 = {
     "errMinorAxis": {"units": "arcsec", "values": [None]},
     "errPA": {"units": "deg", "values": [30.0]},
 }
-scsr1_7 = {
+service_cone_search_result1_7 = {
     "RA": {"units": "deg", "values": []},
     "Dec": {"units": "deg", "values": []},
     "errPosition": {"units": "arcsec", "values": []},
@@ -208,9 +208,9 @@ scsr1_7 = {
     "JD_endObs": {"units": "day", "values": []},
     "Reliability": {"units": "%", "values": []},
 }
-scsr1_8 = {}
+service_cone_search_result1_8 = {}
 
-scsar1 = {
+service_cone_search_all_result1 = {
     "TMASSxsc": [
         {
             "RA": {"units": "deg", "values": []},
@@ -319,16 +319,16 @@ scsar1 = {
 
 # segundo caso del conesearch_all ra = 0, dec = 0, radius = 0 (catalogos vacios, este caso engloba numeros negativos o 0)
 
-scsr2_1 = {}
-scsr2_2 = {}
-scsr2_3 = {}
-scsr2_4 = {}
-scsr2_5 = {}
-scsr2_6 = {}
-scsr2_7 = {}
-scsr2_8 = {}
+service_cone_search_result2_1 = {}
+service_cone_search_result2_2 = {}
+service_cone_search_result2_3 = {}
+service_cone_search_result2_4 = {}
+service_cone_search_result2_5 = {}
+service_cone_search_result2_6 = {}
+service_cone_search_result2_7 = {}
+service_cone_search_result2_8 = {}
 
-scsar2 = {
+service_cone_search_all_result2 = {
     "TMASSxsc": [],
     "AAVSO_VSX": [],
     "AKARI": [],
@@ -429,4 +429,167 @@ service_cross_match_result1 = {
     "StartMJD": {"value": 2450019.71, "units": "MJD"},
     "StopMJD": {"value": 2452482.94, "units": "MJD"},
     "distance": {"value": 202606.56393768272, "units": "arcsec"},
+}
+
+
+# segundo caso del crossmatch catalog = "FIRST", ra = 1, dec = 0, radius = 0(no entrega resultados)
+
+cross_match_result2_1 = []
+cross_match_result2_2 = [
+    "RA",
+    "Dec",
+    "SideProb",
+    "Fpeak",
+    "Fint",
+    "rms",
+    "Major",
+    "Minor",
+    "PosAng",
+    "FitMajor",
+    "FitMinor",
+    "FitPosAng",
+    "StartMJD",
+    "StopMJD",
+]
+cross_match_result2_3 = [
+    "rad",
+    "rad",
+    " ",
+    "mJy",
+    "mJy",
+    "mJy",
+    "arcsec",
+    "arcsec",
+    "deg",
+    "arcsec",
+    "arcsec",
+    "deg",
+    "MJD",
+    "MJD",
+]
+service_cross_match_result2 = {}
+
+
+# tercer caso del crossmatch catalog = "FIRST", ra = 1, dec = 0 sin radius
+
+cross_match_result3_1 = []
+cross_match_result3_2 = [
+    "RA",
+    "Dec",
+    "SideProb",
+    "Fpeak",
+    "Fint",
+    "rms",
+    "Major",
+    "Minor",
+    "PosAng",
+    "FitMajor",
+    "FitMinor",
+    "FitPosAng",
+    "StartMJD",
+    "StopMJD",
+]
+cross_match_result3_3 = [
+    "rad",
+    "rad",
+    " ",
+    "mJy",
+    "mJy",
+    "mJy",
+    "arcsec",
+    "arcsec",
+    "deg",
+    "arcsec",
+    "arcsec",
+    "deg",
+    "MJD",
+    "MJD",
+]
+service_cross_match_result3 = {}
+
+
+# primer caso del crossmatch all  ra = 1, dec = 0 radius = 200
+
+service_cross_match_result1_1 = {}
+service_cross_match_result1_2 = {}
+service_cross_match_result1_3 = {}
+service_cross_match_result1_4 = {}
+service_cross_match_result1_5 = {
+    "RA": {"value": 1.0161792162935126, "units": "deg"},
+    "Dec": {"value": -0.011691666358208579, "units": "deg"},
+    "SideProb": {"value": 0.014053001999855042, "units": " "},
+    "Fpeak": {"value": 10.430000305175781, "units": "mJy"},
+    "Fint": {"value": 10.716876029968262, "units": "mJy"},
+    "rms": {"value": 0.10876674205064774, "units": "mJy"},
+    "Major": {"value": 1.6299999952316284, "units": "arcsec"},
+    "Minor": {"value": 0.0, "units": "arcsec"},
+    "PosAng": {"value": 33.900001525878906, "units": "deg"},
+    "FitMajor": {"value": 6.539999961853027, "units": "arcsec"},
+    "FitMinor": {"value": 5.429999828338623, "units": "arcsec"},
+    "FitPosAng": {"value": 6.300000190734863, "units": "deg"},
+    "StartMJD": {"value": 2450019.713368056, "units": "MJD"},
+    "StopMJD": {"value": 2452482.9428125005, "units": "MJD"},
+    "distance": {"value": 71.86145556680134, "units": "arcsec"},
+}
+service_cross_match_result1_6 = {
+    "RA": {"value": 1.0159166666666666, "units": "deg"},
+    "Dec": {"value": -0.011666666666674423, "units": "deg"},
+    "errRA": {"value": 0.000541666655437425, "units": "deg"},
+    "errDec": {"value": 0.0006388888888888888, "units": "deg"},
+    "Flux": {"value": 11.1, "units": "mJy"},
+    "errFlux": {"value": 1.0, "units": "mJy"},
+    "MajorAxis": {"value": 35.8, "units": "arcsec"},
+    "MinorAxis": {"value": -28.8, "units": "arcsec"},
+    "PA": {"value": 30.0, "units": "deg"},
+    "errMajorAxis": {"value": 6.9, "units": "arcsec"},
+    "errMinorAxis": {"value": None, "units": "arcsec"},
+    "errPA": {"value": 30.0, "units": "deg"},
+    "distance": {"value": 71.04428164620468, "units": "arcsec"},
+}
+service_cross_match_result1_7 = {}
+service_cross_match_result1_8 = {}
+
+service_cross_match_all_result1 = {
+    "TMASSxsc": [],
+    "AAVSO_VSX": [],
+    "AKARI": [],
+    "CRTS_per_var": [],
+    "FIRST": [
+        {
+            "RA": {"value": 1.0161792162935126, "units": "deg"},
+            "Dec": {"value": -0.011691666358208579, "units": "deg"},
+            "SideProb": {"value": 0.014053001999855042, "units": " "},
+            "Fpeak": {"value": 10.430000305175781, "units": "mJy"},
+            "Fint": {"value": 10.716876029968262, "units": "mJy"},
+            "rms": {"value": 0.10876674205064774, "units": "mJy"},
+            "Major": {"value": 1.6299999952316284, "units": "arcsec"},
+            "Minor": {"value": 0.0, "units": "arcsec"},
+            "PosAng": {"value": 33.900001525878906, "units": "deg"},
+            "FitMajor": {"value": 6.539999961853027, "units": "arcsec"},
+            "FitMinor": {"value": 5.429999828338623, "units": "arcsec"},
+            "FitPosAng": {"value": 6.300000190734863, "units": "deg"},
+            "StartMJD": {"value": 2450019.713368056, "units": "MJD"},
+            "StopMJD": {"value": 2452482.9428125005, "units": "MJD"},
+            "distance": {"value": 71.86145556680134, "units": "arcsec"},
+        }
+    ],
+    "NVSS": [
+        {
+            "RA": {"value": 1.0159166666666666, "units": "deg"},
+            "Dec": {"value": -0.011666666666674423, "units": "deg"},
+            "errRA": {"value": 0.000541666655437425, "units": "deg"},
+            "errDec": {"value": 0.0006388888888888888, "units": "deg"},
+            "Flux": {"value": 11.1, "units": "mJy"},
+            "errFlux": {"value": 1.0, "units": "mJy"},
+            "MajorAxis": {"value": 35.8, "units": "arcsec"},
+            "MinorAxis": {"value": -28.8, "units": "arcsec"},
+            "PA": {"value": 30.0, "units": "deg"},
+            "errMajorAxis": {"value": 6.9, "units": "arcsec"},
+            "errMinorAxis": {"value": None, "units": "arcsec"},
+            "errPA": {"value": 30.0, "units": "deg"},
+            "distance": {"value": 71.04428164620468, "units": "arcsec"},
+        }
+    ],
+    "ROSATfsc": [],
+    "SWIREz": [],
 }

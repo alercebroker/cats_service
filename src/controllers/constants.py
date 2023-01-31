@@ -8,7 +8,7 @@ radius_dict = {
     "GAIADR2": 0.1,
     "NVSS": 10.8,
     "SDSSoffset": 0.1,
-    "SkyMapper": 0.4,
+    "SkyMapper": 0.4
 }
 # catsHTM catalog name to real name
 catalog_map = {
@@ -17,11 +17,11 @@ catalog_map = {
     "GAIADR1": "GAIA/DR1",
     "GAIADR2": "GAIA/DR2",
     "SDSSDR10": "SDSS/DR10",
-    "TMASSxsc": "2MASSxsc",
+    "TMASSxsc": "2MASSxsc"
 }
 # map ra, dec to catalog ra, dec name
 map_ra_dec = {
     "HSCv2": ("MatchRA", "MatchDec"),
     "XMM": ("RA", "DEC"),
-    "SDSSoffset": ("ra", "dec"),
+    "SDSSoffset": ("ra", "dec")
 }

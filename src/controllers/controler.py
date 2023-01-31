@@ -29,7 +29,7 @@ def controller_conesearch_all(request):
         request["radius"] = float(request["radius"])
         path = os.environ["DATA_PATH"]
     except BaseException:
-        return "Request contains one or more invalid arguments."
+        return json("Request contains one or more invalid arguments.")
     return json(catname_all(service_get_conesearch_all(catalogs, request, path), catalog_map))
 
 
