@@ -27,7 +27,9 @@ def service_get_crossmatch(catalog,request, path,map_ra_dec,radius_dict):
     if request["radius"] == None: 
         request["radius"] = float(radius_dict.get(catalog,50))
 
+    print(f"catalogo_recibido:{catalog}")
     match, catalog_columns, column_units = cone_search(catalog, request["ra"], request["dec"], request["radius"], path)
+    print(f"y el match de eso es:{match}")
     if len(match) != 0:
         return parse_crossmatch(match, catalog, request["ra"], request["dec"], catalog_columns, column_units,map_ra_dec)
 

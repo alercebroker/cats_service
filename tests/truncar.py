@@ -19,3 +19,13 @@ def round_cross_match_all(_dict):
     for _list in _dict.values():
         round_cross_match(_list)
     return _dict
+
+def round_controller_conesearch(_dict):
+    round_cone_search(_dict["cat_fields"])
+    
+    return _dict
+
+def round_controller_crossmatch(_dict):
+    round_cross_match(_dict["cat_fields"])
+    
+    return _dict

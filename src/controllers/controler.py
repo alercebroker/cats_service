@@ -16,13 +16,16 @@ def controller_conesearch(catalog,request):
         path = os.environ["DATA_PATH"]
     except BaseException:
         return json("Request contains one or more invalid arguments.")
-
+    f = open("conesearch",'w')
+    print(json(catname(service_get_conesearch(catalog,request, path), catalog_map, catalog)), file = f)
+    f.close
     return json(catname(service_get_conesearch(catalog,request, path), catalog_map, catalog))
 
 
 def controller_conesearch_all(request):
 
     catalogs = os.environ["CATALOGS"].split(",")
+    print(f"el cosiito:{catalogs}")
     try:
         request["ra"] = radians(float(request["ra"]))
         request["dec"] = radians(float(request["dec"]))
@@ -30,6 +33,10 @@ def controller_conesearch_all(request):
         path = os.environ["DATA_PATH"]
     except BaseException:
         return "Request contains one or more invalid arguments."
+
+    f = open("conesearchall",'w')
+    print(json(catname_all(service_get_conesearch_all(catalogs, request, path), catalog_map)), file = f)
+    f.close
     return json(catname_all(service_get_conesearch_all(catalogs, request, path), catalog_map))
 
 
@@ -46,6 +53,9 @@ def controller_crossmatch(catalog,request):
     except BaseException:
         return json("Request contains one or more invalid arguments.")
 
+    f = open("crossmatch",'w')
+    print(json(catname(service_get_crossmatch(catalog, request, path,map_ra_dec,radius_dict), catalog_map, catalog)), file = f)
+    f.close
         
     return json(catname(service_get_crossmatch(catalog, request, path,map_ra_dec,radius_dict), catalog_map, catalog))
 
@@ -62,6 +72,5 @@ def controller_crossmatch_all(request):
         return json("Request contains one or more invalid arguments.")
 
     # check if a value for radius was provided
-
     return json(catname_all(service_get_crossmatch_all(catalogs,request,path, map_ra_dec,radius_dict),catalog_map))
 

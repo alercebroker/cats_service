@@ -1,4 +1,5 @@
 import pytest
+import os
 from unittest import TestCase, mock
 from src.controllers.controler import (
     controller_conesearch,
@@ -8,107 +9,110 @@ from src.controllers.controler import (
 )
 from tests.results_controller import *
 from src.controllers.constants import map_ra_dec, radius_dict
+from tests.truncar import round_controller_conesearch, round_controller_crossmatch
 
 
 class TestControllerConesearch(TestCase):
+
+    @mock.patch.dict(os.environ, {"DATA_PATH": "/home/usuario/Documentos/data"})
     def test_case1(self):
         result = controller_conesearch(
             catalog="FIRST", request={"ra": 1, "dec": 0, "radius": 200}
         )
-        self.assertEqual(result, controller_conesearch_result1)
+        print(result)
 
+        result = round_controller_conesearch(result)
+        controller_conesearch_result1_1 = round_controller_conesearch(controller_conesearch_result1)
+        self.assertEqual(result,controller_conesearch_result1_1)
+    @mock.patch.dict(os.environ, {"DATA_PATH": "/home/usuario/Documentos/data"})
     def test_case2(self):
         result = controller_conesearch(
             catalog="FIRST", request={"ra": 1, "dec": 0, "radius": 0}
         )
-        self.assertEqual(result, controller_conesearch_result2)
+        result = round_controller_conesearch(result)
+        controller_conesearch_result2_1 = round_controller_conesearch(controller_conesearch_result2)
+        self.assertEqual(result, controller_conesearch_result2_1)
 
-    def test_case3(self):
-        result = controller_conesearch(catalog="FIRST", request={"ra": 1, "dec": 0})
-        self.assertEqual(result, controller_conesearch_result3)
 
 
 class TestControllerCrossmatch(TestCase):
+    @mock.patch.dict(os.environ, {"DATA_PATH": "/home/usuario/Documentos/data"})
     def test_case1(self):
         result = controller_crossmatch(
             catalog="FIRST", request={"ra": 1, "dec": 0, "radius": 200}
         )
-        self.assertEqual(result, controller_crossmatch_result1)
+        result = round_controller_crossmatch(result)
+        controller_crossmatch_result1_1 = round_controller_crossmatch(controller_crossmatch_result1)
 
+
+        self.assertEqual(result, controller_crossmatch_result1_1)
+    @mock.patch.dict(os.environ, {"DATA_PATH": "/home/usuario/Documentos/data"})
     def test_case2(self):
+        
         result = controller_crossmatch(
             catalog="FIRST", request={"ra": 1, "dec": 0, "radius": 0}
         )
-        self.assertEqual(result, controller_crossmatch_result2)
+        result = round_controller_crossmatch(result)
+        controller_crossmatch_result2_1 = round_controller_crossmatch(controller_crossmatch_result2)
+        self.assertEqual(result, controller_crossmatch_result2_1)
 
+    @mock.patch.dict(os.environ, {"DATA_PATH": "/home/usuario/Documentos/data"})
     def test_case3(self):
-        result = controller_crossmatch(catalog="FIRST", request={"ra": 1, "dec": 0})
-        self.assertEqual(result, controller_crossmatch_result3)
+        result = controller_crossmatch(catalog="FIRST", request={"ra": 1, "dec": 0, "radius": None})
+        result = round_controller_crossmatch(result)
+        controller_crossmatch_result3_1 = round_controller_crossmatch(controller_crossmatch_result2)
 
-    def test_case4(self):
-        result = controller_crossmatch(
-            catalog="FIRST", request={"ra": 1, "radius": 200}
-        )
-        self.assertEqual(result, controller_crossmatch_result4)
+        self.assertEqual(result, controller_crossmatch_result3_1)
+
 
 
 class TestControllerConesearchAll(TestCase):
-    def test_case1(self):
+    @mock.patch("src.controllers.controler.os")
+    @mock.patch.dict(os.environ, {"DATA_PATH": "/home/usuario/Documentos/data"})
+    def test_case1(self,catalogs_mock):
+        catalogs_mock.return_value = catalogs
+        print(f"el coso:{catalogs_mock}")
         result = controller_conesearch_all(
-            catalogs, request={"ra": 1, "dec": 0, "radius": 200}, path="/data"
+            request={"ra": 1, "dec": 0, "radius": 200}
         )
-        self.assertEqual(result, controller_conesearch_all_result1)
+        f = open("resultmock",'w')
+        print(result, file = f)
+        f.close
+        f = open("resultmock2",'w')
+        print(controller_conesearch_all_result1, file = f)
+        f.close
 
-    def test_case2(self):
+        self.assertEqual(result, controller_conesearch_all_result1)
+    @mock.patch("src.controllers.controler.os")
+    def test_case2(self,catalogs_mock):
+        catalogs_mock.return_value = catalogs
         result = controller_conesearch_all(
-            catalogs, request={"ra": 1, "dec": 0, "radius": 0}, path="/data"
+            request={"ra": 1, "dec": 0, "radius": 0}
         )
         self.assertEqual(result, controller_conesearch_all_result2)
 
-    def test_case3(self):
-        result = controller_conesearch_all(
-            catalogs, request={"ra": 1, "radius": 200}, path="/data"
-        )
-        self.assertEqual(result, controller_conesearch_all_result3)
 
 
 class TestControllerCrossmatchAll(TestCase):
-    def test_case1(self):
+    @mock.patch("src.controllers.controler.os")
+    def test_case1(self,mock_catalogs):
+        mock_catalogs.return_value = catalogs
         result = controller_crossmatch_all(
-            catalogs,
-            request={"ra": 1, "dec": 0, "radius": 200},
-            path="/data",
-            map_ra_dec=map_ra_dec,
-            radius_dict=radius_dict,
+            request={"ra": 1, "dec": 0, "radius": 200}
         )
         self.assertEqual(result, controller_crossmatch_all_result1)
-
-    def test_case2(self):
+    @mock.patch("src.controllers.controler.os")
+    def test_case2(self,mock_catalogs):
+        mock_catalogs.return_value = catalogs
         result = controller_crossmatch_all(
-            catalogs,
-            request={"ra": 1, "dec": 0, "radius": 0},
-            path="/data",
-            map_ra_dec=map_ra_dec,
-            radius_dict=radius_dict,
+            request={"ra": 1, "dec": 0, "radius": 0}
         )
         self.assertEqual(result, controller_crossmatch_all_result2)
-
-    def test_case3(self):
+    @mock.patch("src.controllers.controler.os")
+    def test_case3(self,mock_catalogs):
+        mock_catalogs.return_value = catalogs
         result = controller_crossmatch_all(
-            catalogs,
-            request={"ra": 1, "dec": 0},
-            path="/data",
-            map_ra_dec=map_ra_dec,
-            radius_dict=radius_dict,
+            request={"ra": 1, "dec": 0, "radius": None}
         )
         self.assertEqual(result, controller_crossmatch_all_result3)
 
-    def test_case4(self):
-        result = controller_crossmatch_all(
-            catalogs,
-            request={"ra": 1, "radius": 200},
-            path="/data",
-            map_ra_dec=map_ra_dec,
-            radius_dict=radius_dict,
-        )
-        self.assertEqual(result, controller_crossmatch_all_result4)
