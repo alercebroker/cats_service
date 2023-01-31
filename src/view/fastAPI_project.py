@@ -9,9 +9,10 @@ from src.controllers.controler import (
 )
 from typing import Union
 from starlette_prometheus import metrics, PrometheusMiddleware
+import os
 
 
-app = FastAPI()
+app = FastAPI(root_path=os.getenv("ROOT_PATH", "/"))
 
 app.add_middleware(PrometheusMiddleware)
 app.add_route("/metrics/", metrics)
@@ -38,7 +39,7 @@ def welcome():
               </html>"""
 
 
-@app.get("/conesearch")
+@app.get("/conesearch/")
 def conesearch(catalog: str, ra: float, dec: float, radius: float):
     """
     This function returns the cone search result, it uses an auxiliary
@@ -55,7 +56,7 @@ def conesearch(catalog: str, ra: float, dec: float, radius: float):
     return controller_conesearch(catalog, request)
 
 
-@app.get("/conesearch_all")
+@app.get("/conesearch_all/")
 def conesearch_all(ra: float, dec: float, radius: float):
     """
     This function returns the result of running a cone search over all
@@ -72,7 +73,7 @@ def conesearch_all(ra: float, dec: float, radius: float):
     return controller_conesearch_all(request)
 
 
-@app.get("/crossmatch")
+@app.get("/crossmatch/")
 def crossmatch(catalog: str, ra: float, dec: float, radius: Union[float, None] = None):
     """
     This function returns the result of running a crossmatch over one catalog.
@@ -88,7 +89,7 @@ def crossmatch(catalog: str, ra: float, dec: float, radius: Union[float, None] =
     return controller_crossmatch(catalog, request)
 
 
-@app.get("/crossmatch_all")
+@app.get("/crossmatch_all/")
 def crossmatch_all(ra: float, dec: float, radius: Union[float, None] = None):
     """
     This function returns the crossmatch result for all catalogs.

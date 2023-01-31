@@ -1,0 +1,15 @@
+server {
+    listen 80;
+
+    location /test/ {
+        proxy_pass_header Server;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Scheme $scheme;
+        proxy_set_header USE_X_FORWARDED_HOST True;
+        proxy_set_header X-Forwarded-Prefix /test;
+        proxy_pass http://api:5001/;
+    }
+
+}
