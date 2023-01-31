@@ -9,9 +9,10 @@ from src.controllers.controler import (
 )
 from typing import Union
 from starlette_prometheus import metrics, PrometheusMiddleware
+import os
 
 
-app = FastAPI()
+app = FastAPI(root_path=os.getenv("ROOT_PATH", "/"))
 
 app.add_middleware(PrometheusMiddleware)
 app.add_route("/metrics/", metrics)
