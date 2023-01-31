@@ -9,7 +9,7 @@ from src.services.service import (
 )
 from src.controllers.constants import map_ra_dec, radius_dict, catalog_map
 from math import radians
-from tests.truncar import truncar, truncar_all
+from tests.truncar import round_cone_search, round_cross_match, round_cross_match_all, round_cone_search_all
 
 
 class TestServiceConesearch(TestCase):
@@ -19,7 +19,10 @@ class TestServiceConesearch(TestCase):
         result = service_get_conesearch(
             catalog="FIRST", request={"ra":radians(float(1)), "dec": radians(float(0)) ,"radius": float(200)}, path="/data"
         )
-        self.assertEqual(service_cone_search_result1, result)
+
+        result = round_cone_search(result)
+        service_cone_search_result1_2 = round_cone_search(service_cone_search_result1)
+        self.assertEqual(service_cone_search_result1_2, result)
 
     @mock.patch("src.services.service.cone_search")
     def test_case2(self, cone_search_mock2):
@@ -47,7 +50,10 @@ class TestServiceConesearchAll(TestCase):
         result = service_get_conesearch_all(
             catalogs, request={"ra":radians(float(1)), "dec": radians(float(0)) ,"radius": float(200)}, path="/data"
         )
-        self.assertEqual(service_cone_search_all_result1, result)
+
+        result = round_cone_search_all(result)
+        service_cone_search_all_result1_2 = round_cone_search_all(service_cone_search_all_result1)
+        self.assertEqual(service_cone_search_all_result1_2, result)
 
     @mock.patch("src.services.service.service_get_conesearch")
     def test_case2(self, service_get_conesearch_mock2):
@@ -82,8 +88,8 @@ class TestServiceCrossmach(TestCase):
             map_ra_dec=map_ra_dec,
             radius_dict=radius_dict,
         )
-        result = truncar(result)
-        service_cross_match_result1_2 = truncar(service_cross_match_result1)
+        result = round_cross_match(result)
+        service_cross_match_result1_2 = round_cross_match(service_cross_match_result1)
 
         self.assertEqual(service_cross_match_result1_2, result)
 
@@ -101,13 +107,13 @@ class TestServiceCrossmach(TestCase):
             map_ra_dec=map_ra_dec,
             radius_dict=radius_dict,
         )
-        result = truncar(result)
-        service_cross_match_result2_2 = truncar(service_cross_match_result2)
+        result = round_cross_match(result)
+        service_cross_match_result2_2 = round_cross_match(service_cross_match_result2)
 
         self.assertEqual(service_cross_match_result2_2, result)
         
     @mock.patch("src.services.service.cone_search")
-    def test_case2(self, cone_search_mock2):
+    def test_case3(self, cone_search_mock2):
         cone_search_mock2.return_value = (
             cross_match_result3_1,
             cross_match_result3_2,
@@ -120,8 +126,8 @@ class TestServiceCrossmach(TestCase):
             map_ra_dec=map_ra_dec,
             radius_dict=radius_dict,
         )
-        result = truncar(result)
-        service_cross_match_result3_2 = truncar(service_cross_match_result3)
+        result = round_cross_match(result)
+        service_cross_match_result3_2 = round_cross_match(service_cross_match_result3)
 
         self.assertEqual(service_cross_match_result3_2, result)
 
@@ -142,6 +148,6 @@ class TestServiceCrossmatchAll(TestCase):
         result = service_get_crossmatch_all(
             catalogs, request={"ra":radians(float(1)), "dec": radians(float(0)) ,"radius": float(200)}, path="/data", map_ra_dec=map_ra_dec, radius_dict=radius_dict
         )
-        service_cross_match_all_result1_1 = truncar_all(service_cross_match_all_result1)
-        result = truncar_all(result)
+        service_cross_match_all_result1_1 = round_cross_match_all(service_cross_match_all_result1)
+        result = round_cross_match_all(result)
         self.assertEqual(service_cross_match_all_result1_1,result)

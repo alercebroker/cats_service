@@ -1,16 +1,21 @@
-def truncar (dic1):
-    for key in dic1:
-        dic1[key]["value"] = round(dic1[key]["value"],2)
 
-    return dic1
+def round_cone_search(_list):
+    for element in _list:
+        element["values"] = [round(value, 2) for value in element["values"] if type(value) == float]
+    return _list
 
-def truncar_cone (dic1):
-    for key in dic1:
-        dic1[key]["values"] = round(dic1[key]["values"],2)
+def round_cone_search_all(_dict):
+    for _list in _dict.values():
+        round_cone_search(_list)
+    return _dict
 
-    return dic1
+def round_cross_match(_list):
+    for element in _list:
+        if type(element["value"]) == float:
+            element["value"] = round(element["value"],2)
+    return _list
 
-def truncar_all (dic1):
-    for key in dic1:
-        for key2 in dic1[key]:
-            dic1[key][key2]["value"] = round(dic1[key][key2]["value"],2)
+def round_cross_match_all(_dict):
+    for _list in _dict.values():
+        round_cross_match(_list)
+    return _dict

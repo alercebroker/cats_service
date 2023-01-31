@@ -93,7 +93,6 @@ class ModelCrossMatch:
 
 
     def format_result_with_units(self, result):
-        
         results_list = []
         result_with_units = {}
         for key, unit in zip(result, self.column_units):
@@ -111,17 +110,13 @@ class ModelCrossMatch:
                     "value": None if np.isnan(value) else value,
                     "units": unit,
                 }
+            results_list.append(result_with_units)
+        
         # replace inf
-        result_with_units = {
-            key: (
-                val
-                if val != np.inf
-                else {"value": "infinity"}
-            )
-            for key, val in result_with_units.items()
-        }
+        for attribute in results_list:
+            if attribute["value"] == np.inf:
+                attribute["value"] = "infinity"
 
-        results_list.append(result_with_units)
         return results_list
 
 
