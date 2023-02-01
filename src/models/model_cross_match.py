@@ -101,14 +101,14 @@ class ModelCrossMatch:
                 # convert unit to deg
                 result_with_units = {
                     "attribute_name": key,
+                    "unit": "deg",
                     "value": None if np.isnan(value) else degrees(value),
-                    "units": "deg",
                 }
             else:
                 result_with_units = {
                     "attribute_name": key,
-                    "value": None if np.isnan(value) else value,
-                    "units": unit,
+                    "unit": unit,
+                    "value": None if np.isnan(value) else value
                 }
             results_list.append(result_with_units)
         

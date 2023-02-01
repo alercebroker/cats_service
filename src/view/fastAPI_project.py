@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from src.controllers.controler import controller_conesearch, controller_conesearch_all, controller_crossmatch, controller_crossmatch_all
 from typing import Union
-from src.presentation.response_models import CrossMatchModel, ConeSearchModel
+from src.presentation.response_models import CrossMatchModel, CrossMatchAllModel, ConeSearchModel, ConeSearchAllModel
 
 app = FastAPI()
 
@@ -25,7 +25,7 @@ def welcome():
 
 
 
-@app.get("/conesearch", response_model=Union[ConeSearchModel, dict])
+@app.get("/conesearch", response_model=list[ConeSearchModel])
 def conesearch(catalog: str, ra: float, dec: float, radius: float):
     """
     This function returns the cone search result, it uses an auxiliary
@@ -46,7 +46,7 @@ def conesearch(catalog: str, ra: float, dec: float, radius: float):
     return controller_conesearch(catalog,request)
 
 
-@app.get("/conesearch_all", response_model=Union[list[ConeSearchModel], list])
+@app.get("/conesearch_all", response_model=ConeSearchAllModel)
 def conesearch_all(ra: float, dec: float, radius: float):
     """
     This function returns the result of running a cone search over all
@@ -67,7 +67,7 @@ def conesearch_all(ra: float, dec: float, radius: float):
     return controller_conesearch_all(request)
 
 
-@app.get("/crossmatch",response_model=Union[CrossMatchModel, dict])
+@app.get("/crossmatch",response_model=list[CrossMatchModel])
 def crossmatch(catalog: str, ra: float, dec: float, radius: Union[float, None] = None):
     """
     This function returns the result of running a crossmatch over one catalog.
@@ -88,7 +88,7 @@ def crossmatch(catalog: str, ra: float, dec: float, radius: Union[float, None] =
 
 
 
-@app.get("/crossmatch_all",response_model=Union[list[CrossMatchModel], list])
+@app.get("/crossmatch_all",response_model=CrossMatchAllModel)
 def crossmatch_all(ra: float, dec: float, radius: Union[float, None] = None):
     """
     This function returns the crossmatch result for all catalogs.

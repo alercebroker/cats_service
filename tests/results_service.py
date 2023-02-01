@@ -31,9 +31,9 @@ cone_search_result1_3 = [
     " ",
 ]
 service_cone_search_result1 = [
-    {"attribute_name": "RA", "units": "deg", "values": [1.0161792162935126]},
-    {"attribute_name": "Dec", "units": "deg", "values": [-0.011691666358208579]},
-    {"attribute_name": "SideProb", "units": " ", "values": [0.014053001999855042]},
+    {"attribute_name": "RA", "unit": "deg", "values": [1.0161792162935126]},
+    {"attribute_name": "Dec", "unit": "deg", "values": [-0.011691666358208579]},
+    {"attribute_name": "SideProb", "unit": " ", "values": [0.014053001999855042]},
 ]
 
 # segundo caso del conesearch catalog = "First", ra = 0, dec = 0, radius = 0 (no encuentra coincidencias)
@@ -54,71 +54,71 @@ service_cone_search_result2 = {}
 
 # primer caso del conesearch_all ra = 1, dec = 0, radius = 200
 service_cone_search_result1_1 = [
-    {"attribute_name": "RA", "units": "deg", "values": []},
-    {"attribute_name": "Dec", "units": "deg", "values": []},
-    {"attribute_name": "r_K20e", "units": "arcsec", "values": []},
+    {"attribute_name": "RA", "unit": "deg", "values": []},
+    {"attribute_name": "Dec", "unit": "deg", "values": []},
+    {"attribute_name": "r_K20e", "unit": "arcsec", "values": []},
 ]
 service_cone_search_result1_2 = [
-    {"attribute_name": "RA", "units": "deg", "values": []},
-    {"attribute_name": "Dec", "units": "deg", "values": []},
-    {"attribute_name": "VarFlag", "units": " ", "values": []},
+    {"attribute_name": "RA", "unit": "deg", "values": []},
+    {"attribute_name": "Dec", "unit": "deg", "values": []},
+    {"attribute_name": "VarFlag", "unit": " ", "values": []},
 ]
 service_cone_search_result1_3 = [
-    {"attribute_name": "RA_rad", "units": "deg", "values": []},
-    {"attribute_name": "Dec_rad", "units": "deg", "values": []},
-    {"attribute_name": "RA_arcsec", "units": "arcsec", "values": []},
+    {"attribute_name": "RA_rad", "unit": "deg", "values": []},
+    {"attribute_name": "Dec_rad", "unit": "deg", "values": []},
+    {"attribute_name": "RA_arcsec", "unit": "arcsec", "values": []},
 ]
 service_cone_search_result1_4 = {}
 service_cone_search_result1_5 = [
-    {"attribute_name": "RA", "units": "deg", "values": [1.0161792162935126]},
-    {"attribute_name": "Dec", "units": "deg", "values": [-0.011691666358208579]},
-    {"attribute_name": "SideProb", "units": " ", "values": [0.014053001999855042]},
+    {"attribute_name": "RA", "unit": "deg", "values": [1.0161792162935126]},
+    {"attribute_name": "Dec", "unit": "deg", "values": [-0.011691666358208579]},
+    {"attribute_name": "SideProb", "unit": " ", "values": [0.014053001999855042]},
 ]
 service_cone_search_result1_6 = [
-    {"attribute_name": "RA", "units": "deg", "values": [1.0159166666666666]},
-    {"attribute_name": "Dec", "units": "deg", "values": [-0.011666666666674423]},
-    {"attribute_name": "errRA", "units": "deg", "values": [0.000541666655437425]},
+    {"attribute_name": "RA", "unit": "deg", "values": [1.0159166666666666]},
+    {"attribute_name": "Dec", "unit": "deg", "values": [-0.011666666666674423]},
+    {"attribute_name": "errRA", "unit": "deg", "values": [0.000541666655437425]},
 ]
 service_cone_search_result1_7 = [
-    {"attribute_name": "RA", "units": "deg", "values": []},
-    {"attribute_name": "Dec", "units": "deg", "values": []},
-    {"attribute_name": "errPosition", "units": "arcsec", "values": []},
+    {"attribute_name": "RA", "unit": "deg", "values": []},
+    {"attribute_name": "Dec", "unit": "deg", "values": []},
+    {"attribute_name": "errPosition", "unit": "arcsec", "values": []},
 ]
 service_cone_search_result1_8 = {}
 
 service_cone_search_all_result1 = {
     "TMASSxsc": [
-        {"attribute_name": "RA", "units": "deg", "values": []},
-        {"attribute_name": "Dec", "units": "deg", "values": []},
-        {"attribute_name": "r_K20e", "units": "arcsec", "values": []},
+        {"attribute_name": "RA", "unit": "deg", "values": []},
+        {"attribute_name": "Dec", "unit": "deg", "values": []},
+        {"attribute_name": "r_K20e", "unit": "arcsec", "values": []},
  
     ],
     "AAVSO_VSX": [
-        {"attribute_name": "RA", "units": "deg", "values": []},
-        {"attribute_name": "Dec", "units": "deg", "values": []},
-        {"attribute_name": "VarFlag", "units": " ", "values": []},
+        {"attribute_name": "RA", "unit": "deg", "values": []},
+        {"attribute_name": "Dec", "unit": "deg", "values": []},
+        {"attribute_name": "VarFlag", "unit": " ", "values": []},
 
     ],
     "AKARI": [
-        {"attribute_name": "RA_rad", "units": "deg", "values": []},
-        {"attribute_name": "Dec_rad", "units": "deg", "values": []},
-        {"attribute_name": "RA_arcsec", "units": "arcsec", "values": []},
+        {"attribute_name": "RA_rad", "unit": "deg", "values": []},
+        {"attribute_name": "Dec_rad", "unit": "deg", "values": []},
+        {"attribute_name": "RA_arcsec", "unit": "arcsec", "values": []},
 
     ],
     "FIRST": [
-        {"attribute_name": "RA", "units": "deg", "values": [1.0161792162935126]},
-        {"attribute_name": "Dec", "units": "deg", "values": [-0.011691666358208579]},
-        {"attribute_name": "SideProb", "units": " ", "values": [0.014053001999855042]},
+        {"attribute_name": "RA", "unit": "deg", "values": [1.0161792162935126]},
+        {"attribute_name": "Dec", "unit": "deg", "values": [-0.011691666358208579]},
+        {"attribute_name": "SideProb", "unit": " ", "values": [0.014053001999855042]},
     ],
     "NVSS": [
-        {"attribute_name": "RA", "units": "deg", "values": [1.0159166666666666]},
-        {"attribute_name": "Dec", "units": "deg", "values": [-0.011666666666674423]},
-        {"attribute_name": "errRA", "units": "deg", "values": [0.000541666655437425]},
+        {"attribute_name": "RA", "unit": "deg", "values": [1.0159166666666666]},
+        {"attribute_name": "Dec", "unit": "deg", "values": [-0.011666666666674423]},
+        {"attribute_name": "errRA", "unit": "deg", "values": [0.000541666655437425]},
     ],
     "ROSATfsc": [
-        {"attribute_name": "RA", "units": "deg", "values": []},
-        {"attribute_name": "Dec", "units": "deg", "values": []},
-        {"attribute_name": "errPosition", "units": "arcsec", "values": []},
+        {"attribute_name": "RA", "unit": "deg", "values": []},
+        {"attribute_name": "Dec", "unit": "deg", "values": []},
+        {"attribute_name": "errPosition", "unit": "arcsec", "values": []},
     ],
 }
 
@@ -157,10 +157,10 @@ cross_match_result1_3 = [
 ]
 
 service_cross_match_result1 = [
-    {"attribute_name": "RA", "value": 1.0161792162935126, "units": "deg"},
-    {"attribute_name": "Dec", "value": -0.011691666358208579, "units": "deg"},
-    {"attribute_name": "SideProb", "value": 0.014053001999855042, "units": " "},
-    {"attribute_name": "distance", "value": 71.86145556680134, "units": "arcsec"},
+    {"attribute_name": "RA", "value": 1.0161792162935126, "unit": "deg"},
+    {"attribute_name": "Dec", "value": -0.011691666358208579, "unit": "deg"},
+    {"attribute_name": "SideProb", "value": 0.014053001999855042, "unit": " "},
+    {"attribute_name": "distance", "value": 71.86145556680134, "unit": "arcsec"},
 ]
 
 # segundo caso del crossmatch catalog = "FIRST", ra = 1, dec = 0, radius = 0(no entrega resultados)
@@ -202,31 +202,31 @@ service_cross_match_result1_2 = {}
 service_cross_match_result1_3 = {}
 service_cross_match_result1_4 = {}
 service_cross_match_result1_5 = [
-    {"attribute_name": "RA", "value": 1.0161792162935126, "units": "deg"},
-    {"attribute_name": "Dec", "value": -0.011691666358208579, "units": "deg"},
-    {"attribute_name": "SideProb", "value": 0.014053001999855042, "units": " "},
-    {"attribute_name": "distance", "value": 71.86145556680134, "units": "arcsec"},
+    {"attribute_name": "RA", "value": 1.0161792162935126, "unit": "deg"},
+    {"attribute_name": "Dec", "value": -0.011691666358208579, "unit": "deg"},
+    {"attribute_name": "SideProb", "value": 0.014053001999855042, "unit": " "},
+    {"attribute_name": "distance", "value": 71.86145556680134, "unit": "arcsec"},
 ]
 service_cross_match_result1_6 = [
-    {"attribute_name": "RA", "value": 1.0159166666666666, "units": "deg"},
-    {"attribute_name": "Dec", "value": -0.011666666666674423, "units": "deg"},
-    {"attribute_name": "errRA", "value": 0.000541666655437425, "units": "deg"},
-    {"attribute_name": "distance", "value": 71.04428164620468, "units": "arcsec"},
+    {"attribute_name": "RA", "value": 1.0159166666666666, "unit": "deg"},
+    {"attribute_name": "Dec", "value": -0.011666666666674423, "unit": "deg"},
+    {"attribute_name": "errRA", "value": 0.000541666655437425, "unit": "deg"},
+    {"attribute_name": "distance", "value": 71.04428164620468, "unit": "arcsec"},
 ]
 service_cross_match_result1_7 = {}
 service_cross_match_result1_8 = {}
 
 service_cross_match_all_result1 = {
     "FIRST": [
-        {"attribute_name": "RA", "value": 1.0161792162935126, "units": "deg"},
-        {"attribute_name": "Dec", "value": -0.011691666358208579, "units": "deg"},
-        {"attribute_name": "SideProb", "value": 0.014053001999855042, "units": " "},
-        {"attribute_name": "distance", "value": 71.86145556680134, "units": "arcsec"},
+        {"attribute_name": "RA", "value": 1.0161792162935126, "unit": "deg"},
+        {"attribute_name": "Dec", "value": -0.011691666358208579, "unit": "deg"},
+        {"attribute_name": "SideProb", "value": 0.014053001999855042, "unit": " "},
+        {"attribute_name": "distance", "value": 71.86145556680134, "unit": "arcsec"},
     ],
     "NVSS": [
-        {"attribute_name": "RA", "value": 1.0159166666666666, "units": "deg"},
-        {"attribute_name": "Dec", "value": -0.011666666666674423, "units": "deg"},
-        {"attribute_name": "errRA", "value": 0.000541666655437425, "units": "deg"},
-        {"attribute_name": "distance", "value": 71.04428164620468, "units": "arcsec"},
+        {"attribute_name": "RA", "value": 1.0159166666666666, "unit": "deg"},
+        {"attribute_name": "Dec", "value": -0.011666666666674423, "unit": "deg"},
+        {"attribute_name": "errRA", "value": 0.000541666655437425, "unit": "deg"},
+        {"attribute_name": "distance", "value": 71.04428164620468, "unit": "arcsec"},
     ],
 }
