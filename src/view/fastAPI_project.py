@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from src.controllers.controler import controller_conesearch, controller_conesearch_all, controller_crossmatch, controller_crossmatch_all
 from typing import Union
-from src.presentation.response_models import CrossMatchModel, CrossMatchAllModel, ConeSearchModel, ConeSearchAllModel
+from src.presentation.response_models import CrossMatchModel, ConeSearchModel
 
 app = FastAPI()
 
@@ -46,7 +46,7 @@ def conesearch(catalog: str, ra: float, dec: float, radius: float):
     return controller_conesearch(catalog,request)
 
 
-@app.get("/conesearch_all", response_model=Union[ConeSearchAllModel, dict])
+@app.get("/conesearch_all", response_model=Union[list[ConeSearchModel], list])
 def conesearch_all(ra: float, dec: float, radius: float):
     """
     This function returns the result of running a cone search over all
@@ -88,7 +88,7 @@ def crossmatch(catalog: str, ra: float, dec: float, radius: Union[float, None] =
 
 
 
-@app.get("/crossmatch_all",response_model=Union[CrossMatchAllModel, dict])
+@app.get("/crossmatch_all",response_model=Union[list[CrossMatchModel], list])
 def crossmatch_all(ra: float, dec: float, radius: Union[float, None] = None):
     """
     This function returns the crossmatch result for all catalogs.
