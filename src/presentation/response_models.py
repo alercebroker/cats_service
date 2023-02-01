@@ -13,9 +13,6 @@ class CrossMatchModel(BaseModel):
     catalog_name: str
     catalog_fields: List[CrossMatchFieldsModel]
 
-class CrossMatchAllModel(BaseModel):
-    catalogs: List[CrossMatchModel]
-
 class ConeSearchFieldsModel(GenericModel, Generic[DataT]):
     attribute_name: str
     units: str
@@ -24,6 +21,3 @@ class ConeSearchFieldsModel(GenericModel, Generic[DataT]):
 class ConeSearchModel(BaseModel):
     catalog_name: str
     catalog_fields: List[ConeSearchFieldsModel]
-
-class ConeSearchAllModel(BaseModel):
-    catalogs: List[ConeSearchModel]

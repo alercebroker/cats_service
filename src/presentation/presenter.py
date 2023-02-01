@@ -13,13 +13,10 @@ def catname(results, catalog_map, catalog):
 def catname_all(final_result,catalog_map):
 
     result_catname = []
-    final_result_catname = {}
     for key in final_result:
         result_catname.append(catname(final_result[key], catalog_map, key))
     
-    final_result_catname["catalogs"] = result_catname
-
-    return final_result_catname
+    return result_catname
 
 
 
