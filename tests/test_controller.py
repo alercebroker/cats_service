@@ -67,11 +67,10 @@ class TestControllerCrossmatch(TestCase):
 
 
 class TestControllerConesearchAll(TestCase):
-    @mock.patch("src.controllers.controler.os")
+    a = "".join(catalogs)
+    os.environ["CATALOGS"] = a
     @mock.patch.dict(os.environ, {"DATA_PATH": "/home/usuario/Documentos/data"})
-    def test_case1(self,catalogs_mock):
-        catalogs_mock.return_value = catalogs
-        print(f"el coso:{catalogs_mock}")
+    def test_case1(self):
         result = controller_conesearch_all(
             request={"ra": 1, "dec": 0, "radius": 200}
         )
