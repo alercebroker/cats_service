@@ -16,7 +16,7 @@ def controller_conesearch(catalog,request):
         path = os.environ["DATA_PATH"]
     except BaseException:
         return json("Request contains one or more invalid arguments.")
-    f = open("conesearch",'w')
+    f = open("conesearchcontro",'w')
     print(json(service_get_conesearch(catalog,request, path)), file = f)
     f.close
     return json(service_get_conesearch(catalog,request, path))
@@ -32,7 +32,9 @@ def controller_conesearch_all(request):
         path = os.environ["DATA_PATH"]
     except BaseException:
         return "Request contains one or more invalid arguments."
-
+    f = open("conesearchallcon.txt",'w')
+    print(service_get_conesearch_all(catalogs, request, path),file = f )
+    f.close()
 
     return json(service_get_conesearch_all(catalogs, request, path))
 
@@ -50,7 +52,7 @@ def controller_crossmatch(catalog,request):
     except BaseException:
         return json("Request contains one or more invalid arguments.")
 
-    f = open("crossmatch",'w')
+    f = open("crossmatchcont",'w')
     print(json(service_get_crossmatch(catalog, request, path,map_ra_dec,radius_dict)), file = f)
     f.close
         
@@ -68,9 +70,9 @@ def controller_crossmatch_all(request):
     except BaseException:
         return json("Request contains one or more invalid arguments.")
 
-
-
-
+    f = open("crossmatchallcon.txt",'w')
+    print(service_get_conesearch_all(catalogs, request, path),file = f )
+    f.close()
     # check if a value for radius was provided
     return json(service_get_crossmatch_all(catalogs,request,path, map_ra_dec,radius_dict))
 
