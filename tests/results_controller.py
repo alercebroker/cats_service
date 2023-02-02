@@ -14,27 +14,8 @@ controller_conesearch_result1 = {
     "cat_fields": [
         {"attribute_name": "RA", "units": "deg", "values": [1.0161792162935126]},
         {"attribute_name": "Dec", "units": "deg", "values": [-0.011691666358208579]},
-        {"attribute_name": "SideProb", "units": " ", "values": [0.014053001999855042]},
-        {"attribute_name": "Fpeak", "units": "mJy", "values": [10.430000305175781]},
-        {"attribute_name": "Fint", "units": "mJy", "values": [10.716876029968262]},
-        {"attribute_name": "rms", "units": "mJy", "values": [0.10876674205064774]},
-        {"attribute_name": "Major", "units": "arcsec", "values": [1.6299999952316284]},
-        {"attribute_name": "Minor", "units": "arcsec", "values": [0.0]},
-        {"attribute_name": "PosAng", "units": "deg", "values": [33.900001525878906]},
-        {
-            "attribute_name": "FitMajor",
-            "units": "arcsec",
-            "values": [6.539999961853027],
-        },
-        {
-            "attribute_name": "FitMinor",
-            "units": "arcsec",
-            "values": [5.429999828338623],
-        },
-        {"attribute_name": "FitPosAng", "units": "deg", "values": [6.300000190734863]},
-        {"attribute_name": "StartMJD", "units": "MJD", "values": [2450019.713368056]},
-        {"attribute_name": "StopMJD", "units": "MJD", "values": [2452482.9428125005]},
-    ],
+        {"attribute_name": "SideProb", "units": " ", "values": [0.014053001999855042]}
+    ]
 }
 controller_conesearch_result2 = {"cat_name": "FIRST", "cat_fields": {}}
 
@@ -42,6 +23,7 @@ controller_conesearch_result2 = {"cat_name": "FIRST", "cat_fields": {}}
 controller_crossmatch_result1 = {'cat_name': 'FIRST', 'cat_fields': [{'attribute_name': 'RA', 'value': 1.0161792162935126, 'units': 'deg'}, {'attribute_name': 'Dec', 'value': -0.011691666358208579, 'units': 'deg'}, {'attribute_name': 'SideProb', 'value': 0.014053001999855042, 'units': ' '}, {'attribute_name': 'Fpeak', 'value': 10.430000305175781, 'units': 'mJy'}, {'attribute_name': 'Fint', 'value': 10.716876029968262, 'units': 'mJy'}, {'attribute_name': 'rms', 'value': 0.10876674205064774, 'units': 'mJy'}, {'attribute_name': 'Major', 'value': 1.6299999952316284, 'units': 'arcsec'}, {'attribute_name': 'Minor', 'value': 0.0, 'units': 'arcsec'}, {'attribute_name': 'PosAng', 'value': 33.900001525878906, 'units': 'deg'}, {'attribute_name': 'FitMajor', 'value': 6.539999961853027, 'units': 'arcsec'}, {'attribute_name': 'FitMinor', 'value': 5.429999828338623, 'units': 'arcsec'}, {'attribute_name': 'FitPosAng', 'value': 6.300000190734863, 'units': 'deg'}, {'attribute_name': 'StartMJD', 'value': 2450019.713368056, 'units': 'MJD'}, {'attribute_name': 'StopMJD', 'value': 2452482.9428125005, 'units': 'MJD'}, {'attribute_name': 'distance', 'value': 71.86145556680134, 'units': 'arcsec'}]}
 controller_crossmatch_result2 = {"cat_name": "FIRST", "cat_fields": {}}
 controller_crossmatch_result3 = {"cat_name": "FIRST", "cat_fields": {}}
+
 
 
 controller_conesearch_all_result1 = {

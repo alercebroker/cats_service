@@ -230,3 +230,28 @@ service_cross_match_all_result1 = {
         {"attribute_name": "distance", "value": 71.04428164620468, "units": "arcsec"},
     ],
 }
+
+
+
+service_cross_match_result2_1 = {}
+service_cross_match_result2_2 = {}
+service_cross_match_result2_3 = {}
+service_cross_match_result2_4 = {}
+service_cross_match_result2_5 = {}
+service_cross_match_result2_6 = {}
+service_cross_match_result2_7 = {}
+service_cross_match_result2_8 = {}
+
+service_cross_match_all_result2 = {}
+
+
+service_cross_match_result3_1 = {}
+service_cross_match_result3_2 = {}
+service_cross_match_result3_3 = {}
+service_cross_match_result3_4 = {}
+service_cross_match_result3_5 = {}
+service_cross_match_result3_6 = {}
+service_cross_match_result3_7 = {}
+service_cross_match_result3_8 = {}
+
+service_cross_match_all_result3 = {}

@@ -10,22 +10,28 @@ from src.controllers.controler import (
 from tests.results_controller import *
 from src.controllers.constants import map_ra_dec, radius_dict
 from tests.truncar import round_controller_conesearch, round_controller_crossmatch
+from tests.results_service import *
+from src.models.model_cross_match import ModelCrossMatch
 
+
+os.environ["DATA_PATH"] = "/home/usuario/Documentos/data"
+os.environ["CATALOGS"] = "TMASSxsc,AAVSO_VSX,AKARI,CRTS_per_var,FIRST,NVSS,ROSATfsc,SWIREz"
 
 class TestControllerConesearch(TestCase):
 
-    @mock.patch.dict(os.environ, {"DATA_PATH": "/home/usuario/Documentos/data"})
-    def test_case1(self):
+    @mock.patch("src.services.service.cone_search")
+    def test_case1(self, cone_search_mock):
+        cone_search_mock.return_value = cone_search_result1_1, cone_search_result1_2, cone_search_result1_3
         result = controller_conesearch(
             catalog="FIRST", request={"ra": 1, "dec": 0, "radius": 200}
         )
-        print(result)
-
         result = round_controller_conesearch(result)
         controller_conesearch_result1_1 = round_controller_conesearch(controller_conesearch_result1)
         self.assertEqual(result,controller_conesearch_result1_1)
-    @mock.patch.dict(os.environ, {"DATA_PATH": "/home/usuario/Documentos/data"})
-    def test_case2(self):
+    
+    @mock.patch("src.services.service.cone_search")
+    def test_case2(self, cone_search_mock):
+        cone_search_mock.return_value = cone_search_result2_1, cone_search_result2_2, cone_search_result2_3
         result = controller_conesearch(
             catalog="FIRST", request={"ra": 1, "dec": 0, "radius": 0}
         )
@@ -36,8 +42,14 @@ class TestControllerConesearch(TestCase):
 
 
 class TestControllerCrossmatch(TestCase):
-    @mock.patch.dict(os.environ, {"DATA_PATH": "/home/usuario/Documentos/data"})
-    def test_case1(self):
+
+    def fake_get_min_distance(self,*args, **kwargs):
+        return distance_result
+
+    @mock.patch.object(ModelCrossMatch, 'get_min_distance', new = fake_get_min_distance)
+    @mock.patch("src.services.service.cone_search")
+    def test_case1(self,cone_search_mock):
+        cone_search_mock.return_value = cone_search_result1_1, cone_search_result1_2, cone_search_result1_3
         result = controller_crossmatch(
             catalog="FIRST", request={"ra": 1, "dec": 0, "radius": 200}
         )
@@ -46,9 +58,11 @@ class TestControllerCrossmatch(TestCase):
 
 
         self.assertEqual(result, controller_crossmatch_result1_1)
-    @mock.patch.dict(os.environ, {"DATA_PATH": "/home/usuario/Documentos/data"})
-    def test_case2(self):
-        
+    
+    @mock.patch.object(ModelCrossMatch, 'get_min_distance', new = fake_get_min_distance)
+    @mock.patch("src.services.service.cone_search")
+    def test_case2(self,cone_search_mock):
+        cone_search_mock.return_value = cone_search_result2_1, cone_search_result2_2, cone_search_result2_3        
         result = controller_crossmatch(
             catalog="FIRST", request={"ra": 1, "dec": 0, "radius": 0}
         )
@@ -56,35 +70,50 @@ class TestControllerCrossmatch(TestCase):
         controller_crossmatch_result2_1 = round_controller_crossmatch(controller_crossmatch_result2)
         self.assertEqual(result, controller_crossmatch_result2_1)
 
-    @mock.patch.dict(os.environ, {"DATA_PATH": "/home/usuario/Documentos/data"})
-    def test_case3(self):
+    @mock.patch.object(ModelCrossMatch, 'get_min_distance', new = fake_get_min_distance)
+    @mock.patch("src.services.service.cone_search")
+    def test_case3(self,cone_search_mock):
+        cone_search_mock.return_value = cone_search_result2_1, cone_search_result2_2, cone_search_result2_3
         result = controller_crossmatch(catalog="FIRST", request={"ra": 1, "dec": 0, "radius": None})
         result = round_controller_crossmatch(result)
-        controller_crossmatch_result3_1 = round_controller_crossmatch(controller_crossmatch_result2)
+        controller_crossmatch_result3_1 = round_controller_crossmatch(controller_crossmatch_result3)
 
         self.assertEqual(result, controller_crossmatch_result3_1)
 
 
 
 class TestControllerConesearchAll(TestCase):
-    a = "".join(catalogs)
-    os.environ["CATALOGS"] = a
-    @mock.patch.dict(os.environ, {"DATA_PATH": "/home/usuario/Documentos/data"})
-    def test_case1(self):
+
+    @mock.patch("src.services.service.service_get_conesearch")
+    def test_case1(self, service_get_conesearch_mock):
+        service_get_conesearch_mock.side_effect = [
+            service_cone_search_result1_1,
+            service_cone_search_result1_2,
+            service_cone_search_result1_3,
+            service_cone_search_result1_4,
+            service_cone_search_result1_5,
+            service_cone_search_result1_6,
+            service_cone_search_result1_7,
+            service_cone_search_result1_8,
+        ]
         result = controller_conesearch_all(
             request={"ra": 1, "dec": 0, "radius": 200}
         )
-        f = open("resultmock",'w')
-        print(result, file = f)
-        f.close
-        f = open("resultmock2",'w')
-        print(controller_conesearch_all_result1, file = f)
-        f.close
-
         self.assertEqual(result, controller_conesearch_all_result1)
-    @mock.patch("src.controllers.controler.os")
-    def test_case2(self,catalogs_mock):
-        catalogs_mock.return_value = catalogs
+
+
+    @mock.patch("src.services.service.service_get_conesearch")
+    def test_case2(self, service_get_conesearch_mock2):
+        service_get_conesearch_mock2.side_effect = [
+            service_cone_search_result2_1,
+            service_cone_search_result2_2,
+            service_cone_search_result2_3,
+            service_cone_search_result2_4,
+            service_cone_search_result2_5,
+            service_cone_search_result2_6,
+            service_cone_search_result2_7,
+            service_cone_search_result2_8,
+        ]
         result = controller_conesearch_all(
             request={"ra": 1, "dec": 0, "radius": 0}
         )
@@ -93,23 +122,54 @@ class TestControllerConesearchAll(TestCase):
 
 
 class TestControllerCrossmatchAll(TestCase):
-    @mock.patch("src.controllers.controler.os")
-    def test_case1(self,mock_catalogs):
-        mock_catalogs.return_value = catalogs
+    @mock.patch("src.services.service.service_get_crossmatch")
+    def test_case1(self, service_get_crossmatch_mock):
+        service_get_crossmatch_mock.side_effect = [
+            service_cross_match_result1_1,
+            service_cross_match_result1_2,
+            service_cross_match_result1_3,
+            service_cross_match_result1_4,
+            service_cross_match_result1_5,
+            service_cross_match_result1_6,
+            service_cross_match_result1_7,
+            service_cross_match_result1_8,
+        ]
         result = controller_crossmatch_all(
             request={"ra": 1, "dec": 0, "radius": 200}
         )
         self.assertEqual(result, controller_crossmatch_all_result1)
-    @mock.patch("src.controllers.controler.os")
-    def test_case2(self,mock_catalogs):
-        mock_catalogs.return_value = catalogs
+
+
+    @mock.patch("src.services.service.service_get_crossmatch")
+    def test_case2(self, service_get_crossmatch_mock2):
+        service_get_crossmatch_mock2.side_effect = [
+            service_cross_match_result2_1,
+            service_cross_match_result2_2,
+            service_cross_match_result2_3,
+            service_cross_match_result2_4,
+            service_cross_match_result2_5,
+            service_cross_match_result2_6,
+            service_cross_match_result2_7,
+            service_cross_match_result2_8,
+        ]
         result = controller_crossmatch_all(
             request={"ra": 1, "dec": 0, "radius": 0}
         )
         self.assertEqual(result, controller_crossmatch_all_result2)
-    @mock.patch("src.controllers.controler.os")
-    def test_case3(self,mock_catalogs):
-        mock_catalogs.return_value = catalogs
+
+
+    @mock.patch("src.services.service.service_get_crossmatch")
+    def test_case3(self, service_get_crossmatch_mock3):
+        service_get_crossmatch_mock3.side_effect = [
+            service_cross_match_result3_1,
+            service_cross_match_result3_2,
+            service_cross_match_result3_3,
+            service_cross_match_result3_4,
+            service_cross_match_result3_5,
+            service_cross_match_result3_6,
+            service_cross_match_result3_7,
+            service_cross_match_result3_8,
+        ]
         result = controller_crossmatch_all(
             request={"ra": 1, "dec": 0, "radius": None}
         )

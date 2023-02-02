@@ -33,9 +33,6 @@ def controller_conesearch_all(request):
     except BaseException:
         return "Request contains one or more invalid arguments."
 
-    f = open("conesearchall",'w')
-    print(json(catname_all(service_get_conesearch_all(catalogs, request, path), catalog_map)), file = f)
-    f.close
     return json(catname_all(service_get_conesearch_all(catalogs, request, path), catalog_map))
 
 

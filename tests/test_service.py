@@ -83,7 +83,6 @@ class TestServiceCrossmach(TestCase):
 
 
     @mock.patch.object(ModelCrossMatch, 'get_min_distance', new = fake_get_min_distance)
-    #@mock.patch("src.models.model_cross_match.ModelCrossMatch.get_min_dist")
     @mock.patch("src.services.service.cone_search")
     def test_case1(self, cone_search_mock):
         #get_min_distance_mock.return_value = distance_result
@@ -166,3 +165,22 @@ class TestServiceCrossmatchAll(TestCase):
         service_cross_match_all_result1_1 = round_cross_match_all(service_cross_match_all_result1)
         result = round_cross_match_all(result)
         self.assertEqual(service_cross_match_all_result1_1,result)
+
+    @mock.patch("src.services.service.service_get_crossmatch")
+    def test_case1(self, service_get_crossmatch_mock2):
+        service_get_crossmatch_mock2.side_effect = [
+            service_cross_match_result2_1,
+            service_cross_match_result2_2,
+            service_cross_match_result2_3,
+            service_cross_match_result2_4,
+            service_cross_match_result2_5,
+            service_cross_match_result2_6,
+            service_cross_match_result2_7,
+            service_cross_match_result2_8,
+        ]
+        result = service_get_crossmatch_all(
+            catalogs, request={"ra":radians(float(1)), "dec": radians(float(0)) ,"radius": float(0)}, path="/data", map_ra_dec=map_ra_dec, radius_dict=radius_dict
+        )
+        service_cross_match_all_result2_1 = round_cross_match_all(service_cross_match_all_result2)
+        result = round_cross_match_all(result)
+        self.assertEqual(service_cross_match_all_result2_1,result)
