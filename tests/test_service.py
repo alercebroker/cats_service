@@ -28,12 +28,11 @@ class TestServiceConesearch(TestCase):
 
     @mock.patch("src.services.service.cone_search")
     def test_case2(self, cone_search_mock2):
-        with pytest.raises(Exception):
-            cone_search_mock2.return_value = cone_search_result2_1, cone_search_result2_2, cone_search_result2_3
-            result = service_get_conesearch(
-                catalog="FIRST", request={"ra":radians(float(1)), "dec": radians(float(0)) ,"radius": float(0)}, path="/data"
-            )
-            self.assertEqual(service_cone_search_result2, result)
+        cone_search_mock2.return_value = cone_search_result2_1, cone_search_result2_2, cone_search_result2_3
+        result = service_get_conesearch(
+            catalog="FIRST", request={"ra":radians(float(1)), "dec": radians(float(0)) ,"radius": float(0)}, path="/data"
+        )
+        self.assertEqual(service_cone_search_result2, result)
 
 
 class TestServiceConesearchAll(TestCase):
@@ -83,10 +82,8 @@ class TestServiceCrossmach(TestCase):
 
 
     @mock.patch.object(ModelCrossMatch, 'get_min_distance', new = fake_get_min_distance)
-    #@mock.patch("src.models.model_cross_match.ModelCrossMatch.get_min_dist")
     @mock.patch("src.services.service.cone_search")
     def test_case1(self, cone_search_mock):
-        #get_min_distance_mock.return_value = distance_result
         cone_search_mock.return_value = (
             cross_match_result1_1,
             cross_match_result1_2,

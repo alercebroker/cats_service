@@ -49,7 +49,7 @@ cone_search_result2_3 = [
     "rad",
     " ",
 ]
-service_cone_search_result2 = {}
+service_cone_search_result2 = []
 
 
 # primer caso del conesearch_all ra = 1, dec = 0, radius = 200
@@ -176,7 +176,7 @@ cross_match_result2_3 = [
     "rad",
     " ",
 ]
-service_cross_match_result2 = {}
+service_cross_match_result2 = []
 
 
 # tercer caso del crossmatch catalog = "FIRST", ra = 1, dec = 0 sin radius
@@ -192,7 +192,7 @@ cross_match_result3_3 = [
     "rad",
     " ",
 ]
-service_cross_match_result3 = {}
+service_cross_match_result3 = []
 
 
 # primer caso del crossmatch all  ra = 1, dec = 0 radius = 200
