@@ -95,6 +95,7 @@ class ModelCrossMatch:
     def format_result_with_units(self, result):
         results_list = []
         result_with_units = {}
+
         for key, unit in zip(result, self.column_units):
             value = result[key]
             if self.unit_is_rad(unit):

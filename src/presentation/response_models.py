@@ -1,16 +1,16 @@
 from pydantic import BaseModel, create_model
-from typing import Optional
+from typing import Union
 import os
 
 class CrossMatchModel(BaseModel):
     attribute_name: str
     unit: str
-    value: Optional[float]
+    value: Union[float, None]
 
 class ConeSearchModel(BaseModel):
     attribute_name: str
     unit: str
-    values: list[Optional[float]]
+    values: list[Union[float, None]]
 
 
 catalogs = os.environ["CATALOGS"].split(",")
