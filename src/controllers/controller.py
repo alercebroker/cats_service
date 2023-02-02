@@ -4,7 +4,8 @@ from math import radians
 from src.services.service import service_get_conesearch, service_get_crossmatch, service_get_conesearch_all, service_get_crossmatch_all
 from src.controllers.constants import radius_dict, map_ra_dec
 
-def controller_conesearch(catalog,request):
+
+def controller_conesearch(catalog, request):
 
     try:
         # get arguments
@@ -34,8 +35,7 @@ def controller_conesearch_all(request):
     return json(service_get_conesearch_all(catalogs, request, path))
 
 
-
-def controller_crossmatch(catalog,request):
+def controller_crossmatch(catalog, request):
 
     try:
         # get arguments
