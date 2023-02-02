@@ -95,20 +95,21 @@ class ModelCrossMatch:
     def format_result_with_units(self, result):
         results_list = []
         result_with_units = {}
+
         for key, unit in zip(result, self.column_units):
             value = result[key]
             if self.unit_is_rad(unit):
                 # convert unit to deg
                 result_with_units = {
                     "attribute_name": key,
+                    "unit": "deg",
                     "value": None if np.isnan(value) else degrees(value),
-                    "units": "deg",
                 }
             else:
                 result_with_units = {
                     "attribute_name": key,
-                    "value": None if np.isnan(value) else value,
-                    "units": unit,
+                    "unit": unit,
+                    "value": None if np.isnan(value) else value
                 }
             results_list.append(result_with_units)
         

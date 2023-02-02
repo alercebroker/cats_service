@@ -1,23 +1,28 @@
-from typing import Generic, TypeVar, Optional, List
-from pydantic import BaseModel, validator, ValidationError
-from pydantic.generics import GenericModel
-
-DataT = TypeVar('DataT')
-
-class CrossMatchFieldsModel(GenericModel, Generic[DataT]):
-    attribute_name: str
-    value: int
-    units: str
+from pydantic import BaseModel, create_model
+from typing import Union
+import os
 
 class CrossMatchModel(BaseModel):
-    catalog_name: str
-    catalog_fields: List[CrossMatchFieldsModel]
-
-class ConeSearchFieldsModel(GenericModel, Generic[DataT]):
     attribute_name: str
-    units: str
-    values: List[float]
-    
+    unit: str
+    value: Union[float, None]
+
 class ConeSearchModel(BaseModel):
-    catalog_name: str
-    catalog_fields: List[ConeSearchFieldsModel]
+    attribute_name: str
+    unit: str
+    values: list[Union[float, None]]
+
+
+catalogs = os.environ["CATALOGS"].split(",")
+
+conesearch_catalogs_attributes = {}
+crossmatch_catalogs_attributes = {}
+
+for catalog in catalogs:
+    conesearch_catalogs_attributes[catalog] = (list[ConeSearchModel], None)
+    crossmatch_catalogs_attributes[catalog] = (list[CrossMatchModel], None)
+
+ConeSearchAllModel = create_model("ConeSearchAllModel", **conesearch_catalogs_attributes)
+CrossMatchAllModel = create_model("CrossMatchAllModel", **crossmatch_catalogs_attributes)
+
+

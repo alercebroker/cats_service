@@ -36,9 +36,9 @@ class ModelConesearch:
                     value = degrees(value)
                 values.append(value)
             if self.unit_is_rad(unit):
-                attribute_dict = {"attribute_name": column, "units": "deg", "values": values}
+                attribute_dict = {"attribute_name": column, "unit": "deg", "values": values}
             else:
-                attribute_dict = {"attribute_name": column, "units": unit, "values": values}
+                attribute_dict = {"attribute_name": column, "unit": unit, "values": values}
             results.append(attribute_dict)
         return results
 
