@@ -15,6 +15,9 @@ from tests.truncar import round_controller_conesearch, round_controller_crossmat
 from tests.results_service import *
 from src.models.model_cross_match import ModelCrossMatch
 
+
+
+
 class TestControllerConesearch(TestCase):
 
     @mock.patch("src.services.service.cone_search")
@@ -51,7 +54,14 @@ class TestControllerCrossmatch(TestCase):
         result = controller_crossmatch(
             catalog="FIRST", request={"ra": 1, "dec": 0, "radius": 200}
         )
+        f = open("result.txt",'w')
+        print(result, file = f)
+        f.close
         result = round_controller_crossmatch(result)
+
+        f = open("resultround.txt",'w')
+        print(result, file = f)
+        f.close
         controller_crossmatch_result1_1 = round_controller_crossmatch(controller_crossmatch_result1)
 
 
