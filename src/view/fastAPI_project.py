@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
-from src.controllers.controler import controller_conesearch, controller_conesearch_all, controller_crossmatch, controller_crossmatch_all
+from src.controllers.controller import controller_conesearch, controller_conesearch_all, controller_crossmatch, controller_crossmatch_all
 from typing import Union
 from src.presentation.response_models import CrossMatchModel, CrossMatchAllModel, ConeSearchModel, ConeSearchAllModel
 

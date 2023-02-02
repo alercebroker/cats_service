@@ -1,4 +1,3 @@
-
 def round_cone_search(_list):
     for element in _list:
         element["values"] = [round(value, 2) for value in element["values"] if type(value) == float]
@@ -24,7 +23,6 @@ def round_controller_conesearch(_list):
     round_cone_search(_list)
     return _list
 
-def round_controller_crossmatch(_dict):
-    print(_dict)
-    
-    return _dict
+def round_controller_crossmatch(_list):
+    round_cross_match(_list)
+    return _list

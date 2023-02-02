@@ -1,4 +1,3 @@
-import pytest
 from unittest import mock, TestCase
 from tests.results_service import *
 from src.services.service import (
@@ -9,7 +8,7 @@ from src.services.service import (
 )
 from src.controllers.constants import map_ra_dec, radius_dict, catalog_map
 from math import radians
-from tests.truncar import round_cone_search, round_cross_match, round_cross_match_all, round_cone_search_all
+from tests.utils import round_cone_search, round_cross_match, round_cross_match_all, round_cone_search_all
 from src.models.model_cross_match import ModelCrossMatch
 
 
