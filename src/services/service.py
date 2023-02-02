@@ -16,11 +16,7 @@ def service_get_conesearch_all(catalogs,request, path):
 
     # append the results of each catalog
     final_result = {}
-    a = 0
     for catalog in catalogs:
-        a = a + 1
-        print("flaaag")
-        print(a) 
         partial_result = service_get_conesearch(catalog,request, path)
 
         if partial_result != {}:

@@ -1,5 +1,7 @@
 import pytest
 import os
+os.environ["DATA_PATH"] = "/home/usuario/Documentos/data"
+os.environ["CATALOGS"] = "TMASSxsc,AAVSO_VSX,AKARI,CRTS_per_var,FIRST,NVSS,ROSATfsc,SWIREz"
 from unittest import TestCase, mock
 from src.controllers.controler import (
     controller_conesearch,
@@ -12,10 +14,6 @@ from src.controllers.constants import map_ra_dec, radius_dict
 from tests.truncar import round_controller_conesearch, round_controller_crossmatch
 from tests.results_service import *
 from src.models.model_cross_match import ModelCrossMatch
-
-
-os.environ["DATA_PATH"] = "/home/usuario/Documentos/data"
-os.environ["CATALOGS"] = "TMASSxsc,AAVSO_VSX,AKARI,CRTS_per_var,FIRST,NVSS,ROSATfsc,SWIREz"
 
 class TestControllerConesearch(TestCase):
 

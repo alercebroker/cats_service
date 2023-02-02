@@ -20,10 +20,9 @@ def round_cross_match_all(_dict):
         round_cross_match(_list)
     return _dict
 
-def round_controller_conesearch(_dict):
-    round_cone_search(_dict["cat_fields"])
-    
-    return _dict
+def round_controller_conesearch(_list):
+    round_cone_search(_list)
+    return _list
 
 def round_controller_crossmatch(_dict):
     print(_dict)

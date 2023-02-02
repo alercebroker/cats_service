@@ -18,7 +18,7 @@ def controller_conesearch(catalog,request):
         return json("Request contains one or more invalid arguments.")
     f = open("conesearch",'w')
     print(json(service_get_conesearch(catalog,request, path)), file = f)
-    f.close
+    f.close()
     return json(service_get_conesearch(catalog,request, path))
 
 
@@ -52,7 +52,7 @@ def controller_crossmatch(catalog,request):
 
     f = open("crossmatch",'w')
     print(json(service_get_crossmatch(catalog, request, path,map_ra_dec,radius_dict)), file = f)
-    f.close
+    f.close()
         
     return json(service_get_crossmatch(catalog, request, path,map_ra_dec,radius_dict))
 
