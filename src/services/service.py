@@ -25,7 +25,6 @@ def service_get_conesearch_all(catalogs, request, path):
 
 
 def service_get_crossmatch(catalog, request, path, map_ra_dec, radius_dict):
-
     if request["radius"] == None:
         request["radius"] = float(radius_dict.get(catalog, 50))
 
