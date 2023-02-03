@@ -23,8 +23,8 @@ class ModelConesearch:
                     ran = idx
                     break
         return self.catalog_columns
-    
-    def replace_nan_inf_and_convert_degrees(self,df):
+
+    def replace_nan_inf_and_convert_degrees(self, df):
         results = []
         for column, unit in zip(self.catalog_columns, self.column_units):
             attribute_dict = {}
@@ -40,9 +40,17 @@ class ModelConesearch:
                     value = degrees(value)
                 values.append(value)
             if self.unit_is_rad(unit):
-                attribute_dict = {"attribute_name": column, "unit": "deg", "values": values}
+                attribute_dict = {
+                    "attribute_name": column,
+                    "unit": "deg",
+                    "values": values,
+                }
             else:
-                attribute_dict = {"attribute_name": column, "unit": unit, "values": values}
+                attribute_dict = {
+                    "attribute_name": column,
+                    "unit": unit,
+                    "values": values,
+                }
             results.append(attribute_dict)
         return results
 
@@ -51,7 +59,7 @@ class ModelConesearch:
             df = pd.DataFrame(self.match, columns=self.catalog_columns)
         except ValueError as ex:
             return {}
-            
+
         df.columns = self.rename_duplicated_columns()
         return self.replace_nan_inf_and_convert_degrees(df)
 

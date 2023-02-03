@@ -1,9 +1,19 @@
 import uvicorn
 from fastapi import FastAPI, status
 from fastapi.responses import HTMLResponse
-from src.controllers.controller import controller_conesearch, controller_conesearch_all, controller_crossmatch, controller_crossmatch_all
+from src.controllers.controller import (
+    controller_conesearch,
+    controller_conesearch_all,
+    controller_crossmatch,
+    controller_crossmatch_all,
+)
 from typing import Union
-from src.presentation.response_models import CrossMatchModel, CrossMatchAllModel, ConeSearchModel, ConeSearchAllModel
+from src.presentation.response_models import (
+    CrossMatchModel,
+    CrossMatchAllModel,
+    ConeSearchModel,
+    ConeSearchAllModel,
+)
 from starlette_prometheus import metrics, PrometheusMiddleware
 import os
 
@@ -33,8 +43,6 @@ def welcome():
               here</a>.</p>
               </body>
               </html>"""
-
-
 
 
 @app.get("/conesearch", response_model=list[ConeSearchModel])
@@ -71,7 +79,7 @@ def conesearch_all(ra: float, dec: float, radius: float):
     return controller_conesearch_all(request)
 
 
-@app.get("/crossmatch",response_model=list[CrossMatchModel])
+@app.get("/crossmatch", response_model=list[CrossMatchModel])
 def crossmatch(catalog: str, ra: float, dec: float, radius: Union[float, None] = None):
     """
     This function returns the result of running a crossmatch over one catalog.
@@ -87,8 +95,7 @@ def crossmatch(catalog: str, ra: float, dec: float, radius: Union[float, None] =
     return controller_crossmatch(catalog, request)
 
 
-
-@app.get("/crossmatch_all",response_model=CrossMatchAllModel)
+@app.get("/crossmatch_all", response_model=CrossMatchAllModel)
 def crossmatch_all(ra: float, dec: float, radius: Union[float, None] = None):
     """
     This function returns the crossmatch result for all catalogs.

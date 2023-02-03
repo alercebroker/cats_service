@@ -110,10 +110,10 @@ class ModelCrossMatch:
                 result_with_units = {
                     "attribute_name": key,
                     "unit": unit,
-                    "value": None if np.isnan(value) else value
+                    "value": None if np.isnan(value) else value,
                 }
             results_list.append(result_with_units)
-        
+
         # replace inf
         for attribute in results_list:
             if attribute["value"] == np.inf:

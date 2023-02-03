@@ -3,11 +3,13 @@ from ..models.parse import parse_conesearch, parse_crossmatch
 
 
 def service_get_conesearch(catalog, request, path):
-    
-    match, catalog_columns, column_units = cone_search(catalog, request["ra"], request["dec"], request["radius"], path)
+
+    match, catalog_columns, column_units = cone_search(
+        catalog, request["ra"], request["dec"], request["radius"], path
+    )
 
     if len(match) != 0:
-        return parse_conesearch(match, catalog_columns, column_units)  
+        return parse_conesearch(match, catalog_columns, column_units)
     else:
         return []
 
@@ -29,9 +31,19 @@ def service_get_crossmatch(catalog, request, path, map_ra_dec, radius_dict):
     if request["radius"] == None:
         request["radius"] = float(radius_dict.get(catalog, 50))
 
-    match, catalog_columns, column_units = cone_search(catalog, request["ra"], request["dec"], request["radius"], path)
+    match, catalog_columns, column_units = cone_search(
+        catalog, request["ra"], request["dec"], request["radius"], path
+    )
     if len(match) != 0:
-        return parse_crossmatch(match, catalog, request["ra"], request["dec"], catalog_columns, column_units,map_ra_dec)
+        return parse_crossmatch(
+            match,
+            catalog,
+            request["ra"],
+            request["dec"],
+            catalog_columns,
+            column_units,
+            map_ra_dec,
+        )
 
     else:
         return []
