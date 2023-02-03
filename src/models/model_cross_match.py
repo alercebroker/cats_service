@@ -4,9 +4,11 @@ from astropy import units
 from astropy.coordinates import SkyCoord
 from math import radians, degrees
 
+
 class ModelCrossMatch:
-    
-    def __init__(self, match, catalog, ra, dec, catalog_columns, column_units, map_ra_dec):
+    def __init__(
+        self, match, catalog, ra, dec, catalog_columns, column_units, map_ra_dec
+    ):
         self.match = match
         self.catalog = catalog
         self.ra = ra
@@ -15,9 +17,7 @@ class ModelCrossMatch:
         self.column_units = column_units
         self.map_ra_dec = map_ra_dec
 
-
     def check_ra_dec_instance(self, df):
-
         matches = []
         # append distance unit
         self.column_units = np.append(self.column_units, "arcsec")
@@ -27,7 +27,9 @@ class ModelCrossMatch:
         # this object is a list with a dictionary containing
         # the ra, dec of the closest matching object
         try:
-            closest_ra_dec = self.get_min_distance(matches, self.catalog, self.ra, self.dec)
+            closest_ra_dec = self.get_min_distance(
+                matches, self.catalog, self.ra, self.dec
+            )
         except BaseException:
             return {}
         # get all the fields of the matching object
@@ -51,7 +53,6 @@ class ModelCrossMatch:
                 break
 
         return result
-
 
     def get_min_distance(self, matches, catalog, ra, dec):
         """
@@ -91,7 +92,6 @@ class ModelCrossMatch:
             return list(filter(lambda x: x["distance"] == min_distance, distances))
         return None
 
-
     def format_result_with_units(self, result):
         results_list = []
         result_with_units = {}
@@ -109,17 +109,16 @@ class ModelCrossMatch:
                 result_with_units = {
                     "attribute_name": key,
                     "unit": unit,
-                    "value": None if np.isnan(value) else value
+                    "value": None if np.isnan(value) else value,
                 }
             results_list.append(result_with_units)
-        
+
         # replace inf
         for attribute in results_list:
             if attribute["value"] == np.inf:
                 attribute["value"] = "infinity"
 
         return results_list
-
 
     def unit_is_rad(self, unit):
         """
@@ -131,11 +130,10 @@ class ModelCrossMatch:
         """
         return unit == "rad"
 
-
     def return_format(self):
         try:
             # dataframe to match columns to values
-            df = pd.DataFrame(self.match, columns= self.catalog_columns)
+            df = pd.DataFrame(self.match, columns=self.catalog_columns)
             # add distance column to df
             df["distance"] = None
         except BaseException:

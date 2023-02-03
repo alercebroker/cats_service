@@ -2,3 +2,5 @@
 venv/
 src/src.egg-info
 .env
+dist/
+.coverage
