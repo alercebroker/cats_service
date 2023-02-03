@@ -54,14 +54,5 @@ class ModelConesearch:
             results.append(attribute_dict)
         return results
 
-    def return_format(self):
-        try:
-            df = pd.DataFrame(self.match, columns=self.catalog_columns)
-        except ValueError as ex:
-            return {}
-
-        df.columns = self.rename_duplicated_columns()
-        return self.replace_nan_inf_and_convert_degrees(df)
-
     def unit_is_rad(self, unit):
         return unit == "rad"

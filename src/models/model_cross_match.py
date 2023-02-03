@@ -129,15 +129,3 @@ class ModelCrossMatch:
             A boolean stating if the input units was radian or not.
         """
         return unit == "rad"
-
-    def return_format(self):
-        try:
-            # dataframe to match columns to values
-            df = pd.DataFrame(self.match, columns=self.catalog_columns)
-            # add distance column to df
-            df["distance"] = None
-        except BaseException:
-            return {}
-
-        result = self.check_ra_dec_instance(df)
-        return self.format_result_with_units(result)
