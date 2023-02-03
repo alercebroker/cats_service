@@ -3,7 +3,6 @@ from src.models.model_cross_match import ModelCrossMatch
 
 
 def parse_conesearch(match, catalog_columns, column_units):
-
     model = ModelConesearch(match, catalog_columns, column_units)
     return model.return_format()
 

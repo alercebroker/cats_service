@@ -18,7 +18,6 @@ class ModelCrossMatch:
         self.map_ra_dec = map_ra_dec
 
     def check_ra_dec_instance(self, df):
-
         matches = []
         # append distance unit
         self.column_units = np.append(self.column_units, "arcsec")

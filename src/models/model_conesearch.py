@@ -64,5 +64,4 @@ class ModelConesearch:
         return self.replace_nan_inf_and_convert_degrees(df)
 
     def unit_is_rad(self, unit):
-
         return unit == "rad"

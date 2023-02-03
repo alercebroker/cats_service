@@ -11,7 +11,6 @@ from src.controllers.constants import radius_dict, map_ra_dec
 
 
 def controller_conesearch(catalog, request):
-
     try:
         # get arguments
         catalog = catalog
@@ -27,7 +26,6 @@ def controller_conesearch(catalog, request):
 
 
 def controller_conesearch_all(request):
-
     catalogs = os.environ["CATALOGS"].split(",")
     try:
         request["ra"] = radians(float(request["ra"]))
@@ -41,7 +39,6 @@ def controller_conesearch_all(request):
 
 
 def controller_crossmatch(catalog, request):
-
     try:
         # get arguments
         catalog = catalog
@@ -56,7 +53,6 @@ def controller_crossmatch(catalog, request):
 
 
 def controller_crossmatch_all(request):
-
     catalogs = os.environ["CATALOGS"].split(",")
     try:
         request["ra"] = radians(float(request["ra"]))
