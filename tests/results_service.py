@@ -9,7 +9,9 @@ catalogs = [
     "SWIREz",
 ]
 
-distance_result = [{'distance': 71.86145556680134, 'ra': 0.0177356731, 'dec': -0.000204058073}]
+distance_result = [
+    {"distance": 71.86145556680134, "ra": 0.0177356731, "dec": -0.000204058073}
+]
 
 
 # primer caso del conesearch catalog = "FIRST", ra = 1, dec = 0, radius = 200
@@ -86,7 +88,7 @@ service_cone_search_all_result1 = {
         {"attribute_name": "errRA", "unit": "deg", "values": [0.000541666655437425]},
     ],
     "ROSATfsc": [],
-    "SWIREz": []
+    "SWIREz": [],
 }
 
 # segundo caso del conesearch_all ra = 0, dec = 0, radius = 0 (catalogos vacios, este caso engloba numeros negativos o 0)
@@ -108,7 +110,7 @@ service_cone_search_all_result2 = {
     "FIRST": [],
     "NVSS": [],
     "ROSATfsc": [],
-    "SWIREz": []
+    "SWIREz": [],
 }
 
 
@@ -210,9 +212,8 @@ service_cross_match_all_result1 = {
         {"attribute_name": "distance", "value": 71.04428164620468, "unit": "arcsec"},
     ],
     "ROSATfsc": [],
-    "SWIREz": []
+    "SWIREz": [],
 }
-
 
 
 service_cross_match_result2_1 = []
@@ -232,7 +233,7 @@ service_cross_match_all_result2 = {
     "FIRST": [],
     "NVSS": [],
     "ROSATfsc": [],
-    "SWIREz": []
+    "SWIREz": [],
 }
 
 
@@ -253,5 +254,5 @@ service_cross_match_all_result3 = {
     "FIRST": [],
     "NVSS": [],
     "ROSATfsc": [],
-    "SWIREz": []
+    "SWIREz": [],
 }
