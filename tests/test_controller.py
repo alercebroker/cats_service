@@ -26,7 +26,7 @@ class TestControllerConesearch(TestCase):
             cone_search_result1_3,
         )
         result = controller_conesearch(
-            catalog="FIRST", request={"ra": 1, "dec": 0, "radius": 200}
+            params={"catalog": "FIRST", "ra": 1, "dec": 0, "radius": 200}
         )
         result = round_controller_conesearch(result)
         controller_conesearch_result1_1 = round_controller_conesearch(
@@ -42,7 +42,7 @@ class TestControllerConesearch(TestCase):
             cone_search_result2_3,
         )
         result = controller_conesearch(
-            catalog="FIRST", request={"ra": 1, "dec": 0, "radius": 0}
+            request={"catalog": "FIRST", "ra": 1, "dec": 0, "radius": 0}
         )
         result = round_controller_conesearch(result)
         controller_conesearch_result2_1 = round_controller_conesearch(
@@ -64,7 +64,7 @@ class TestControllerCrossmatch(TestCase):
             cone_search_result1_3,
         )
         result = controller_crossmatch(
-            catalog="FIRST", request={"ra": 1, "dec": 0, "radius": 200}
+            request={"catalog": "FIRST", "ra": 1, "dec": 0, "radius": 200}
         )
 
         result = round_controller_crossmatch(result)
@@ -83,7 +83,7 @@ class TestControllerCrossmatch(TestCase):
             cone_search_result2_3,
         )
         result = controller_crossmatch(
-            catalog="FIRST", request={"ra": 1, "dec": 0, "radius": 0}
+            request={"catalog": "FIRST", "ra": 1, "dec": 0, "radius": 0}
         )
         result = round_controller_crossmatch(result)
         controller_crossmatch_result2_1 = round_controller_crossmatch(
@@ -100,7 +100,7 @@ class TestControllerCrossmatch(TestCase):
             cone_search_result2_3,
         )
         result = controller_crossmatch(
-            catalog="FIRST", request={"ra": 1, "dec": 0, "radius": None}
+            request={"catalog": "FIRST", "ra": 1, "dec": 0, "radius": None}
         )
         result = round_controller_crossmatch(result)
         controller_crossmatch_result3_1 = round_controller_crossmatch(
