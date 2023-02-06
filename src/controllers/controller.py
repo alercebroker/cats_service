@@ -31,7 +31,7 @@ def controller_conesearch_all(params):
     return service_get_conesearch_all(catalogs, params, path)
 
 
-def controller_crossmatch(catalog, params):
+def controller_crossmatch(params):
     # get arguments
     catalog = params["catalog"]
     # convert ra and dec to radians
