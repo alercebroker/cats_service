@@ -18,7 +18,6 @@ class ModelCrossMatch:
         self.map_ra_dec = map_ra_dec
 
     def check_ra_dec_instance(self, df):
-
         matches = []
         # append distance unit
         self.column_units = np.append(self.column_units, "arcsec")
@@ -94,30 +93,32 @@ class ModelCrossMatch:
         return None
 
     def format_result_with_units(self, result):
+        results_list = []
         result_with_units = {}
+
         for key, unit in zip(result, self.column_units):
             value = result[key]
             if self.unit_is_rad(unit):
                 # convert unit to deg
-                result_with_units[key] = {
+                result_with_units = {
+                    "attribute_name": key,
+                    "unit": "deg",
                     "value": None if np.isnan(value) else degrees(value),
-                    "units": "deg",
                 }
             else:
-                result_with_units[key] = {
+                result_with_units = {
+                    "attribute_name": key,
+                    "unit": unit,
                     "value": None if np.isnan(value) else value,
-                    "units": unit,
                 }
+            results_list.append(result_with_units)
+
         # replace inf
-        result_with_units = {
-            key: (
-                val
-                if val["value"] != np.inf
-                else {"value": "infinity", "unit": val["unit"]}
-            )
-            for key, val in result_with_units.items()
-        }
-        return result_with_units
+        for attribute in results_list:
+            if attribute["value"] == np.inf:
+                attribute["value"] = "infinity"
+
+        return results_list
 
     def unit_is_rad(self, unit):
         """
@@ -128,15 +129,3 @@ class ModelCrossMatch:
             A boolean stating if the input units was radian or not.
         """
         return unit == "rad"
-
-    def return_format(self):
-        try:
-            # dataframe to match columns to values
-            df = pd.DataFrame(self.match, columns=self.catalog_columns)
-            # add distance column to df
-            df["distance"] = None
-        except BaseException:
-            return {}
-
-        result = self.check_ra_dec_instance(df)
-        return self.format_result_with_units(result)
