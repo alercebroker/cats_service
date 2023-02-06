@@ -7,7 +7,14 @@ from math import radians, degrees
 
 class ModelCrossMatch:
     def __init__(
-        self, match, catalog, ra, dec, catalog_columns, column_units, map_ra_dec
+        self,
+        match: list,
+        catalog: list,
+        ra: float,
+        dec: float,
+        catalog_columns: list,
+        column_units: list,
+        map_ra_dec: dict,
     ):
         self.match = match
         self.catalog = catalog
@@ -17,7 +24,17 @@ class ModelCrossMatch:
         self.column_units = column_units
         self.map_ra_dec = map_ra_dec
 
-    def check_ra_dec_instance(self, df):
+    def add_distance_value(self, df):
+        """
+        This function adds the distance attribute for the given catalog.
+        It uses the 'get_min_distance' function for this.
+
+        Args:
+            df (pd.DataFrame): contains the matches and catalog columns.
+
+        Returns:
+            A dict that contains the distance value.
+        """
         matches = []
         # append distance unit
         self.column_units = np.append(self.column_units, "arcsec")
@@ -93,6 +110,16 @@ class ModelCrossMatch:
         return None
 
     def format_result_with_units(self, result):
+        """
+        This function replaces nan values to None, and inf values to "infinity".
+        If the unit is in radians it converts the value from radians to degrees.
+
+        Args:
+            result (dict): contains the matches and catalog columns.
+
+        Returns:
+            A list containing each attribute name, its unit and its value.
+        """
         results_list = []
         result_with_units = {}
 

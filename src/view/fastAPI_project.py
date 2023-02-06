@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI, status
+from fastapi import FastAPI, status, Query, Depends
 from fastapi.responses import HTMLResponse
 from src.controllers.controller import (
     controller_conesearch,
@@ -7,7 +7,6 @@ from src.controllers.controller import (
     controller_crossmatch,
     controller_crossmatch_all,
 )
-from typing import Union
 from src.presentation.response_models import (
     CrossMatchModel,
     CrossMatchAllModel,
@@ -16,9 +15,14 @@ from src.presentation.response_models import (
 )
 from starlette_prometheus import metrics, PrometheusMiddleware
 import os
+from pydantic.dataclasses import dataclass
 
 
-app = FastAPI(root_path=os.getenv("ROOT_PATH", "/"))
+app = FastAPI(
+    description="Cats Service provides conesearch and cross-match on different catalogs. It is based on catsHTM.",
+    title="ALeRCE CatsHTM Service",
+    root_path=os.getenv("ROOT_PATH", "/"),
+)
 
 app.add_middleware(PrometheusMiddleware)
 app.add_route("/metrics/", metrics)
@@ -45,68 +49,82 @@ def welcome():
               </html>"""
 
 
+@dataclass
+class ConesearchInput:
+    catalog: str = Query(
+        description="name of the catalog, e.g., FIRST, AAVSO_VSX, AKARI"
+    )
+    ra: float = Query(description="ra coordinate of the point to search in degrees.")
+    dec: float = Query(description="dec coordinate of the point to search in degrees.")
+    radius: float = Query(description="radius of the point to search in arsec")
+
+
 @app.get("/conesearch", response_model=list[ConeSearchModel])
-def conesearch(catalog: str, ra: float, dec: float, radius: float):
+def conesearch(params: ConesearchInput = Depends()):
     """
     This function returns the cone search result, it uses an auxiliary
     function to generate the result.
-
-    Args:
-        A Request
-
-    Returns:
-        The JSON representation of the cone search result for a single catalog.
     """
-    request = {"ra": ra, "dec": dec, "radius": radius}
 
-    return controller_conesearch(catalog, request)
+    return controller_conesearch(params)
+
+
+@dataclass
+class ConesearchAllInput:
+    ra: float = Query(description="ra coordinate of the point to search in degrees.")
+    dec: float = Query(description="dec coordinate of the point to search in degrees.")
+    radius: float = Query(description="radius of the point to search in arsec")
 
 
 @app.get("/conesearch_all", response_model=ConeSearchAllModel)
-def conesearch_all(ra: float, dec: float, radius: float):
+def conesearch_all(params: ConesearchAllInput = Depends()):
     """
     This function returns the result of running a cone search over all
     available catalogs. It uses the 'conesearch' function to generate this
     results.
-
-    Args:
-        A request
-
-    Returns:
-        The JSON representation of the cone search results for all catalogs.
     """
-    request = {"ra": ra, "dec": dec, "radius": radius}
-    return controller_conesearch_all(request)
+    return controller_conesearch_all(params)
+
+
+@dataclass
+class CrossmatchInput:
+    catalog: str = Query(
+        description="name of the catalog, e.g., FIRST, AAVSO_VSX, AKARI"
+    )
+    ra: float = Query(description="ra coordinate of the point to search in degrees.")
+    dec: float = Query(description="dec coordinate of the point to search in degrees.")
+    radius: float | None = Query(
+        None,
+        description="radius of the point to search in arsec, if not provided, the default value for that catalog is used.",
+    )
 
 
 @app.get("/crossmatch", response_model=list[CrossMatchModel])
-def crossmatch(catalog: str, ra: float, dec: float, radius: Union[float, None] = None):
+def crossmatch(params: CrossmatchInput = Depends()):
     """
     This function returns the result of running a crossmatch over one catalog.
     It uses an auxiliary function to compute the results.
-
-    Args:
-        A request
-    Returns:
-        The JSON representation of the crossmatch result.
     """
-    request = {"ra": ra, "dec": dec, "radius": radius}
+    return controller_crossmatch(params)
 
-    return controller_crossmatch(catalog, request)
+
+@dataclass
+class CrossmatchAllInput:
+    ra: float = Query(description="ra coordinate of the point to search in degrees.")
+    dec: float = Query(description="dec coordinate of the point to search in degrees.")
+    radius: float | None = Query(
+        None,
+        description="radius of the point to search in arsec, if not provided, the default value for that catalog is used.",
+    )
 
 
 @app.get("/crossmatch_all", response_model=CrossMatchAllModel)
-def crossmatch_all(ra: float, dec: float, radius: Union[float, None] = None):
+def crossmatch_all(params: CrossmatchAllInput = Depends()):
     """
-    This function returns the crossmatch result for all catalogs.
-
-    Args:
-        A request
-    Returns:
-        The JSON representation of the crossmatch result for all catalogs.
+    This function returns the result of running a crossmatch over all
+    available catalogs.
     """
-    request = {"ra": ra, "dec": dec, "radius": radius}
-    return controller_crossmatch_all(request)
+    return controller_crossmatch_all(params)
 
 
 if __name__ == "__main__":
