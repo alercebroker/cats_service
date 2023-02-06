@@ -4,12 +4,18 @@ from math import radians, degrees
 
 
 class ModelConesearch:
-    def __init__(self, match, catalog_columns, column_units):
+    def __init__(self, match: list, catalog_columns: list, column_units: list):
         self.match = match
         self.catalog_columns = catalog_columns
         self.column_units = column_units
 
     def rename_duplicated_columns(self):
+        """
+        This function search for and rename duplicated catalog columns.
+
+        Returns
+            A list with the renamed columns.
+        """
         duplicated_columns = [
             col
             for col in self.catalog_columns
@@ -25,6 +31,16 @@ class ModelConesearch:
         return self.catalog_columns
 
     def replace_nan_inf_and_convert_degrees(self, df):
+        """
+        This function replaces nan values to None, and inf values to "infinity".
+        If the unit is in degrees it converts the value to it.
+
+        Args:
+            df (pd.DataFrame): contains the matches and catalog columns.
+
+        Returns:
+            A list containing each attribute name, its unit and values.
+        """
         results = []
         for column, unit in zip(self.catalog_columns, self.column_units):
             attribute_dict = {}
@@ -55,4 +71,11 @@ class ModelConesearch:
         return results
 
     def unit_is_rad(self, unit):
+        """
+        Checks if unit is rad, and returns True or False accordingly.
+        Args:
+            unit (string): the unit.
+        Returns:
+            A boolean stating if the input units was radian or not.
+        """
         return unit == "rad"

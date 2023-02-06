@@ -9,44 +9,43 @@ from src.services.service import (
 from src.controllers.constants import radius_dict, map_ra_dec
 
 
-def controller_conesearch(catalog, request):
+def controller_conesearch(params):
     # get arguments
-    catalog = catalog
+    catalog = params["catalog"]
     # convert ra and dec to radians
-    request["ra"] = radians(float(request["ra"]))
-    request["dec"] = radians(float(request["dec"]))
-    request["radius"] = float(request["radius"])
+    params["ra"] = radians(params["ra"])
+    params["dec"] = radians(params["dec"])
+    params["radius"] = params["radius"]
     path = os.environ["DATA_PATH"]
 
-    return service_get_conesearch(catalog, request, path)
+    return service_get_conesearch(catalog, params, path)
 
 
-def controller_conesearch_all(request):
+def controller_conesearch_all(params):
     catalogs = os.environ["CATALOGS"].split(",")
-
-    request["ra"] = radians(float(request["ra"]))
-    request["dec"] = radians(float(request["dec"]))
-    request["radius"] = float(request["radius"])
+    params["ra"] = radians(params["ra"])
+    params["dec"] = radians(params["dec"])
+    params["radius"] = params["radius"]
     path = os.environ["DATA_PATH"]
 
-    return service_get_conesearch_all(catalogs, request, path)
+    return service_get_conesearch_all(catalogs, params, path)
 
 
-def controller_crossmatch(catalog, request):
+def controller_crossmatch(catalog, params):
     # get arguments
-    catalog = catalog
+    catalog = params["catalog"]
     # convert ra and dec to radians
-    request["ra"] = radians(float(request["ra"]))
-    request["dec"] = radians(float(request["dec"]))
+    params["ra"] = radians(params["ra"])
+    params["dec"] = radians(params["dec"])
     path = os.environ["DATA_PATH"]
 
-    return service_get_crossmatch(catalog, request, path, map_ra_dec, radius_dict)
+    return service_get_crossmatch(catalog, params, path, map_ra_dec, radius_dict)
 
 
-def controller_crossmatch_all(request):
+def controller_crossmatch_all(params):
     catalogs = os.environ["CATALOGS"].split(",")
-    request["ra"] = radians(float(request["ra"]))
-    request["dec"] = radians(float(request["dec"]))
+    params["ra"] = radians(params["ra"])
+    params["dec"] = radians(params["dec"])
     path = os.environ["DATA_PATH"]
 
-    return service_get_crossmatch_all(catalogs, request, path, map_ra_dec, radius_dict)
+    return service_get_crossmatch_all(catalogs, params, path, map_ra_dec, radius_dict)

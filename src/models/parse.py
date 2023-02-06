@@ -32,6 +32,5 @@ def parse_crossmatch(
     except BaseException:
         return {}
 
-    result = model.check_ra_dec_instance(df)
-
+    result = model.add_distance_value(df)
     return model.format_result_with_units(result)

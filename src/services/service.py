@@ -3,6 +3,18 @@ from ..models.parse import parse_conesearch, parse_crossmatch
 
 
 def service_get_conesearch(catalog, request, path):
+    """
+    This function returns all the conesearch matches, given a request, for a
+    specific catalog. It uses the catsHTM conesearch function for this.
+
+    Args:
+        catalog (string): name of the catalog.
+        request (dict): contains the ra, dec, and radius.
+        path (string): path of the catalog.
+
+    Returns:
+        A list containing all the matches.
+    """
     match, catalog_columns, column_units = cone_search(
         catalog, request["ra"], request["dec"], request["radius"], path
     )
@@ -14,6 +26,19 @@ def service_get_conesearch(catalog, request, path):
 
 
 def service_get_conesearch_all(catalogs, request, path):
+    """
+    This functions returns the conesearch matches, given a request,
+    for all catalogs. It uses the 'service_get_conesearch' function
+    to generate this result.
+
+    Args:
+        catalogs (list): name of the available catalogs.
+        request (dict): contains the ra, dec, and radius.
+        path (string): path of the catalogs.
+
+    Returns:
+        A dictionary containing the matches for each catalog.
+    """
     # append the results of each catalog
     final_result = {}
     for catalog in catalogs:
@@ -25,6 +50,20 @@ def service_get_conesearch_all(catalogs, request, path):
 
 
 def service_get_crossmatch(catalog, request, path, map_ra_dec, radius_dict):
+    """
+    This function returns all the crossmatch matches, given a request, for a
+    specific catalog. It uses the catsHTM conesearch function for this.
+
+    Args:
+        catalog (string): name of the catalog.
+        request (dict): contains the ra, dec, and radius.
+        path (string): path of the catalog.
+        map_ra_dec (dict): map for request ra, dec to adjust to catalog ra, dec.
+        radius_dict (dict): contains the default radius to use on each catalog.
+
+    Returns:
+        A list containing all the matches.
+    """
     if request["radius"] == None:
         request["radius"] = float(radius_dict.get(catalog, 50))
 
@@ -47,6 +86,21 @@ def service_get_crossmatch(catalog, request, path, map_ra_dec, radius_dict):
 
 
 def service_get_crossmatch_all(catalogs, request, path, map_ra_dec, radius_dict):
+    """
+    This functions returns the crossmatch matches, given a request,
+    for all catalogs. It uses the 'service_get_crossmatch' function
+    to generate this result.
+
+    Args:
+        catalogs (list): name of the available catalogs.
+        request (dict): contains the ra, dec, and radius.
+        path (string): path of the catalogs.
+        map_ra_dec (dict): map for request ra, dec to adjust to catalog ra, dec.
+        radius_dict (dict): contains the default radius to use on each catalog.
+
+    Returns:
+        A dictionary containing the matches for each catalog.
+    """
     final_result = {}
     for catalog in catalogs:
         if request["radius"] == None:
