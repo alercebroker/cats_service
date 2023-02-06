@@ -33,7 +33,7 @@ class ModelConesearch:
     def replace_nan_inf_and_convert_degrees(self, df):
         """
         This function replaces nan values to None, and inf values to "infinity".
-        If the unit is in degrees it converts the value to it.
+        If the unit is in radians it converts the value from radians to degrees.
 
         Args:
             df (pd.DataFrame): contains the matches and catalog columns.

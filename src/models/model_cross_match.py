@@ -112,7 +112,7 @@ class ModelCrossMatch:
     def format_result_with_units(self, result):
         """
         This function replaces nan values to None, and inf values to "infinity".
-        If the unit is in degrees it converts the value to it.
+        If the unit is in radians it converts the value from radians to degrees.
 
         Args:
             result (dict): contains the matches and catalog columns.
