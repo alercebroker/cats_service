@@ -33,7 +33,7 @@ class TestServiceConesearch(TestCase):
         )
 
         result = service_get_conesearch(
-            request=ConesearchInput(
+            params=ConesearchInput(
                 catalog="FIRST",
                 ra=radians(float(1)),
                 dec=radians(float(0)),
@@ -54,7 +54,7 @@ class TestServiceConesearch(TestCase):
             cone_search_result2_3,
         )
         result = service_get_conesearch(
-            request=ConesearchInput(
+            params=ConesearchInput(
                 catalog="FIRST",
                 ra=radians(float(1)),
                 dec=radians(float(0)),
@@ -80,7 +80,7 @@ class TestServiceConesearchAll(TestCase):
         ]
         result = service_get_conesearch_all(
             catalogs,
-            request=ConesearchAllInput(
+            params=ConesearchAllInput(
                 ra=radians(float(1)),
                 dec=radians(float(0)),
                 radius=(float(200)),
@@ -108,7 +108,7 @@ class TestServiceConesearchAll(TestCase):
         ]
         result = service_get_conesearch_all(
             catalogs,
-            request=ConesearchAllInput(
+            params=ConesearchAllInput(
                 ra=radians(float(1)),
                 dec=radians(float(0)),
                 radius=(float(0)),
@@ -132,7 +132,7 @@ class TestServiceCrossmach(TestCase):
         )
 
         result = service_get_crossmatch(
-            request=CrossmatchInput(
+            params=CrossmatchInput(
                 catalog="FIRST",
                 ra=radians(float(1)),
                 dec=radians(float(0)),
@@ -156,7 +156,7 @@ class TestServiceCrossmach(TestCase):
             cross_match_result2_3,
         )
         result = service_get_crossmatch(
-            request=CrossmatchInput(
+            params=CrossmatchInput(
                 catalog="FIRST",
                 ra=radians(float(1)),
                 dec=radians(float(0)),
@@ -180,7 +180,7 @@ class TestServiceCrossmach(TestCase):
             cross_match_result3_3,
         )
         result = service_get_crossmatch(
-            request=CrossmatchInput(
+            params=CrossmatchInput(
                 catalog="FIRST",
                 ra=radians(float(1)),
                 dec=radians(float(0)),
@@ -211,7 +211,7 @@ class TestServiceCrossmatchAll(TestCase):
         ]
         result = service_get_crossmatch_all(
             catalogs,
-            request=CrossmatchAllInput(
+            params=CrossmatchAllInput(
                 ra=radians(float(1)),
                 dec=radians(float(0)),
                 radius=(float(200)),
@@ -240,7 +240,7 @@ class TestServiceCrossmatchAll(TestCase):
         ]
         result = service_get_crossmatch_all(
             catalogs,
-            request=CrossmatchAllInput(
+            params=CrossmatchAllInput(
                 ra=radians(float(1)),
                 dec=radians(float(0)),
                 radius=(float(0)),
@@ -269,7 +269,7 @@ class TestServiceCrossmatchAll(TestCase):
         ]
         result = service_get_crossmatch_all(
             catalogs,
-            request=CrossmatchAllInput(
+            params=CrossmatchAllInput(
                 ra=radians(float(1)),
                 dec=radians(float(0)),
                 radius=None,

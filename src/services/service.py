@@ -1,22 +1,21 @@
 from catsHTM import cone_search
-from ..models.parse import parse_conesearch, parse_crossmatch
+from src.models.parse import parse_conesearch, parse_crossmatch
 
 
-def service_get_conesearch(request, path):
+def service_get_conesearch(params, path):
     """
     This function returns all the conesearch matches, given a request, for a
     specific catalog. It uses the catsHTM conesearch function for this.
 
     Args:
-        catalog (string): name of the catalog.
-        request (dict): contains the ra, dec, and radius.
+        params (ConesearchInput): contains the catalog, ra, dec, and radius.
         path (string): path of the catalog.
 
     Returns:
         A list containing all the matches.
     """
     match, catalog_columns, column_units = cone_search(
-        request.catalog, request.ra, request.dec, request.radius, path
+        params.catalog, params.ra, params.dec, params.radius, path
     )
 
     if len(match) != 0:
@@ -25,7 +24,7 @@ def service_get_conesearch(request, path):
         return []
 
 
-def service_get_conesearch_all(catalogs, request, path):
+def service_get_conesearch_all(catalogs, params, path):
     """
     This functions returns the conesearch matches, given a request,
     for all catalogs. It uses the 'service_get_conesearch' function
@@ -33,7 +32,7 @@ def service_get_conesearch_all(catalogs, request, path):
 
     Args:
         catalogs (list): name of the available catalogs.
-        request (dict): contains the ra, dec, and radius.
+        params (ConesearchAllInput): contains the ra, dec, and radius.
         path (string): path of the catalogs.
 
     Returns:
@@ -42,41 +41,40 @@ def service_get_conesearch_all(catalogs, request, path):
     # append the results of each catalog
     final_result = {}
     for catalog in catalogs:
-        request.catalog = catalog
-        partial_result = service_get_conesearch(request, path)
+        params.catalog = catalog
+        partial_result = service_get_conesearch(params, path)
         if partial_result != {}:
             final_result[catalog] = partial_result
 
     return final_result
 
 
-def service_get_crossmatch(request, path, map_ra_dec, radius_dict):
+def service_get_crossmatch(params, path, map_ra_dec, radius_dict):
     """
     This function returns all the crossmatch matches, given a request, for a
     specific catalog. It uses the catsHTM conesearch function for this.
 
     Args:
-        catalog (string): name of the catalog.
-        request (dict): contains the ra, dec, and radius.
+        params (CrossmatchInput): contains the catalog, ra, dec, and radius.
         path (string): path of the catalog.
-        map_ra_dec (dict): map for request ra, dec to adjust to catalog ra, dec.
+        map_ra_dec (dict): map for params ra, dec to adjust to catalog ra, dec.
         radius_dict (dict): contains the default radius to use on each catalog.
 
     Returns:
         A list containing all the matches.
     """
-    if request.radius == None:
-        request.radius = float(radius_dict.get(request.catalog, 50))
+    if params.radius == None:
+        params.radius = float(radius_dict.get(params.catalog, 50))
 
     match, catalog_columns, column_units = cone_search(
-        request.catalog, request.ra, request.dec, request.radius, path
+        params.catalog, params.ra, params.dec, params.radius, path
     )
     if len(match) != 0:
         return parse_crossmatch(
             match,
-            request.catalog,
-            request.ra,
-            request.ra,
+            params.catalog,
+            params.ra,
+            params.ra,
             catalog_columns,
             column_units,
             map_ra_dec,
@@ -86,7 +84,7 @@ def service_get_crossmatch(request, path, map_ra_dec, radius_dict):
         return []
 
 
-def service_get_crossmatch_all(catalogs, request, path, map_ra_dec, radius_dict):
+def service_get_crossmatch_all(catalogs, params, path, map_ra_dec, radius_dict):
     """
     This functions returns the crossmatch matches, given a request,
     for all catalogs. It uses the 'service_get_crossmatch' function
@@ -94,9 +92,9 @@ def service_get_crossmatch_all(catalogs, request, path, map_ra_dec, radius_dict)
 
     Args:
         catalogs (list): name of the available catalogs.
-        request (dict): contains the ra, dec, and radius.
+        params (CrossmatchAllInput): contains the ra, dec, and radius.
         path (string): path of the catalogs.
-        map_ra_dec (dict): map for request ra, dec to adjust to catalog ra, dec.
+        map_ra_dec (dict): map for params ra, dec to adjust to catalog ra, dec.
         radius_dict (dict): contains the default radius to use on each catalog.
 
     Returns:
@@ -104,8 +102,8 @@ def service_get_crossmatch_all(catalogs, request, path, map_ra_dec, radius_dict)
     """
     final_result = {}
     for catalog in catalogs:
-        request.catalog = catalog
-        partial_result = service_get_crossmatch(request, path, map_ra_dec, radius_dict)
+        params.catalog = catalog
+        partial_result = service_get_crossmatch(params, path, map_ra_dec, radius_dict)
         # append the partial result if it is not empty
         if partial_result != {}:
             final_result[catalog] = partial_result
