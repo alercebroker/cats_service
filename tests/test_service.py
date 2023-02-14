@@ -15,7 +15,12 @@ from tests.utils import (
     round_cone_search_all,
 )
 from src.models.model_cross_match import ModelCrossMatch
-from src.view.fastAPI_project import ConesearchInput, CrossmatchInput
+from src.view.fastAPI_project import (
+    ConesearchInput,
+    CrossmatchInput,
+    ConesearchAllInput,
+    CrossmatchAllInput,
+)
 
 
 class TestServiceConesearch(TestCase):
@@ -75,8 +80,7 @@ class TestServiceConesearchAll(TestCase):
         ]
         result = service_get_conesearch_all(
             catalogs,
-            request=ConesearchInput(
-                catalog="",
+            request=ConesearchAllInput(
                 ra=radians(float(1)),
                 dec=radians(float(0)),
                 radius=(float(200)),
@@ -104,8 +108,7 @@ class TestServiceConesearchAll(TestCase):
         ]
         result = service_get_conesearch_all(
             catalogs,
-            request=ConesearchInput(
-                catalog="",
+            request=ConesearchAllInput(
                 ra=radians(float(1)),
                 dec=radians(float(0)),
                 radius=(float(0)),
@@ -208,8 +211,7 @@ class TestServiceCrossmatchAll(TestCase):
         ]
         result = service_get_crossmatch_all(
             catalogs,
-            request=CrossmatchInput(
-                catalog="",
+            request=CrossmatchAllInput(
                 ra=radians(float(1)),
                 dec=radians(float(0)),
                 radius=(float(200)),
@@ -238,8 +240,7 @@ class TestServiceCrossmatchAll(TestCase):
         ]
         result = service_get_crossmatch_all(
             catalogs,
-            request=CrossmatchInput(
-                catalog="",
+            request=CrossmatchAllInput(
                 ra=radians(float(1)),
                 dec=radians(float(0)),
                 radius=(float(0)),
@@ -268,8 +269,7 @@ class TestServiceCrossmatchAll(TestCase):
         ]
         result = service_get_crossmatch_all(
             catalogs,
-            request=CrossmatchInput(
-                catalog="",
+            request=CrossmatchAllInput(
                 ra=radians(float(1)),
                 dec=radians(float(0)),
                 radius=None,
