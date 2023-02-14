@@ -11,13 +11,12 @@ from src.controllers.constants import radius_dict, map_ra_dec
 
 def controller_conesearch(params):
     # get arguments
-    catalog = params.catalog
     # convert ra and dec to radians
     params.ra = radians(params.ra)
     params.dec = radians(params.dec)
     path = os.environ["DATA_PATH"]
 
-    return service_get_conesearch(catalog, params, path)
+    return service_get_conesearch(params, path)
 
 
 def controller_conesearch_all(params):
@@ -31,13 +30,12 @@ def controller_conesearch_all(params):
 
 def controller_crossmatch(params):
     # get arguments
-    catalog = params.catalog
     # convert ra and dec to radians
     params.ra = radians(params.ra)
     params.dec = radians(params.dec)
     path = os.environ["DATA_PATH"]
 
-    return service_get_crossmatch(catalog, params, path, map_ra_dec, radius_dict)
+    return service_get_crossmatch(params, path, map_ra_dec, radius_dict)
 
 
 def controller_crossmatch_all(params):

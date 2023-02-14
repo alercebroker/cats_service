@@ -2,7 +2,7 @@ from catsHTM import cone_search
 from ..models.parse import parse_conesearch, parse_crossmatch
 
 
-def service_get_conesearch(catalog, request, path):
+def service_get_conesearch(request, path):
     """
     This function returns all the conesearch matches, given a request, for a
     specific catalog. It uses the catsHTM conesearch function for this.
@@ -16,7 +16,7 @@ def service_get_conesearch(catalog, request, path):
         A list containing all the matches.
     """
     match, catalog_columns, column_units = cone_search(
-        catalog, request.ra, request.dec, request.radius, path
+        request.catalog, request.ra, request.dec, request.radius, path
     )
 
     if len(match) != 0:
@@ -42,14 +42,15 @@ def service_get_conesearch_all(catalogs, request, path):
     # append the results of each catalog
     final_result = {}
     for catalog in catalogs:
-        partial_result = service_get_conesearch(catalog, request, path)
+        request.catalog = catalog
+        partial_result = service_get_conesearch(request, path)
         if partial_result != {}:
             final_result[catalog] = partial_result
 
     return final_result
 
 
-def service_get_crossmatch(catalog, request, path, map_ra_dec, radius_dict):
+def service_get_crossmatch(request, path, map_ra_dec, radius_dict):
     """
     This function returns all the crossmatch matches, given a request, for a
     specific catalog. It uses the catsHTM conesearch function for this.
@@ -65,15 +66,15 @@ def service_get_crossmatch(catalog, request, path, map_ra_dec, radius_dict):
         A list containing all the matches.
     """
     if request.radius == None:
-        request.radius = float(radius_dict.get(catalog, 50))
+        request.radius = float(radius_dict.get(request.catalog, 50))
 
     match, catalog_columns, column_units = cone_search(
-        catalog, request.ra, request.dec, request.radius, path
+        request.catalog, request.ra, request.dec, request.radius, path
     )
     if len(match) != 0:
         return parse_crossmatch(
             match,
-            catalog,
+            request.catalog,
             request.ra,
             request.ra,
             catalog_columns,
@@ -103,14 +104,8 @@ def service_get_crossmatch_all(catalogs, request, path, map_ra_dec, radius_dict)
     """
     final_result = {}
     for catalog in catalogs:
-        if request.radius == None:
-            request_aux = request
-            request_aux.radius = float(radius_dict.get(catalog, 50))
-        else:
-            request_aux = request
-        partial_result = service_get_crossmatch(
-            catalog, request_aux, path, map_ra_dec, radius_dict
-        )
+        request.catalog = catalog
+        partial_result = service_get_crossmatch(request, path, map_ra_dec, radius_dict)
         # append the partial result if it is not empty
         if partial_result != {}:
             final_result[catalog] = partial_result
