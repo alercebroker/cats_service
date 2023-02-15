@@ -58,7 +58,6 @@ def service_get_conesearch_all(conesearch_all_dto: ConesearchAllDto):
     # append the results of each catalog
     final_result = {}
     for catalog in conesearch_all_dto.catalogs:
-
         conesearch_dto = ConesearchDto(
             catalog,
             conesearch_all_dto.ra,

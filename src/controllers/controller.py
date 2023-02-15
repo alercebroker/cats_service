@@ -31,7 +31,6 @@ def controller_conesearch(params):
 
 
 def controller_conesearch_all(params):
-
     conesearch_all_dto = ConesearchAllDto(
         os.environ["CATALOGS"].split(","),
         radians(params.ra),
