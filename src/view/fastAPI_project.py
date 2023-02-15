@@ -56,7 +56,7 @@ class ConesearchInput:
     )
     ra: float = Query(description="ra coordinate of the point to search in degrees.")
     dec: float = Query(description="dec coordinate of the point to search in degrees.")
-    radius: float = Query(description="radius of the point to search in arsec")
+    radius: float = Query(description="radius of the point to search in arsec.")
 
 
 @app.get("/conesearch", response_model=list[ConeSearchModel])
@@ -73,7 +73,7 @@ def conesearch(params: ConesearchInput = Depends()):
 class ConesearchAllInput:
     ra: float = Query(description="ra coordinate of the point to search in degrees.")
     dec: float = Query(description="dec coordinate of the point to search in degrees.")
-    radius: float = Query(description="radius of the point to search in arsec")
+    radius: float = Query(description="radius of the point to search in arsec.")
 
 
 @app.get("/conesearch_all", response_model=ConeSearchAllModel)

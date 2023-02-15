@@ -1,55 +1,25 @@
 from catsHTM import cone_search
 from src.models.parse import parse_conesearch, parse_crossmatch
+from src.services.dtos import (
+    ConesearchDto,
+    ConesearchAllDto,
+    CrossmatchDto,
+    CrossmatchAllDto,
+)
 
 
-class ConesearchDto:
-    def __init__(self, catalog, ra, dec, radius, path):
-        self.catalog = catalog
-        self.ra = ra
-        self.dec = dec
-        self.radius = radius
-        self.path = path
-
-
-class ConesearchAllDto:
-    def __init__(self, catalogs, ra, dec, radius, path):
-        self.catalogs = catalogs
-        self.ra = ra
-        self.dec = dec
-        self.radius = radius
-        self.path = path
-
-
-class CrossmatchDto:
-    def __init__(self, catalog, ra, dec, radius, path, map_ra_dec, radius_dict):
-        self.catalog = catalog
-        self.ra = ra
-        self.dec = dec
-        self.radius = radius
-        self.path = path
-        self.map_ra_dec = map_ra_dec
-        self.radius_dict = radius_dict
-
-
-class CrossmatchAllDto:
-    def __init__(self, catalogs, ra, dec, radius, path, map_ra_dec, radius_dict):
-        self.catalogs = catalogs
-        self.ra = ra
-        self.dec = dec
-        self.radius = radius
-        self.path = path
-        self.map_ra_dec = map_ra_dec
-        self.radius_dict = radius_dict
-
-
-def service_get_conesearch(conesearch_dto):
+def service_get_conesearch(conesearch_dto: ConesearchDto):
     """
     This function returns all the conesearch matches, given a request, for a
     specific catalog. It uses the catsHTM conesearch function for this.
 
     Args:
-        conesearch_dto (ConesearchDto): contains catalog, ra, dec, radius and path.
-        path (string): path of the catalog.
+        conesearch_dto (ConesearchDto): contains:
+            catalog (string): name of the catalog, e.g., FIRST, AAVSO_VSX
+            ra (float): ra coordinate of the point to search in degrees.
+            dec (float): dec coordinate of the point to search in degrees.
+            radius (float): radius of the point to search in arsec.
+            path (string): path of the catalogs.
 
     Returns:
         A list containing all the matches.
@@ -68,16 +38,19 @@ def service_get_conesearch(conesearch_dto):
         return []
 
 
-def service_get_conesearch_all(conesearch_all_dto):
+def service_get_conesearch_all(conesearch_all_dto: ConesearchAllDto):
     """
     This functions returns the conesearch matches, given a request,
     for all catalogs. It uses the 'service_get_conesearch' function
     to generate this result.
 
     Args:
-        catalogs (list): name of the available catalogs.
-        params (ConesearchAllInput): contains the ra, dec, and radius.
-        path (string): path of the catalogs.
+        conesearch_all_dto (ConesearchAllDto): contains:
+            catalogs (list): name of the available catalogs.
+            ra (float): ra coordinate of the point to search in degrees.
+            dec (float): dec coordinate of the point to search in degrees.
+            radius (float): radius of the point to search in arsec.
+            path (string): path of the catalogs.
 
     Returns:
         A dictionary containing the matches for each catalog.
@@ -101,16 +74,20 @@ def service_get_conesearch_all(conesearch_all_dto):
     return final_result
 
 
-def service_get_crossmatch(crossmatch_dto):
+def service_get_crossmatch(crossmatch_dto: CrossmatchDto):
     """
     This function returns all the crossmatch matches, given a request, for a
     specific catalog. It uses the catsHTM conesearch function for this.
 
     Args:
-        params (CrossmatchInput): contains the catalog, ra, dec, and radius.
-        path (string): path of the catalog.
-        map_ra_dec (dict): map for params ra, dec to adjust to catalog ra, dec.
-        radius_dict (dict): contains the default radius to use on each catalog.
+        crossmatch_dto (CrossmatchDto): contains:
+            catalog (string): name of the catalog, e.g., FIRST, AAVSO_VSX
+            ra (float): ra coordinate of the point to search in degrees.
+            dec (float): dec coordinate of the point to search in degrees.
+            radius (float): radius of the point to search in arsec.
+            path (string): path of the catalogs.
+            map_ra_dec (dict): map for params ra, dec to adjust to catalog ra, dec.
+            radius_dict (dict): contains the default radius to use on each catalog.
 
     Returns:
         A list containing all the matches.
@@ -142,18 +119,22 @@ def service_get_crossmatch(crossmatch_dto):
         return []
 
 
-def service_get_crossmatch_all(crossmatch_all_dto):
+def service_get_crossmatch_all(crossmatch_all_dto: CrossmatchAllDto):
     """
     This functions returns the crossmatch matches, given a request,
     for all catalogs. It uses the 'service_get_crossmatch' function
     to generate this result.
 
     Args:
-        catalogs (list): name of the available catalogs.
-        params (CrossmatchAllInput): contains the ra, dec, and radius.
-        path (string): path of the catalogs.
-        map_ra_dec (dict): map for params ra, dec to adjust to catalog ra, dec.
-        radius_dict (dict): contains the default radius to use on each catalog.
+
+        crossmatch_all_dto (CrossmatchAllDto): contains:
+            catalogs (list): name of the available catalogs.
+            ra (float): ra coordinate of the point to search in degrees.
+            dec (float): dec coordinate of the point to search in degrees.
+            radius (float): radius of the point to search in arsec.
+            path (string): path of the catalogs.
+            map_ra_dec (dict): map for params ra, dec to adjust to catalog ra, dec.
+            radius_dict (dict): contains the default radius to use on each catalog.
 
     Returns:
         A dictionary containing the matches for each catalog.

@@ -7,7 +7,7 @@ from src.services.service import (
     service_get_crossmatch_all,
 )
 from src.controllers.constants import radius_dict, map_ra_dec
-from src.services.service import (
+from src.services.dtos import (
     ConesearchDto,
     ConesearchAllDto,
     CrossmatchDto,
