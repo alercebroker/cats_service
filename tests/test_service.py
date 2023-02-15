@@ -15,6 +15,14 @@ from tests.utils import (
     round_cone_search_all,
 )
 from src.models.model_cross_match import ModelCrossMatch
+from src.services.dtos import (
+    ConesearchDto,
+    ConesearchAllDto,
+    CrossmatchDto,
+    CrossmatchAllDto,
+)
+
+test_catalogs = "TMASSxsc,AAVSO_VSX,AKARI,CRTS_per_var,FIRST,NVSS,ROSATfsc,SWIREz"
 
 
 class TestServiceConesearch(TestCase):
@@ -27,13 +35,13 @@ class TestServiceConesearch(TestCase):
         )
 
         result = service_get_conesearch(
-            catalog="FIRST",
-            request={
-                "ra": radians(float(1)),
-                "dec": radians(float(0)),
-                "radius": float(200),
-            },
-            path="/data",
+            conesearch_dto=ConesearchDto(
+                catalog="FIRST",
+                ra=radians(float(1)),
+                dec=radians(float(0)),
+                radius=(float(200)),
+                path="/data",
+            ),
         )
 
         result = round_cone_search(result)
@@ -48,13 +56,13 @@ class TestServiceConesearch(TestCase):
             cone_search_result2_3,
         )
         result = service_get_conesearch(
-            catalog="FIRST",
-            request={
-                "ra": radians(float(1)),
-                "dec": radians(float(0)),
-                "radius": float(0),
-            },
-            path="/data",
+            conesearch_dto=ConesearchDto(
+                catalog="FIRST",
+                ra=radians(float(1)),
+                dec=radians(float(0)),
+                radius=(float(0)),
+                path="/data",
+            ),
         )
         self.assertEqual(service_cone_search_result2, result)
 
@@ -73,13 +81,13 @@ class TestServiceConesearchAll(TestCase):
             service_cone_search_result1_8,
         ]
         result = service_get_conesearch_all(
-            catalogs,
-            request={
-                "ra": radians(float(1)),
-                "dec": radians(float(0)),
-                "radius": float(200),
-            },
-            path="/data",
+            conesearch_all_dto=ConesearchAllDto(
+                catalogs=test_catalogs.split(","),
+                ra=radians(float(1)),
+                dec=radians(float(0)),
+                radius=(float(200)),
+                path="/data",
+            ),
         )
 
         result = round_cone_search_all(result)
@@ -101,13 +109,13 @@ class TestServiceConesearchAll(TestCase):
             service_cone_search_result2_8,
         ]
         result = service_get_conesearch_all(
-            catalogs,
-            request={
-                "ra": radians(float(1)),
-                "dec": radians(float(0)),
-                "radius": float(0),
-            },
-            path="/data",
+            conesearch_all_dto=ConesearchAllDto(
+                catalogs=test_catalogs.split(","),
+                ra=radians(float(1)),
+                dec=radians(float(0)),
+                radius=(float(0)),
+                path="/data",
+            ),
         )
         self.assertEqual(service_cone_search_all_result2, result)
 
@@ -126,15 +134,15 @@ class TestServiceCrossmach(TestCase):
         )
 
         result = service_get_crossmatch(
-            catalog="FIRST",
-            request={
-                "ra": radians(float(1)),
-                "dec": radians(float(0)),
-                "radius": float(200),
-            },
-            path="/data",
-            map_ra_dec=map_ra_dec,
-            radius_dict=radius_dict,
+            crossmatch_dto=CrossmatchDto(
+                catalog="FIRST",
+                ra=radians(float(1)),
+                dec=radians(float(0)),
+                radius=(float(200)),
+                path="/data",
+                map_ra_dec=map_ra_dec,
+                radius_dict=radius_dict,
+            ),
         )
         result = round_cross_match(result)
         service_cross_match_result1_2 = round_cross_match(service_cross_match_result1)
@@ -150,15 +158,15 @@ class TestServiceCrossmach(TestCase):
             cross_match_result2_3,
         )
         result = service_get_crossmatch(
-            catalog="FIRST",
-            request={
-                "ra": radians(float(1)),
-                "dec": radians(float(0)),
-                "radius": float(0),
-            },
-            path="/data",
-            map_ra_dec=map_ra_dec,
-            radius_dict=radius_dict,
+            crossmatch_dto=CrossmatchDto(
+                catalog="FIRST",
+                ra=radians(float(1)),
+                dec=radians(float(0)),
+                radius=(float(0)),
+                path="/data",
+                map_ra_dec=map_ra_dec,
+                radius_dict=radius_dict,
+            ),
         )
         result = round_cross_match(result)
         service_cross_match_result2_2 = round_cross_match(service_cross_match_result2)
@@ -174,11 +182,15 @@ class TestServiceCrossmach(TestCase):
             cross_match_result3_3,
         )
         result = service_get_crossmatch(
-            catalog="FIRST",
-            request={"ra": radians(float(1)), "dec": radians(float(0)), "radius": None},
-            path="/data",
-            map_ra_dec=map_ra_dec,
-            radius_dict=radius_dict,
+            crossmatch_dto=CrossmatchDto(
+                catalog="FIRST",
+                ra=radians(float(1)),
+                dec=radians(float(0)),
+                radius=None,
+                path="/data",
+                map_ra_dec=map_ra_dec,
+                radius_dict=radius_dict,
+            ),
         )
         result = round_cross_match(result)
         service_cross_match_result3_2 = round_cross_match(service_cross_match_result3)
@@ -200,15 +212,15 @@ class TestServiceCrossmatchAll(TestCase):
             service_cross_match_result1_8,
         ]
         result = service_get_crossmatch_all(
-            catalogs,
-            request={
-                "ra": radians(float(1)),
-                "dec": radians(float(0)),
-                "radius": float(200),
-            },
-            path="/data",
-            map_ra_dec=map_ra_dec,
-            radius_dict=radius_dict,
+            crossmatch_all_dto=CrossmatchAllDto(
+                catalogs=test_catalogs.split(","),
+                ra=radians(float(1)),
+                dec=radians(float(0)),
+                radius=(float(200)),
+                path="/data",
+                map_ra_dec=map_ra_dec,
+                radius_dict=radius_dict,
+            ),
         )
         service_cross_match_all_result1_1 = round_cross_match_all(
             service_cross_match_all_result1
@@ -229,15 +241,15 @@ class TestServiceCrossmatchAll(TestCase):
             service_cross_match_result2_8,
         ]
         result = service_get_crossmatch_all(
-            catalogs,
-            request={
-                "ra": radians(float(1)),
-                "dec": radians(float(0)),
-                "radius": float(0),
-            },
-            path="/data",
-            map_ra_dec=map_ra_dec,
-            radius_dict=radius_dict,
+            crossmatch_all_dto=CrossmatchAllDto(
+                catalogs=test_catalogs.split(","),
+                ra=radians(float(1)),
+                dec=radians(float(0)),
+                radius=(float(0)),
+                path="/data",
+                map_ra_dec=map_ra_dec,
+                radius_dict=radius_dict,
+            ),
         )
         service_cross_match_all_result2_1 = round_cross_match_all(
             service_cross_match_all_result2
@@ -258,11 +270,15 @@ class TestServiceCrossmatchAll(TestCase):
             service_cross_match_result3_8,
         ]
         result = service_get_crossmatch_all(
-            catalogs,
-            request={"ra": radians(float(1)), "dec": radians(float(0)), "radius": None},
-            path="/data",
-            map_ra_dec=map_ra_dec,
-            radius_dict=radius_dict,
+            crossmatch_all_dto=CrossmatchAllDto(
+                catalogs=test_catalogs.split(","),
+                ra=radians(float(1)),
+                dec=radians(float(0)),
+                radius=None,
+                path="/data",
+                map_ra_dec=map_ra_dec,
+                radius_dict=radius_dict,
+            ),
         )
         service_cross_match_all_result3_1 = round_cross_match_all(
             service_cross_match_all_result3

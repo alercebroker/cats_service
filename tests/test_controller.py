@@ -15,6 +15,12 @@ from tests.results_controller import *
 from tests.utils import round_controller_conesearch, round_controller_crossmatch
 from tests.results_service import *
 from src.models.model_cross_match import ModelCrossMatch
+from src.view.fastAPI_project import (
+    ConesearchInput,
+    CrossmatchInput,
+    ConesearchAllInput,
+    CrossmatchAllInput,
+)
 
 
 class TestControllerConesearch(TestCase):
@@ -26,7 +32,12 @@ class TestControllerConesearch(TestCase):
             cone_search_result1_3,
         )
         result = controller_conesearch(
-            params={"catalog": "FIRST", "ra": 1, "dec": 0, "radius": 200}
+            params=ConesearchInput(
+                catalog="FIRST",
+                ra=1,
+                dec=0,
+                radius=200,
+            )
         )
         result = round_controller_conesearch(result)
         controller_conesearch_result1_1 = round_controller_conesearch(
@@ -42,7 +53,12 @@ class TestControllerConesearch(TestCase):
             cone_search_result2_3,
         )
         result = controller_conesearch(
-            params={"catalog": "FIRST", "ra": 1, "dec": 0, "radius": 0}
+            params=ConesearchInput(
+                catalog="FIRST",
+                ra=1,
+                dec=0,
+                radius=0,
+            )
         )
         result = round_controller_conesearch(result)
         controller_conesearch_result2_1 = round_controller_conesearch(
@@ -64,7 +80,12 @@ class TestControllerCrossmatch(TestCase):
             cone_search_result1_3,
         )
         result = controller_crossmatch(
-            params={"catalog": "FIRST", "ra": 1, "dec": 0, "radius": 200}
+            params=CrossmatchInput(
+                catalog="FIRST",
+                ra=1,
+                dec=0,
+                radius=200,
+            )
         )
 
         result = round_controller_crossmatch(result)
@@ -83,7 +104,12 @@ class TestControllerCrossmatch(TestCase):
             cone_search_result2_3,
         )
         result = controller_crossmatch(
-            params={"catalog": "FIRST", "ra": 1, "dec": 0, "radius": 0}
+            params=CrossmatchInput(
+                catalog="FIRST",
+                ra=1,
+                dec=0,
+                radius=0,
+            )
         )
         result = round_controller_crossmatch(result)
         controller_crossmatch_result2_1 = round_controller_crossmatch(
@@ -100,7 +126,12 @@ class TestControllerCrossmatch(TestCase):
             cone_search_result2_3,
         )
         result = controller_crossmatch(
-            params={"catalog": "FIRST", "ra": 1, "dec": 0, "radius": None}
+            params=CrossmatchInput(
+                catalog="FIRST",
+                ra=1,
+                dec=0,
+                radius=None,
+            )
         )
         result = round_controller_crossmatch(result)
         controller_crossmatch_result3_1 = round_controller_crossmatch(
@@ -123,7 +154,9 @@ class TestControllerConesearchAll(TestCase):
             service_cone_search_result1_7,
             service_cone_search_result1_8,
         ]
-        result = controller_conesearch_all(params={"ra": 1, "dec": 0, "radius": 200})
+        result = controller_conesearch_all(
+            params=ConesearchAllInput(ra=1, dec=0, radius=200)
+        )
         self.assertEqual(result, controller_conesearch_all_result1)
 
     @mock.patch("src.services.service.service_get_conesearch")
@@ -138,7 +171,9 @@ class TestControllerConesearchAll(TestCase):
             service_cone_search_result2_7,
             service_cone_search_result2_8,
         ]
-        result = controller_conesearch_all(params={"ra": 1, "dec": 0, "radius": 0})
+        result = controller_conesearch_all(
+            params=ConesearchAllInput(ra=1, dec=0, radius=0)
+        )
         self.assertEqual(result, controller_conesearch_all_result2)
 
 
@@ -155,7 +190,9 @@ class TestControllerCrossmatchAll(TestCase):
             service_cross_match_result1_7,
             service_cross_match_result1_8,
         ]
-        result = controller_crossmatch_all(params={"ra": 1, "dec": 0, "radius": 200})
+        result = controller_crossmatch_all(
+            params=CrossmatchAllInput(ra=1, dec=0, radius=200)
+        )
         self.assertEqual(result, controller_crossmatch_all_result1)
 
     @mock.patch("src.services.service.service_get_crossmatch")
@@ -170,7 +207,7 @@ class TestControllerCrossmatchAll(TestCase):
             service_cross_match_result2_7,
             service_cross_match_result2_8,
         ]
-        result = controller_crossmatch_all(params={"ra": 1, "dec": 0, "radius": 0})
+        result = controller_crossmatch_all(CrossmatchAllInput(ra=1, dec=0, radius=0))
         self.assertEqual(result, controller_crossmatch_all_result2)
 
     @mock.patch("src.services.service.service_get_crossmatch")
@@ -185,5 +222,5 @@ class TestControllerCrossmatchAll(TestCase):
             service_cross_match_result3_7,
             service_cross_match_result3_8,
         ]
-        result = controller_crossmatch_all(params={"ra": 1, "dec": 0, "radius": None})
+        result = controller_crossmatch_all(CrossmatchAllInput(ra=1, dec=0, radius=None))
         self.assertEqual(result, controller_crossmatch_all_result3)
