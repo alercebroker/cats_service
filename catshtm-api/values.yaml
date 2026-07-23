@@ -1,0 +1,85 @@
+# Default values for catshtm-api.
+# These mirror the deployed release `ws-catshtm-old`.
+
+replicaCount: 1
+
+# Namespace the chart creates and deploys into.
+namespace: ws-catshtm-old
+
+nameOverride: ""
+fullnameOverride: ""
+
+image:
+  repository: ghcr.io/alercebroker/catshtm_api
+  tag: "1"
+  pullPolicy: IfNotPresent
+
+# Credentials used to build the `image-pull-access` dockerconfigjson secret.
+# IMPORTANT: do NOT commit a real token. Inject at deploy time, e.g.:
+#   helm install ... --set imageCredentials.password=$GHCR_TOKEN
+imageCredentials:
+  registry: ""
+  username: ""
+  password: ""
+  email: ""
+
+imagePullSecrets:
+  - name: image-pull-access
+
+# API ConfigMap (exposed to the container as env vars).
+configmap:
+  catalogs: ""
+  data_path: ""
+  root_path: ""
+
+# nginx reverse-proxy sidecar.
+nginx:
+  image: ""
+  tag: ""
+  pathPrefix: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  certificateArn: ""
+  k8sGroupName: ""
+  k8sTags: ""
+  hosts:
+    - host: ""
+      path: ""
+    - host: ""
+      path: ""
+
+# EBS-backed PersistentVolume holding the HTM catalogs.
+volume:
+  handle: ""
+  storage: ""
+  zone: ""
+
+# Resource requests/limits for the API container.
+resources: {}
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 1
+  targetCPUUtilizationPercentage: 80
+
+podAnnotations:
+  prometheus.io/scrape: ""
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: nodegroup
+              operator: In
+              values:
+                - ""
+            - key: topology.kubernetes.io/zone
+              operator: In
+              values:
+                - ""
