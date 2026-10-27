@@ -1,6 +1,7 @@
 from astropy.coordinates import SkyCoord
 from astropy import units
 from catsHTM import cone_search
+from catsHTM.script import get_CatDir, search_htm_ind
 from flask import Flask, request, jsonify, flash, redirect, url_for
 from flask_cors import CORS
 from math import radians, degrees
@@ -47,6 +48,22 @@ map_ra_dec = {
     "XMM": ("RA", "DEC"),
     "SDSSoffset": ("ra", "dec"),
 }
+
+
+def load_catalog_indexes():
+    """
+    Loads the index of every catalog into the catsHTM in-memory cache
+    (about 650 MB in all). gunicorn runs with --preload, so this happens once
+    in the master process and the forked workers share the indexes instead of
+    each loading its own copy on its first requests.
+    """
+    for catalog in catalogs:
+        search_htm_ind(
+            catalog + "_htm.hdf5", 0.0, 0.0, 1e-6, path, CatDir=get_CatDir(catalog)
+        )
+
+
+load_catalog_indexes()
 
 
 @app.route("/")
@@ -202,7 +219,12 @@ def conesearch_all():
     result = []
     # append the results of each catalog
     for catalog in catalogs:
-        partial_result = conesearch(catalog, ra, dec, radius)
+        try:
+            partial_result = conesearch(catalog, ra, dec, radius)
+        except Exception:
+            # an unreadable catalog file must not fail the other catalogs
+            app.logger.exception("cone search failed for catalog %s", catalog)
+            continue
         if partial_result != {}:
             result.append(partial_result)
     final_result = {}
@@ -363,7 +385,12 @@ def crossmatch_all():
         radius = float(radius_dict.get(catalog, 50))
     result = []
     for catalog in catalogs:
-        partial_result = crossmatch(catalog, ra, dec, radius)
+        try:
+            partial_result = crossmatch(catalog, ra, dec, radius)
+        except Exception:
+            # an unreadable catalog file must not fail the other catalogs
+            app.logger.exception("crossmatch failed for catalog %s", catalog)
+            continue
         # append the partial result if it is not empty
         if partial_result:
             if catalog in catalog_map:
